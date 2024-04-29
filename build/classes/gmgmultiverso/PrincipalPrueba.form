@@ -64,6 +64,8 @@
     <Component class="propiedades.Componente4" name="componenteNombreEmpresas">
       <Properties>
         <Property name="etiqueta" type="java.lang.String" value="Nombre Empresas  :"/>
+        <Property name="mensaje" type="java.lang.String" value="&quot;Elije un nombre de empresa&quot;"/>
+        <Property name="primerElementoEsMensaje" type="boolean" value="true"/>
       </Properties>
     </Component>
   </SubComponents>

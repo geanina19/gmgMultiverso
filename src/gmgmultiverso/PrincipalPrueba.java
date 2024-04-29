@@ -3,6 +3,7 @@ package gmgmultiverso;
 import gmgmultiverso.db.Conexion;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -26,6 +27,9 @@ import propiedades.LisOverComp4;
  */
 public class PrincipalPrueba extends javax.swing.JFrame 
 {
+    
+    private MouseListener mouseClickListener = null;
+    private MouseListener mouseOrdenarTabla = null;
 
     Conexion con = new Conexion();
     Connection conet;
@@ -33,7 +37,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
     Statement st;
     ResultSet rs;
     
-    private int codigoProveedor = -1;
+    private int codProveedor = -1;
     
     Object[] cabecera = new Object[]{"Nombre de la empresa", "Telefono", "Email"};
     DefaultTableModel miModelo = new DefaultTableModel(null, cabecera);
@@ -57,14 +61,21 @@ public class PrincipalPrueba extends javax.swing.JFrame
             public void accion(EvObjOverComp4 ev) 
             {
                 System.out.println(ev.getMensaje());
-                codigoProveedor = ev.getSelectedCode();
-                buscarProveedor(codigoProveedor);
+                codProveedor = ev.getSelectedCode();
+                buscarProveedor(codProveedor);
             }
         });
     }
     
     
     //-------------Métodos-----------------
+    
+    //Para q no se mezclen
+    public void quitarListener()
+    {
+        tablaBuscarProveedor.removeMouseListener(mouseClickListener);
+        mouseClickListener = null;
+    }
     
     
     public void activarOrdenarColumnas(DefaultTableModel model)
@@ -85,11 +96,67 @@ public class PrincipalPrueba extends javax.swing.JFrame
         tablaBuscarProveedor.addMouseListener(mouseOrdenarTabla);
     }
     
+    public void mouseListenerAnadirColumnasExtra() 
+    {
+        quitarListener();
+        
+        mouseClickListener = new MouseAdapter() 
+        {
+        @Override
+        public void mouseClicked(MouseEvent evt) 
+        {
+            int editarColumna = tablaBuscarProveedor.getColumnCount() - 2;
+            int eliminarColumna = tablaBuscarProveedor.getColumnCount() - 1;
+
+            int column = tablaBuscarProveedor.columnAtPoint(evt.getPoint());
+            int row = tablaBuscarProveedor.rowAtPoint(evt.getPoint());
+
+            if (row >= 0 && row < tablaBuscarProveedor.getRowCount()) 
+            {
+
+                String codigoProveedorSeleccionado = "SELECT id FROM proveedor WHERE nombre_empresa = '" +  tablaBuscarProveedor.getValueAt(row, 0) + "' "
+                            + "AND telefono = '" + tablaBuscarProveedor.getValueAt(row, 1) + "'";
+                int codigoProveedor = 0;
+
+                try 
+                {
+                    conet=con.abrirConexion();
+                    st=conet.createStatement();
+                    rs=st.executeQuery(codigoProveedorSeleccionado);
+                    
+                    
+                    if (rs.next()) 
+                    {
+                        codigoProveedor = rs.getInt("id");
+                    }
+
+                    rs.close();
+                    st.close();
+                } catch (SQLException ex) 
+                {
+                    ex.printStackTrace();
+                }
+
+                if (column == editarColumna) 
+                {
+                    //abrirFrameEditar(codigoProveedor);
+                } 
+                else if (column == eliminarColumna) 
+                {
+                    //confirmarEliminarProveedor(codigoProveedor);
+                }
+            }
+        }
+    };
+
+    tablaBuscarProveedor.addMouseListener(mouseClickListener);
+    }
     
     //-------------Actualizar tabla------------
     public void actualizarTablaBuscarProveedor()
     {
         
+        quitarListener();
         
         //creamos la tabla con el sql
         String sqlDatos = "select nombre_empresa, telefono, email from proveedor";
@@ -144,6 +211,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
             }
             
             tablaBuscarProveedor.setModel(miModelo);
+            mouseListenerAnadirColumnasExtra();
         } 
         catch (SQLException e) 
         {
@@ -192,19 +260,20 @@ public class PrincipalPrueba extends javax.swing.JFrame
     
     //-------------Buscar proveedores------------
     
-    public void buscarProveedor(int codigoProveedor) 
+    public void buscarProveedor(int codProveedor) 
     {
         
         String sqlDatos = "SELECT nombre_empresa AS Nombre_de_la_empresa, "
                 + "telefono AS Telefono, "
-                + "email AS Email "
+                + "email AS Email, "
+                + "id "
                 + "FROM PROVEEDOR "
                 + "WHERE 1=1";
 
         // Agregar condiciones a la consulta basadas en los códigos proporcionados
-        if (codigoProveedor != -1) 
+        if (codProveedor != -1) 
         {
-            sqlDatos += " AND nombre_empresa LIKE '%" + codigoProveedor + "%'";
+            sqlDatos += " AND id = " + codProveedor;
         }
 
         // Ejecutar la consulta y actualizar la tabla
@@ -281,6 +350,8 @@ public class PrincipalPrueba extends javax.swing.JFrame
         jScrollPane1.setViewportView(tablaBuscarProveedor);
 
         componenteNombreEmpresas.setEtiqueta("Nombre Empresas  :");
+        componenteNombreEmpresas.setMensaje("\"Elije un nombre de empresa\"");
+        componenteNombreEmpresas.setPrimerElementoEsMensaje(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

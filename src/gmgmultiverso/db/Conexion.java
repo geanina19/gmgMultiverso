@@ -15,9 +15,9 @@ import java.sql.SQLException;
 public class Conexion 
 {
     private Connection conexion;
-    private String bbdd = "jdbc:hsqldb:hsql://localhost/";
+    private String bbdd = "jdbc:hsqldb:hsql://localhost/GMGMULTIVERSO/";
     private String usuario = "SA";
-    private String contrasena = "gmgmultiverso";
+    private String contrasena = "";
     
     /*
     public Conexion(String bbdd, String usuario, String contrasena) throws ClassNotFoundException {

@@ -9,6 +9,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import propiedades.EvObjOverComp4;
@@ -32,7 +33,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
     Statement st;
     ResultSet rs;
     
-    private int codigoNomEmpresa = -1;
+    private int codigoProveedor = -1;
     
     Object[] cabecera = new Object[]{"Nombre de la empresa", "Telefono", "Email"};
     DefaultTableModel miModelo = new DefaultTableModel(null, cabecera);
@@ -46,7 +47,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
         
         tablaBuscarProveedor.setModel(miModelo);
         actualizarTablaBuscarProveedor();
-        //cargarProveedores();
+        cargarNombreEmpresa();
         
         //NO TOCAR (FUNCIONA)
         //cuaundo pulse un pais, en la tabla se mostrará los proveedores con ese pais seleccinado
@@ -56,11 +57,15 @@ public class PrincipalPrueba extends javax.swing.JFrame
             public void accion(EvObjOverComp4 ev) 
             {
                 System.out.println(ev.getMensaje());
-                codigoNomEmpresa = ev.getSelectedCode();
-                //buscarProveedor(codigoNomEmpresa);
+                codigoProveedor = ev.getSelectedCode();
+                buscarProveedor(codigoProveedor);
             }
         });
     }
+    
+    
+    //-------------Métodos-----------------
+    
     
     public void activarOrdenarColumnas(DefaultTableModel model)
     {
@@ -80,19 +85,14 @@ public class PrincipalPrueba extends javax.swing.JFrame
         tablaBuscarProveedor.addMouseListener(mouseOrdenarTabla);
     }
     
+    
+    //-------------Actualizar tabla------------
     public void actualizarTablaBuscarProveedor()
     {
         
         
         //creamos la tabla con el sql
-        String sqlDatos = "SELECT P.NOMBRE AS NombreProveedor, "
-                + "P.NOMCONTACTO AS NombreContacto, "
-                + "P.TELEFONO, "
-                + "P.EMAILCONTACTO, "
-                + "PA.NOMBRE AS NombrePais, "
-                + "M.NOMBRE AS NombreMunicipio "
-                + "FROM PROVEEDORES P, MUNICIPIOS M, PAISES PA "
-                + "WHERE P.CODIGOMUNICIPIO = M.CODIGO AND P.CODIGOPAIS = PA.CODIGO";
+        String sqlDatos = "select nombre_empresa, telefono, email from proveedor";
 
         try
         {
@@ -104,7 +104,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
             
-            miModelo = new DefaultTableModel(null, new Object[]{"Proveedor", "Nombre de contacto", "Telefono", "Correo", "Pais", "Municipio"})
+            miModelo = new DefaultTableModel(null, new Object[]{"Nombre de la empresa", "Telefono", "Email"})
             {
                 @Override
                 public Class<?> getColumnClass(int columnIndex) 
@@ -137,12 +137,9 @@ public class PrincipalPrueba extends javax.swing.JFrame
             
             while (rs.next()) 
             {
-                proveedores[0] = rs.getString("NombreProveedor");
-                proveedores[1] = rs.getString("NombreContacto");
-                proveedores[2] = rs.getString("TELEFONO");
-                proveedores[3] = rs.getString("EMAILCONTACTO");
-                proveedores[4] = rs.getString("NombrePais");
-                proveedores[5] = rs.getString("NombreMunicipio");
+                proveedores[0] = rs.getString("nombre_empresa");
+                proveedores[1] = rs.getString("telefono");
+                proveedores[2] = rs.getString("email");
                 miModelo.addRow(proveedores);
             }
             
@@ -166,6 +163,104 @@ public class PrincipalPrueba extends javax.swing.JFrame
             }
         }
     }
+    
+    
+    //-------------Cargar proveedores------------
+    public void cargarNombreEmpresa() 
+    {
+        //String slqPaises = "select nombre, codigo from paises";
+        String slqPaises = "select nombre_empresa, id from proveedor";
+        try
+        {
+            conet = con.abrirConexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(slqPaises);
+            
+            componenteNombreEmpresas.eliminarSeleccion();
+            
+            componenteNombreEmpresas.rellenarJlist(rs, "nombre_empresa", "id");
+            rs.close();
+            st.close();
+            conet.close();
+        }
+        catch(SQLException e)
+        {
+           e.printStackTrace();
+        }
+    }
+    
+    
+    //-------------Buscar proveedores------------
+    
+    public void buscarProveedor(int codigoProveedor) 
+    {
+        
+        String sqlDatos = "SELECT nombre_empresa AS Nombre_de_la_empresa, "
+                + "telefono AS Telefono, "
+                + "email AS Email "
+                + "FROM PROVEEDOR "
+                + "WHERE 1=1";
+
+        // Agregar condiciones a la consulta basadas en los códigos proporcionados
+        if (codigoProveedor != -1) 
+        {
+            sqlDatos += " AND nombre_empresa LIKE '%" + codigoProveedor + "%'";
+        }
+
+        // Ejecutar la consulta y actualizar la tabla
+        try {
+            conet = con.abrirConexion();
+            st = conet.createStatement();
+            rs = st.executeQuery(sqlDatos);
+
+            // Limpiar modelo actual de la tabla
+            miModelo.setRowCount(0);
+
+            boolean hayResultados = false;
+            
+            // Llenar el modelo con los resultados de la consulta
+            while (rs.next()) 
+            {
+                hayResultados = true;
+                
+                Object[] proveedor = new Object[]
+                {
+                    rs.getString("Nombre_de_la_empresa"),
+                    rs.getString("Telefono"),
+                    rs.getString("Email"),
+                };
+                miModelo.addRow(proveedor);
+            }
+
+            // Actualizar la tabla con el nuevo modelo
+            tablaBuscarProveedor.setModel(miModelo);
+            
+            if (!hayResultados) 
+            {
+                JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+        } 
+        finally 
+        {
+            try 
+            {
+                if (rs != null) rs.close();
+                if (st != null) st.close();
+                if (conet != null) conet.close();
+            } 
+            catch (SQLException ex) 
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

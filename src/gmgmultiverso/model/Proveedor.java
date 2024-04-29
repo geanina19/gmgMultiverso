@@ -29,7 +29,7 @@ public class Proveedor
     }
     
     //-----------nombre_empresa-----------
-    public String nombre_empresa() 
+    public String getNombre_empresa() 
     {
         return nombre_empresa;
     }

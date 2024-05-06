@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+
 
 /**
  *
@@ -35,16 +37,16 @@ public class ProveedorDao
         this.con = con;
     }
     
-    
+    /*
     public List<Proveedor> list() 
     {
         String sqlDatos = "SELECT * FROM proveedor";
         
         try 
         {
-            conect=con.abrirConexion();
-            st=conect.createStatement();
-            rs=st.executeQuery(sqlDatos);
+            conect = con.abrirConexion();
+            st = conect.createStatement();
+            rs = st.executeQuery(sqlDatos);
 
             
             List<Proveedor> proveedores = new ArrayList<>();
@@ -69,7 +71,6 @@ public class ProveedorDao
                 proveedores[2] = rs.getString("email");
                 proveedores.add(proveedor);
             }
-            */
             
 
             return proveedores;
@@ -92,10 +93,48 @@ public class ProveedorDao
             }
         }
     }
+    */
     
+    public List<Proveedor> list() 
+    {
+        
+        try 
+        {
+            conect = con.abrirConexion();
+
+            var ps = conect.prepareStatement("SELECT * FROM proveedor");
+
+            var resultSet = ps.executeQuery();
+            List<Proveedor> proveedores = new ArrayList<>();
+            while (resultSet.next()) {
+                Proveedor proveedor = new Proveedor(
+                        resultSet.getString("nombre_empresa"),
+                        resultSet.getInt("telefono"),
+                        resultSet.getString("email")
+                );
+                proveedores.add(proveedor);
+            }
+
+            return proveedores;
+            
+        } 
+        catch (SQLException e) 
+        {
+            throw new RuntimeException(e);
+        } 
+        finally 
+        {
+            if (con != null) {
+                try {
+                    con.cerrarConexion(conect);
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
     
             
-    public boolean save(Proveedor proveedor) 
+    public boolean crearProveedor(Proveedor proveedor) 
     {
         try 
         {
@@ -132,9 +171,42 @@ public class ProveedorDao
     
     /*
     //-------------eliminar un proveedor-------------
+    
+    //-------------con hibernate-------------
     public void eliminarProveedor(Proveedor proveedor) 
     {
         proveedores.remove(proveedor);
     }
     */
+    
+    public boolean eliminarProveedor(int idProveedor) 
+    {
+        String sqlEliminar = "DELETE FROM proveedor WHERE id = ?";
+
+        try 
+        {
+            conect = con.abrirConexion();
+
+            PreparedStatement statement = conect.prepareStatement(sqlEliminar);
+            statement.setInt(1, idProveedor);
+
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (con != null) {
+                try {
+                    con.cerrarConexion(conect);
+                } catch (SQLException e) {
+                    System.out.println("Error al cerrar la conexión en eliminarProveedor");
+                }
+            }
+        }
+    }
+    
+    public 
+
+
 }

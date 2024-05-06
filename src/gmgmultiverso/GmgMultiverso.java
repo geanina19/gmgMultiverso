@@ -19,6 +19,9 @@ public class GmgMultiverso
         // TODO code application logic here
         PrincipalPrueba pp = new PrincipalPrueba();
         pp.setVisible(true);
+        
+        Login l = new Login();
+        l.setVisible(true);
     }
     
 }

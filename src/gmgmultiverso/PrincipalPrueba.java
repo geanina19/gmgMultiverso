@@ -1,6 +1,6 @@
 package gmgmultiverso;
 
-import gmgmultiverso.db.Conexion;
+import gmgmultiverso.db.ManagerConexion;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,7 +31,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
     private MouseListener mouseClickListener = null;
     private MouseListener mouseOrdenarTabla = null;
 
-    Conexion con = new Conexion();
+    ManagerConexion con = new ManagerConexion();
     Connection conet;
     
     Statement st;

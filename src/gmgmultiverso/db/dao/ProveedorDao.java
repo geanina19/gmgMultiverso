@@ -4,7 +4,7 @@
  */
 package gmgmultiverso.db.dao;
 
-import gmgmultiverso.db.Conexion;
+import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.model.Proveedor;
 import java.util.List;
 //import java.awt.print.Proveedor;
@@ -24,15 +24,10 @@ import java.sql.PreparedStatement;
 public class ProveedorDao 
 {
     
-    private Conexion con;
-    Connection conect;
+    private ManagerConexion con;
     
-    Statement st;
-    ResultSet rs;
     
-    //private List<Proveedor> proveedores;
-    
-    public ProveedorDao(Conexion con)
+    public ProveedorDao(ManagerConexion con)
     {
         this.con = con;
     }
@@ -81,10 +76,11 @@ public class ProveedorDao
         } 
         finally 
         {
-            if (con != null) 
+            if (conect != null) 
             {
-                try {
-                    con.cerrarConexion((Connection) con);
+                try 
+                {
+                    conect.close();
                 } 
                 catch (SQLException e) 
                 {
@@ -97,7 +93,11 @@ public class ProveedorDao
     
     public List<Proveedor> list() 
     {
-        
+        Connection conect = null;
+    
+        Statement st;
+        ResultSet rs;
+    
         try 
         {
             conect = con.abrirConexion();
@@ -124,10 +124,15 @@ public class ProveedorDao
         } 
         finally 
         {
-            if (con != null) {
-                try {
-                    con.cerrarConexion(conect);
-                } catch (SQLException e) {
+            if (conect != null) 
+            {
+                try 
+                {
+                    conect.close();
+                } 
+                catch (SQLException e) 
+                {
+                    
                 }
             }
         }
@@ -136,6 +141,12 @@ public class ProveedorDao
             
     public boolean crearProveedor(Proveedor proveedor) 
     {
+        
+        Connection conect = null;
+    
+        Statement st;
+        ResultSet rs;
+        
         try 
         {
             conect = con.abrirConexion();
@@ -155,15 +166,15 @@ public class ProveedorDao
         } 
         finally 
         {
-            if (con != null) 
+            if (conect != null) 
             {
                 try 
                 {
-                    con.cerrarConexion(conect);
+                    conect.close();
                 } 
                 catch (SQLException e) 
                 {
-                    System.out.println("Error cerrar ProveedorDao");
+                    
                 }
             }
         }
@@ -181,6 +192,11 @@ public class ProveedorDao
     
     public boolean eliminarProveedor(int idProveedor) 
     {
+        Connection conect = null;
+    
+        Statement st;
+        ResultSet rs;
+        
         String sqlEliminar = "DELETE FROM proveedor WHERE id = ?";
 
         try 
@@ -192,21 +208,69 @@ public class ProveedorDao
 
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) 
+        {
             e.printStackTrace();
             return false;
-        } finally {
-            if (con != null) {
-                try {
-                    con.cerrarConexion(conect);
-                } catch (SQLException e) {
-                    System.out.println("Error al cerrar la conexión en eliminarProveedor");
+        } 
+        finally 
+        {
+            if (conect != null) 
+            {
+                try 
+                {
+                    conect.close();
+                } 
+                catch (SQLException e) 
+                {
+                    
                 }
             }
         }
     }
     
-    public 
+    public boolean actualizarProveedor(int idProveedor, Proveedor proveedor) 
+    {
+        Connection conect = null;
+    
+        Statement st;
+        ResultSet rs;
+        
+        String sqlActualizar = "UPDATE proveedor SET nombre_empresa = ?, telefono = ?, email = ? WHERE id = ?";
+
+        try {
+            conect = con.abrirConexion();
+            PreparedStatement statement = conect.prepareStatement(sqlActualizar);
+            statement.setString(1, proveedor.getNombre_empresa());
+            statement.setInt(2, proveedor.getTelefono());
+            statement.setString(3, proveedor.getEmail());
+            statement.setInt(4, idProveedor);
+
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+            return false;
+        } 
+        finally 
+        {
+            if (conect != null) 
+            {
+                try 
+                {
+                    conect.close();
+                } 
+                catch (SQLException e) 
+                {
+                    
+                }
+            }
+        }
+    }
+
 
 
 }

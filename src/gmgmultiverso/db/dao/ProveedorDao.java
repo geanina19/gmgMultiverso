@@ -6,8 +6,8 @@ package gmgmultiverso.db.dao;
 
 import gmgmultiverso.db.Conexion;
 import gmgmultiverso.model.Proveedor;
-import java.awt.List;
-import java.awt.print.Book;
+import java.util.List;
+//import java.awt.print.Proveedor;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +36,6 @@ public class ProveedorDao
     }
     
     
-    /*
     public List<Proveedor> list() 
     {
         String sqlDatos = "SELECT * FROM proveedor";
@@ -49,31 +48,28 @@ public class ProveedorDao
 
             
             List<Proveedor> proveedores = new ArrayList<>();
-            /*
+    
             while (rs.next()) 
             {
                 Proveedor proveedor = new Proveedor(
-                        rs.getString("isbn"),
-                        rs.getString("title"),
-                        rs.getString("author"),
-                        rs.getInt("year")
+                        rs.getString("nombre_empresa"),
+                        rs.getInt("telefono"),
+                        rs.getString("email")
                 );
                 proveedores.add(proveedor);
             }
-            
+   
+            /*
             Object [] proveedores = new Object[9];
             
             while (rs.next()) 
             {
-                proveedores[0] = rs.getString("NombreProveedor");
-                proveedores[1] = rs.getString("NombreContacto");
-                proveedores[2] = rs.getString("TELEFONO");
-                proveedores[3] = rs.getString("EMAILCONTACTO");
-                proveedores[4] = rs.getString("NombrePais");
-                proveedores[5] = rs.getString("NombreMunicipio");
+                proveedores[0] = rs.getString("nombre_empresa");
+                proveedores[1] = rs.getInt("telefono");
+                proveedores[2] = rs.getString("email");
                 proveedores.add(proveedor);
             }
-            
+            */
             
 
             return proveedores;
@@ -84,7 +80,8 @@ public class ProveedorDao
         } 
         finally 
         {
-            if (con != null) {
+            if (con != null) 
+            {
                 try {
                     con.cerrarConexion((Connection) con);
                 } 
@@ -95,8 +92,9 @@ public class ProveedorDao
             }
         }
     }
-    */
     
+    
+            
     public boolean save(Proveedor proveedor) 
     {
         try 

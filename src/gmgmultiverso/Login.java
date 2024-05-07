@@ -4,7 +4,13 @@
  */
 package gmgmultiverso;
 
+import gmgmultiverso.db.ManagerConexion;
 import java.awt.Color;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  *
@@ -13,16 +19,54 @@ import java.awt.Color;
 public class Login extends javax.swing.JFrame 
 {
 
-    
+    //private ManagerConexion con;
     int xMouse, yMouse;
     
     /**
      * Creates new form Login
      */
-    public Login() {
+    public Login() 
+    {
         initComponents();
         this.setSize(860, 500);
         //[860, 500]
+    }
+    
+    private boolean validarCredenciales(String usuario, String contrasenia) 
+    {
+        Connection conect;
+        ManagerConexion con = new ManagerConexion();
+    
+        //Statement st;
+        //ResultSet rs;
+
+        try 
+        {
+            conect = con.abrirConexion();
+            String sql = "SELECT * FROM empleado WHERE nombre = ? AND contrasenia = ?";
+            try (PreparedStatement statement = conect.prepareStatement(sql)) 
+            {
+                statement.setString(1, usuario);
+                statement.setString(2, contrasenia);
+                try (ResultSet resultSet = statement.executeQuery()) 
+                {
+                    if (resultSet.next()) 
+                    {
+                        String nombreEmpleado = resultSet.getString("nombre");
+                        if (nombreEmpleado.equals("Admin")) 
+                        {
+                            return true; // Si el usuario es Admin y la contraseña es correcta, permitir el inicio de sesión
+                        }
+                    }
+                    return false; // Si el usuario no es Admin o la contraseña es incorrecta, denegar el inicio de sesión
+                }
+            }
+        } 
+        catch (SQLException e) 
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -146,7 +190,22 @@ public class Login extends javax.swing.JFrame
 
     private void botonIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonIniciarSesionMouseClicked
         // TODO add your handling code here:
-        javax.swing.JOptionPane.showMessageDialog(this, "Intento de login con los datos:\nUsuario: " + ingresarUsuario.getText() + "\nContraseña: " + String.valueOf(ingresarContrasenia.getPassword()), "LOGIN", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        String usuario = ingresarUsuario.getText();
+        String contrasenia = String.valueOf(ingresarContrasenia.getPassword());
+
+        if (validarCredenciales(usuario, contrasenia)) 
+        {
+            // Si las credenciales son válidas, abrir la ventana PrincipalGmgMultiverso
+            PrincipalGmgMultiverso p1 = new PrincipalGmgMultiverso();
+            p1.setVisible(true);
+            this.dispose(); // Cerrar la ventana de login
+        } 
+        else 
+        {
+            //javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(this, "Intento de login con los datos:\nUsuario: " + ingresarUsuario.getText() + "\nContraseña: " + String.valueOf(ingresarContrasenia.getPassword()), "LOGIN", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+        
     }//GEN-LAST:event_botonIniciarSesionMouseClicked
 
     /**

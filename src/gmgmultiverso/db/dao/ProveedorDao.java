@@ -32,64 +32,6 @@ public class ProveedorDao
         this.con = con;
     }
     
-    /*
-    public List<Proveedor> list() 
-    {
-        String sqlDatos = "SELECT * FROM proveedor";
-        
-        try 
-        {
-            conect = con.abrirConexion();
-            st = conect.createStatement();
-            rs = st.executeQuery(sqlDatos);
-
-            
-            List<Proveedor> proveedores = new ArrayList<>();
-    
-            while (rs.next()) 
-            {
-                Proveedor proveedor = new Proveedor(
-                        rs.getString("nombre_empresa"),
-                        rs.getInt("telefono"),
-                        rs.getString("email")
-                );
-                proveedores.add(proveedor);
-            }
-   
-            /*
-            Object [] proveedores = new Object[9];
-            
-            while (rs.next()) 
-            {
-                proveedores[0] = rs.getString("nombre_empresa");
-                proveedores[1] = rs.getInt("telefono");
-                proveedores[2] = rs.getString("email");
-                proveedores.add(proveedor);
-            }
-            
-
-            return proveedores;
-        }
-        catch (SQLException e) 
-        {
-            throw new RuntimeException(e);
-        } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
-                    conect.close();
-                } 
-                catch (SQLException e) 
-                {
-                    
-                }
-            }
-        }
-    }
-    */
     
     public List<Proveedor> list() 
     {
@@ -180,15 +122,9 @@ public class ProveedorDao
         }
     }
     
-    /*
+    
     //-------------eliminar un proveedor-------------
     
-    //-------------con hibernate-------------
-    public void eliminarProveedor(Proveedor proveedor) 
-    {
-        proveedores.remove(proveedor);
-    }
-    */
     
     public boolean eliminarProveedor(int idProveedor) 
     {

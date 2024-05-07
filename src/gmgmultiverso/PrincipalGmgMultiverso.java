@@ -13,7 +13,8 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
     /**
      * Creates new form PrincipalGmgMultiverso
      */
-    public PrincipalGmgMultiverso() {
+    public PrincipalGmgMultiverso() 
+    {
         initComponents();
     }
 

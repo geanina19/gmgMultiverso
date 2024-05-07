@@ -50,6 +50,7 @@ public class ProveedorDao
             List<Proveedor> proveedores = new ArrayList<>();
             while (resultSet.next()) {
                 Proveedor proveedor = new Proveedor(
+                        resultSet.getInt("id"),
                         resultSet.getString("nombre_empresa"),
                         resultSet.getInt("telefono"),
                         resultSet.getString("email")
@@ -166,7 +167,7 @@ public class ProveedorDao
         }
     }
     
-    public boolean actualizarProveedor(int idProveedor, Proveedor proveedor) 
+    public boolean actualizarProveedor(Proveedor proveedor) 
     {
         Connection conect = null;
     
@@ -181,7 +182,7 @@ public class ProveedorDao
             statement.setString(1, proveedor.getNombre_empresa());
             statement.setInt(2, proveedor.getTelefono());
             statement.setString(3, proveedor.getEmail());
-            statement.setInt(4, idProveedor);
+            statement.setInt(4, proveedor.getId());
 
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;

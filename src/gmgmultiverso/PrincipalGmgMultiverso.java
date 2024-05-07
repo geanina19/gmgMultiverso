@@ -16,6 +16,7 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
     public PrincipalGmgMultiverso() 
     {
         initComponents();
+        this.setSize(1326, 670);
     }
 
     /**
@@ -34,11 +35,11 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 1326, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
         pack();

@@ -10,6 +10,7 @@ package gmgmultiverso.model;
  */
 public class Proveedor 
 {
+    private int id;
     private String nombre_empresa;
     private int telefono;
     private String email;
@@ -21,11 +22,23 @@ public class Proveedor
     }
     
     //-----------Constructor-----------
-    public Proveedor(String nombre_empresa, int telefono, String email) 
+    public Proveedor(int id, String nombre_empresa, int telefono, String email) 
     {
+        this.id = id;
         this.nombre_empresa = nombre_empresa;
         this.telefono = telefono;
         this.email = email;
+    }
+    
+    //-----------id-----------
+    public int getId() 
+    {
+        return id;
+    }
+
+    public void setId(int id) 
+    {
+        this.id = id;
     }
     
     //-----------nombre_empresa-----------

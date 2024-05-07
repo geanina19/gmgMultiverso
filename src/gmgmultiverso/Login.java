@@ -10,8 +10,12 @@ import java.awt.Color;
  *
  * @author geanina.foanta
  */
-public class Login extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame 
+{
 
+    
+    int xMouse, yMouse;
+    
     /**
      * Creates new form Login
      */

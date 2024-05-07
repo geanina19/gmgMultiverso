@@ -20,7 +20,7 @@ public class GmgMultiverso
         PrincipalPrueba pp = new PrincipalPrueba();
         pp.setVisible(true);
         
-        Login l = new Login();
+        LoginAdmin l = new LoginAdmin();
         l.setVisible(true);
     }
     

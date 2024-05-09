@@ -37,6 +37,10 @@ public class PrincipalPrueba extends javax.swing.JFrame
     Statement st;
     ResultSet rs;
     
+    /*
+    Esto es prueba
+    */
+    
     private int codProveedor = -1;
     
     Object[] cabecera = new Object[]{"Nombre de la empresa", "Telefono", "Email"};

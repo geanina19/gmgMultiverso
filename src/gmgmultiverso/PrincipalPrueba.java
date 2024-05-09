@@ -40,6 +40,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
     /*
     Esto es prueba
     */
+    /*esto es otra prueba*/
     
     private int codProveedor = -1;
     

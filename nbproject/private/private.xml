@@ -11,5 +11,12 @@
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/PrincipalPrueba.java</file>
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/PrincipalGmgMultiverso.java</file>
         </group>
+        <group name="ProyectoEv2">
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Proveedor.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Producto.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Pedido.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/LoginAdmin.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/ManagerConexion.java</file>
+        </group>
     </open-files>
 </project-private>

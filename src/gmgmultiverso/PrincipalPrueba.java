@@ -1,6 +1,8 @@
 package gmgmultiverso;
 
 import gmgmultiverso.db.ManagerConexion;
+import gmgmultiverso.db.dao.ProveedorDao;
+import gmgmultiverso.model.Proveedor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -37,6 +40,8 @@ public class PrincipalPrueba extends javax.swing.JFrame
     Statement st;
     ResultSet rs;
     
+    //pescado
+    
     /*
     Esto es prueba
     */
@@ -46,6 +51,9 @@ public class PrincipalPrueba extends javax.swing.JFrame
     
     Object[] cabecera = new Object[]{"Nombre de la empresa", "Telefono", "Email"};
     DefaultTableModel miModelo = new DefaultTableModel(null, cabecera);
+    
+    //PARA HACERLO CON EL DAO 
+    ProveedorDao prov = new ProveedorDao(con);
     
     /**
      * Creates new form PrincipalPrueba
@@ -163,79 +171,83 @@ public class PrincipalPrueba extends javax.swing.JFrame
     {
         
         quitarListener();
-        
-        //creamos la tabla con el sql
-        String sqlDatos = "select nombre_empresa, telefono, email from proveedor";
-
-        try
-        {
-            conet=con.abrirConexion();
-            st=conet.createStatement();
-            rs=st.executeQuery(sqlDatos);
+        List<Proveedor> proveedores = prov.list();
+        for (Proveedor proveedor : proveedores) {
+            Object[] rowData = {proveedor.getNombre_empresa(), proveedor.getTelefono(), proveedor.getEmail()};
+            miModelo.addRow(rowData);
             
-            
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            
-            miModelo = new DefaultTableModel(null, new Object[]{"Nombre de la empresa", "Telefono", "Email"})
-            {
-                @Override
-                public Class<?> getColumnClass(int columnIndex) 
-                {
-                    // Devolver la clase de la columna, ImageIcon para las columnas de imágenes
-                    return columnIndex >= 6 ? ImageIcon.class : super.getColumnClass(columnIndex);
-                }
-
-                @Override
-                public boolean isCellEditable(int row, int column) 
-                {
-                    // Hacer las columnas de no sean editables
-                    return column >= 0 ? false : super.isCellEditable(row, column);
-                }
-            };
-            tablaBuscarProveedor.setRowHeight(26);
-            tablaBuscarProveedor.setModel(miModelo);
-            miModelo.setRowCount(0);
-            
-            
-            Object [] proveedores = new Object[9];
-            miModelo = (DefaultTableModel) tablaBuscarProveedor.getModel();
-            
-            
-            // Configurar la tabla con el nuevo modelo
-            tablaBuscarProveedor.setRowHeight(26);
-            tablaBuscarProveedor.setModel(miModelo);
-            miModelo.setRowCount(0);
-            
-            
-            while (rs.next()) 
-            {
-                proveedores[0] = rs.getString("nombre_empresa");
-                proveedores[1] = rs.getString("telefono");
-                proveedores[2] = rs.getString("email");
-                miModelo.addRow(proveedores);
-            }
-            
-            tablaBuscarProveedor.setModel(miModelo);
-            mouseListenerAnadirColumnasExtra();
-        } 
-        catch (SQLException e) 
-        {
-            e.printStackTrace();
-        } 
-        finally 
-        {
-            try 
-            {
-                if (rs != null) rs.close();
-                if (st != null) st.close();
-                if (conet != null) conet.close();
-            } 
-            catch (SQLException ex) 
-            {
-                ex.printStackTrace();
-            }
-        }
+        }//        //creamos la tabla con el sql
+//        String sqlDatos = "select nombre_empresa, telefono, email from proveedor";
+//
+//        try
+//        {
+//            conet=con.abrirConexion();
+//            st=conet.createStatement();
+//            rs=st.executeQuery(sqlDatos);
+//            
+//            
+//            ResultSetMetaData metaData = rs.getMetaData();
+//            int columnCount = metaData.getColumnCount();
+//            
+//            miModelo = new DefaultTableModel(null, new Object[]{"Nombre de la empresa", "Telefono", "Email"})
+//            {
+//                @Override
+//                public Class<?> getColumnClass(int columnIndex) 
+//                {
+//                    // Devolver la clase de la columna, ImageIcon para las columnas de imágenes
+//                    return columnIndex >= 6 ? ImageIcon.class : super.getColumnClass(columnIndex);
+//                }
+//
+//                @Override
+//                public boolean isCellEditable(int row, int column) 
+//                {
+//                    // Hacer las columnas de no sean editables
+//                    return column >= 0 ? false : super.isCellEditable(row, column);
+//                }
+//            };
+//            tablaBuscarProveedor.setRowHeight(26);
+//            tablaBuscarProveedor.setModel(miModelo);
+//            miModelo.setRowCount(0);
+//            
+//            
+//            Object [] proveedores = new Object[9];
+//            miModelo = (DefaultTableModel) tablaBuscarProveedor.getModel();
+//            
+//            
+//            // Configurar la tabla con el nuevo modelo
+//            tablaBuscarProveedor.setRowHeight(26);
+//            tablaBuscarProveedor.setModel(miModelo);
+//            miModelo.setRowCount(0);
+//            
+//            
+//            while (rs.next()) 
+//            {
+//                proveedores[0] = rs.getString("nombre_empresa");
+//                proveedores[1] = rs.getString("telefono");
+//                proveedores[2] = rs.getString("email");
+//                miModelo.addRow(proveedores);
+//            }
+//            
+//            tablaBuscarProveedor.setModel(miModelo);
+//            mouseListenerAnadirColumnasExtra();
+//        } 
+//        catch (SQLException e) 
+//        {
+//            e.printStackTrace();
+//        } 
+//        finally 
+//        {
+//            try 
+//            {
+//                if (rs != null) rs.close();
+//                if (st != null) st.close();
+//                if (conet != null) conet.close();
+//            } 
+//            catch (SQLException ex) 
+//            {
+//                ex.printStackTrace();
+//            }
+//        }
     }
     
     

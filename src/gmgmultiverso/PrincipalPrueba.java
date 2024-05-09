@@ -37,6 +37,8 @@ public class PrincipalPrueba extends javax.swing.JFrame
     Statement st;
     ResultSet rs;
     
+    //pescado
+    
     /*
     Esto es prueba
     */

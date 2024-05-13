@@ -33,6 +33,7 @@ public class LoginAdmin extends javax.swing.JFrame
         initComponents();
         this.setSize(860, 500);
         //[860, 500]
+        this.setLocationRelativeTo(null);
         
         ingresarContrasenia.addKeyListener(new KeyAdapter() {
             @Override

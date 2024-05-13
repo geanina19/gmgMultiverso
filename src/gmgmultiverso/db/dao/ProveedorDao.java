@@ -21,27 +21,20 @@ import java.sql.PreparedStatement;
  *
  * @author geanina.foanta
  */
-public class ProveedorDao 
-{
+public class ProveedorDao {
     
     private ManagerConexion con;
     
     
-    public ProveedorDao(ManagerConexion con)
-    {
+    public ProveedorDao(ManagerConexion con) {
         this.con = con;
     }
     
     
-    public List<Proveedor> list() 
-    {
+    public List<Proveedor> list() {
         Connection conect = null;
     
-        Statement st;
-        ResultSet rs;
-    
-        try 
-        {
+        try {
             conect = con.abrirConexion();
 
             var ps = conect.prepareStatement("SELECT * FROM proveedor");
@@ -50,7 +43,6 @@ public class ProveedorDao
             List<Proveedor> proveedores = new ArrayList<>();
             while (resultSet.next()) {
                 Proveedor proveedor = new Proveedor(
-                        resultSet.getInt("id"),
                         resultSet.getString("nombre_empresa"),
                         resultSet.getInt("telefono"),
                         resultSet.getString("email")
@@ -61,20 +53,14 @@ public class ProveedorDao
             return proveedores;
             
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             throw new RuntimeException(e);
         } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
+        finally {
+            if (conect != null) {
+                try {
                     conect.close();
-                } 
-                catch (SQLException e) 
-                {
+                } catch (SQLException e) {
                     
                 }
             }
@@ -82,16 +68,10 @@ public class ProveedorDao
     }
     
             
-    public boolean crearProveedor(Proveedor proveedor) 
-    {
-        
+    public boolean crearProveedor(Proveedor proveedor) {
         Connection conect = null;
     
-        Statement st;
-        ResultSet rs;
-        
-        try 
-        {
+        try {
             conect = con.abrirConexion();
 
             var sqlDatos = conect.prepareStatement("INSERT INTO proveedor(nombre_empresa, telefono, email) VALUES(?,?,?)");
@@ -102,21 +82,16 @@ public class ProveedorDao
             int insertedRows = sqlDatos.executeUpdate();
             return insertedRows == 1;
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             e.printStackTrace();
             return false;
         } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
+        finally {
+            if (conect != null) {
+                try {
                     conect.close();
                 } 
-                catch (SQLException e) 
-                {
+                catch (SQLException e) {
                     
                 }
             }
@@ -127,17 +102,12 @@ public class ProveedorDao
     //-------------eliminar un proveedor-------------
     
     
-    public boolean eliminarProveedor(int idProveedor) 
-    {
+    public boolean eliminarProveedor(int idProveedor) {
         Connection conect = null;
     
-        Statement st;
-        ResultSet rs;
-        
         String sqlEliminar = "DELETE FROM proveedor WHERE id = ?";
 
-        try 
-        {
+        try{
             conect = con.abrirConexion();
 
             PreparedStatement statement = conect.prepareStatement(sqlEliminar);
@@ -146,34 +116,25 @@ public class ProveedorDao
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             e.printStackTrace();
             return false;
         } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
+        finally {
+            if (conect != null) {
+                try {
                     conect.close();
                 } 
-                catch (SQLException e) 
-                {
+                catch (SQLException e) {
                     
                 }
             }
         }
     }
     
-    public boolean actualizarProveedor(Proveedor proveedor) 
-    {
+    public boolean actualizarProveedor(Proveedor proveedor) {
         Connection conect = null;
     
-        Statement st;
-        ResultSet rs;
-        
         String sqlActualizar = "UPDATE proveedor SET nombre_empresa = ?, telefono = ?, email = ? WHERE id = ?";
 
         try {
@@ -187,21 +148,16 @@ public class ProveedorDao
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             e.printStackTrace();
             return false;
         } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
+        finally {
+            if (conect != null) {
+                try {
                     conect.close();
                 } 
-                catch (SQLException e) 
-                {
+                catch (SQLException e) {
                     
                 }
             }

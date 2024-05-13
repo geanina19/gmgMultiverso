@@ -8,79 +8,63 @@ package gmgmultiverso.model;
  *
  * @author geanina.foanta
  */
-public class Proveedor 
-{
+public class Proveedor {
+    
     private int id;
     private String nombre_empresa;
     private int telefono;
     private String email;
     
     //-----------Constructor vacio-----------
-    public Proveedor()
-    {
+    public Proveedor(){
 
     }
     
     //-----------Constructor-----------
-    public Proveedor(int id, String nombre_empresa, int telefono, String email) 
-    {
-        this.id = id;
+    public Proveedor(String nombre_empresa, int telefono, String email) {
         this.nombre_empresa = nombre_empresa;
         this.telefono = telefono;
         this.email = email;
     }
     
     //-----------id-----------
-    public int getId() 
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId(int id) 
-    {
+    public void setId(int id) {
         this.id = id;
     }
     
     //-----------nombre_empresa-----------
-    public String getNombre_empresa() 
-    {
+    public String getNombre_empresa() {
         return nombre_empresa;
     }
 
-    public void setNombre_empresa(String nombre_empresa) 
-    {
+    public void setNombre_empresa(String nombre_empresa) {
         this.nombre_empresa = nombre_empresa;
     }
     
     //-----------telefono-----------
-    public int getTelefono() 
-    {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) 
-    {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
     
     //-----------nombre_empresa-----------
-    public String getEmail() 
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) 
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
     
     @Override
-    public String toString() 
-    {
-        return "Proveedor{" +
-                "nombre_empresa='" + nombre_empresa + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", email='" + email +
-                '}';
+    public String toString(){
+        return "Proveedor{" + "id" + id + "nombre_empresa='" + nombre_empresa + '\'' + ", telefono='" + telefono + '\'' + ", email='" + email + '}';
     }
 }

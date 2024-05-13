@@ -8,7 +8,8 @@ package gmgmultiverso;
  *
  * @author geanina.foanta
  */
-public class PrincipalGmgMultiverso extends javax.swing.JFrame {
+public class PrincipalGmgMultiverso extends javax.swing.JFrame 
+{
 
     /**
      * Creates new form PrincipalGmgMultiverso
@@ -17,6 +18,7 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
     {
         initComponents();
         this.setSize(1326, 670);
+        this.setLocationRelativeTo(null);
     }
 
     /**

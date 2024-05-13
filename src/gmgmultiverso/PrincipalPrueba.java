@@ -63,6 +63,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
         initComponents();
         
         this.setSize(1326, 670);
+        this.setLocationRelativeTo(null);
         tablaBuscarProveedor.setModel(miModelo);
         actualizarTablaBuscarProveedor();
         cargarNombreEmpresa();

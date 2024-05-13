@@ -122,7 +122,7 @@ INSERT INTO producto (nombre, precio, unidad_existente, id_proveedor) VALUES ('P
 
 -- Datos detalle_pedido
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (1, 1, 2);
-INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (2, 2, 1);
+INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (2, 2, 4);
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (3, 3, 3);
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (4, 4, 2);
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (2, 1, 1);

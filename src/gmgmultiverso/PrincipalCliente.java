@@ -6,6 +6,7 @@ package gmgmultiverso;
 
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ClienteDao;
+import gmgmultiverso.model.Cliente;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -108,7 +109,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
 
-        boton3.setText("inicia sesión");
+        boton3.setText("Inicia sesión");
         boton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 boton3ActionPerformed(evt);
@@ -327,8 +328,9 @@ public class PrincipalCliente extends javax.swing.JFrame {
         return;
     }
 
+    Cliente cliente = new Cliente(nombreCliente, apellidoCliente, contrasenaCliente, direccionCliente, telefonoCliente, emailCliente);
     // Guardar en la base de datos
-    boolean resultado = clienteDao.guardarCliente(nombreCliente, apellidoCliente, contrasenaCliente, direccionCliente, telefonoCliente, emailCliente);
+    boolean resultado = clienteDao.guardarCliente(cliente);
 
     if (resultado) {
         JOptionPane.showMessageDialog(this, "¡Cuenta creada exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);

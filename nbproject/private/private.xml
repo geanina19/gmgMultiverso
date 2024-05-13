@@ -13,15 +13,17 @@
         </group>
         <group name="ProyectoEv2">
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/FormLoginEmpleEjem.java</file>
-            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/build/built-jar.properties</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/PedidoDao.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ProveedorDao.java</file>
-            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/GmgMultiverso.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalPrueba.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ProductoDao.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PantallaCliente.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/CarritoCliente.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/ManagerConexion.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Proveedor.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ClienteDao.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Producto.java</file>
-            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/TextPrompt.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalCliente.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Pedido.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/LoginAdmin.java</file>
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalGmgMultiverso.java</file>

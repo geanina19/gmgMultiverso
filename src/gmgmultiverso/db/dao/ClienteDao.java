@@ -158,6 +158,7 @@ public boolean verificarCredenciales(String correoElectronico, String contrasena
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
     }
 
     return credencialesCorrectas;

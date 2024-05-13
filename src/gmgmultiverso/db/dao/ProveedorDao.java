@@ -102,14 +102,12 @@ public class ProveedorDao {
     //-------------eliminar un proveedor-------------
     
     
-    public boolean eliminarProveedor(int idProveedor) 
-    {
+    public boolean eliminarProveedor(int idProveedor) {
         Connection conect = null;
     
         String sqlEliminar = "DELETE FROM proveedor WHERE id = ?";
 
-        try 
-        {
+        try{
             conect = con.abrirConexion();
 
             PreparedStatement statement = conect.prepareStatement(sqlEliminar);
@@ -118,29 +116,23 @@ public class ProveedorDao {
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             e.printStackTrace();
             return false;
         } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
+        finally {
+            if (conect != null) {
+                try {
                     conect.close();
                 } 
-                catch (SQLException e) 
-                {
+                catch (SQLException e) {
                     
                 }
             }
         }
     }
     
-    public boolean actualizarProveedor(Proveedor proveedor) 
-    {
+    public boolean actualizarProveedor(Proveedor proveedor) {
         Connection conect = null;
     
         String sqlActualizar = "UPDATE proveedor SET nombre_empresa = ?, telefono = ?, email = ? WHERE id = ?";
@@ -156,21 +148,16 @@ public class ProveedorDao {
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } 
-        catch (SQLException e) 
-        {
+        catch (SQLException e) {
             e.printStackTrace();
             return false;
         } 
-        finally 
-        {
-            if (conect != null) 
-            {
-                try 
-                {
+        finally {
+            if (conect != null) {
+                try {
                     conect.close();
                 } 
-                catch (SQLException e) 
-                {
+                catch (SQLException e) {
                     
                 }
             }

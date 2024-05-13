@@ -23,7 +23,7 @@ public class LoginAdmin extends javax.swing.JFrame
 {
 
     //private ManagerConexion con;
-    int xMouse, yMouse;
+    //int xMouse, yMouse;
     
     /**
      * Creates new form Login
@@ -110,6 +110,7 @@ public class LoginAdmin extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Iniciar sesión Administrador");
         setPreferredSize(new java.awt.Dimension(1280, 720));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -173,25 +174,11 @@ public class LoginAdmin extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ingresarUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingresarUsuarioMousePressed
-        // TODO add your handling code here:
-        if (ingresarUsuario.getText().equals("Ingrese su nombre de usuario")) {
-            ingresarUsuario.setText("");
-            ingresarUsuario.setForeground(Color.black);
-        }
-        if (String.valueOf(ingresarContrasenia.getPassword()).isEmpty()) {
-            ingresarContrasenia.setText("********");
-            ingresarContrasenia.setForeground(Color.gray);
-        }
-    }//GEN-LAST:event_ingresarUsuarioMousePressed
 
     private void ingresarContraseniaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingresarContraseniaMousePressed
         // TODO add your handling code here:
@@ -224,6 +211,18 @@ public class LoginAdmin extends javax.swing.JFrame
         }
         
     }//GEN-LAST:event_botonIniciarSesionMouseClicked
+
+    private void ingresarUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingresarUsuarioMousePressed
+        // TODO add your handling code here:
+        if (ingresarUsuario.getText().equals("Ingrese su nombre de usuario")) {
+            ingresarUsuario.setText("");
+            ingresarUsuario.setForeground(Color.black);
+        }
+        if (String.valueOf(ingresarContrasenia.getPassword()).isEmpty()) {
+            ingresarContrasenia.setText("********");
+            ingresarContrasenia.setForeground(Color.gray);
+        }
+    }//GEN-LAST:event_ingresarUsuarioMousePressed
 
     /**
      * @param args the command line arguments

@@ -4,13 +4,18 @@
  */
 package gmgmultiverso;
 
+import com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author geanina.foanta
  */
 public class EjecutaAdmin {
     
-    public static void main(String[] args) 
+    public static void main(String[] args) throws UnsupportedLookAndFeelException 
     {
         // TODO code application logic here
         
@@ -18,8 +23,13 @@ public class EjecutaAdmin {
         PrincipalPrueba pp = new PrincipalPrueba();
         pp.setVisible(true);
         */
-        LoginAdmin l = new LoginAdmin();
-        l.setVisible(true);
+        
+        //UIManager.setLookAndFeel(new FlatCarbonIJTheme());
+        UIManager.put("TextComponent.arc", 100);
+        LoginAdmin la = new LoginAdmin();
+        SwingUtilities.updateComponentTreeUI(la);
+        
+        la.setVisible(true);
         
     }
     

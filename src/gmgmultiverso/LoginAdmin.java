@@ -14,11 +14,19 @@ import java.sql.Statement;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
+import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
  * @author geanina.foanta
  */
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 public class LoginAdmin extends javax.swing.JFrame 
 {
 
@@ -103,6 +111,7 @@ public class LoginAdmin extends javax.swing.JFrame
         botonIniciarSesion = new javax.swing.JButton();
         userIcono = new javax.swing.JLabel();
         llave = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         fondoLogin = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
@@ -156,15 +165,16 @@ public class LoginAdmin extends javax.swing.JFrame
         jPanel1.add(botonIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, -1, 30));
 
         userIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/user.png"))); // NOI18N
-        userIcono.setText("jLabel1");
         jPanel1.add(userIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 30, 30));
 
         llave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/llave.png"))); // NOI18N
-        llave.setText("jLabel2");
         jPanel1.add(llave, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 30, 30));
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logoGmgMultiverso (2).png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 350, -1, -1));
+
         fondoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"))); // NOI18N
-        jPanel1.add(fondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jPanel1.add(fondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -199,10 +209,18 @@ public class LoginAdmin extends javax.swing.JFrame
 
         if (validarCredenciales(usuario, contrasenia)) 
         {
-            // Si las credenciales son válidas, abrir la ventana PrincipalGmgMultiverso
-            PrincipalGmgMultiverso p1 = new PrincipalGmgMultiverso();
-            p1.setVisible(true);
-            this.dispose(); // Cerrar la ventana de login
+            try {
+                // Si las credenciales son válidas, abrir la ventana PrincipalGmgMultiverso
+                
+                UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
+                UIManager.put("TextComponent.arc", 100);
+                PrincipalGmgMultiverso p1 = new PrincipalGmgMultiverso();
+                SwingUtilities.updateComponentTreeUI(p1);
+                p1.setVisible(true);
+                this.dispose(); // Cerrar la ventana de login
+            } catch (UnsupportedLookAndFeelException ex) {
+                Logger.getLogger(LoginAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } 
         else 
         {
@@ -266,6 +284,7 @@ public class LoginAdmin extends javax.swing.JFrame
     private javax.swing.JPasswordField ingresarContrasenia;
     private javax.swing.JTextField ingresarUsuario;
     private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelContrasenia;
     private javax.swing.JLabel labelIniciarSesion;

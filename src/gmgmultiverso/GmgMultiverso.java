@@ -17,11 +17,14 @@ public class GmgMultiverso
     public static void main(String[] args) 
     {
         // TODO code application logic here
-        PrincipalPrueba pp = new PrincipalPrueba();
+     /* PrincipalPrueba pp = new PrincipalPrueba();
         pp.setVisible(true);
         
         LoginAdmin l = new LoginAdmin();
-        l.setVisible(true);
+        l.setVisible(true);*/
+        
+        PrincipalCliente pc = new PrincipalCliente();
+        pc.setVisible(true);
     }
     
 }

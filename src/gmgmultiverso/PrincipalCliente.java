@@ -6,6 +6,7 @@ package gmgmultiverso;
 
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ClienteDao;
+import gmgmultiverso.model.Cliente;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -89,7 +90,79 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
 
+<<<<<<< HEAD
         boton.setText("inicia sesión");
+=======
+        boton3.setText("Inicia sesión");
+        boton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelinicio1Layout = new javax.swing.GroupLayout(panelinicio1);
+        panelinicio1.setLayout(panelinicio1Layout);
+        panelinicio1Layout.setHorizontalGroup(
+            panelinicio1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelinicio1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelinicio1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelinicio1Layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(110, 110, 110))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelinicio1Layout.createSequentialGroup()
+                        .addGroup(panelinicio1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panelinicio1Layout.createSequentialGroup()
+                                .addComponent(boton3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(boton2))
+                            .addGroup(panelinicio1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(email1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(pass1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(82, 82, 82))))
+        );
+        panelinicio1Layout.setVerticalGroup(
+            panelinicio1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelinicio1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(email1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel6)
+                .addGap(33, 33, 33)
+                .addComponent(pass1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(panelinicio1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(boton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(boton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
+        panelPrincipal.setLayout(panelPrincipalLayout);
+        panelPrincipalLayout.setHorizontalGroup(
+            panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelinicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        panelPrincipalLayout.setVerticalGroup(
+            panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelinicio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 2, 24)); // NOI18N
+        jLabel1.setText("Registrate");
+
+        jLabel2.setText("Nombre");
+
+        jLabel3.setText("Email");
+
+        boton.setText("Crear Cuenta");
+>>>>>>> 568bc63e41dd90801fa89148d4a927ca9c75c7bc
         boton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonActionPerformed(evt);
@@ -160,6 +233,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
  String correo = email.getText();
         String contrasena = new String(pass.getPassword());
 
+<<<<<<< HEAD
         // Verificar credenciales
         if (clienteDao.verificarCredenciales(correo, contrasena)) {
             // Crear una instancia de PantallaCliente y pasar el correo electrónico como argumento
@@ -173,6 +247,28 @@ public class PrincipalCliente extends javax.swing.JFrame {
             pass.setBackground(Color.RED);
             JOptionPane.showMessageDialog(this, "Correo electrónico o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
+=======
+    // Verificar que los campos no estén vacíos
+    if (nombreCliente.isEmpty() || apellidoCliente.isEmpty() || contrasenaCliente.isEmpty() || direccionCliente.isEmpty() || emailCliente.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    Cliente cliente = new Cliente(nombreCliente, apellidoCliente, contrasenaCliente, direccionCliente, telefonoCliente, emailCliente);
+    // Guardar en la base de datos
+    boolean resultado = clienteDao.guardarCliente(cliente);
+
+    if (resultado) {
+        JOptionPane.showMessageDialog(this, "¡Cuenta creada exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        
+        PantallaCliente pc = new PantallaCliente();
+        pc.setVisible(true);
+        
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Hubo un error al crear la cuenta. Inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+    }    
+>>>>>>> 568bc63e41dd90801fa89148d4a927ca9c75c7bc
     }//GEN-LAST:event_botonActionPerformed
 
     /**

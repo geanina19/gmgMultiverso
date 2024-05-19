@@ -4,6 +4,7 @@
  */
 package gmgmultiverso.db.dao;
 import gmgmultiverso.db.ManagerConexion;
+import gmgmultiverso.model.Cliente;
 import gmgmultiverso.model.Proveedor;
 import java.awt.List;
 import java.awt.print.Book;
@@ -29,14 +30,14 @@ public class ClienteDao {
     
     public boolean verificarCorreo(String correoElectronico) {
         boolean correoEncontrado = false;
-        Connection conn = null;
+        Connection conect = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            conn = con.abrirConexion();
+            conect = con.abrirConexion();
             String query = "SELECT * FROM cliente WHERE email = ?";
-            ps = conn.prepareStatement(query);
+            ps = conect.prepareStatement(query);
             ps.setString(1, correoElectronico);
             rs = ps.executeQuery();
 
@@ -49,7 +50,7 @@ public class ClienteDao {
             try {
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
-                if (conn != null) con.cerrarConexion(conn);
+                if (conect != null) con.cerrarConexion(conect);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -60,43 +61,35 @@ public class ClienteDao {
 
 
 //guardar cliente 
-public boolean guardarCliente(String nombre, String apellido, String contrasenia, String direccion, int telefono, String email) {
-    boolean exito = false;
-    Connection conn = null;
-    PreparedStatement ps = null;
+public boolean guardarCliente(Cliente cliente) {
+    Connection conect = null;
 
     try {
-        conn = con.abrirConexion();
-        String query = "INSERT INTO cliente (nombre, apellido, contrasenia, direccion, telefono, email) VALUES (?, ?, ?, ?, ?, ?)";
-        ps = conn.prepareStatement(query);
-        ps.setString(1, nombre);
-        ps.setString(2, apellido);
-        ps.setString(3, contrasenia);
-        ps.setString(4, direccion);
-        ps.setInt(5, telefono);
-        ps.setString(6, email);
-
-        int resultado = ps.executeUpdate();
-        if (resultado > 0) {
-            exito = true;
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            if (ps != null) {
-                ps.close();
-            }
-            if (conn != null) {
-                con.cerrarConexion(conn);
-            }
+        conect = con.abrirConexion();
+        var ps = conect.prepareStatement("INSERT INTO cliente (nombre, apellido, contrasenia, direccion, telefono, email) VALUES (?, ?, ?, ?, ?, ?)");
+        
+        ps.setString(1, cliente.getNombre());
+        ps.setString(2, cliente.getApellido());
+        ps.setString(3, cliente.getContrasenia());
+        ps.setString(4, cliente.getDireccion());
+        ps.setInt(5, cliente.getTelefono());
+        ps.setString(6, cliente.getEmail());
+        
+        int insertedRows = ps.executeUpdate();
+            return insertedRows == 1;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                }
+            }
         }
     }
 
-    return exito;
-}
  // Método para cargar los nombres de los productos
     public String[] cargarNombresProductos() {
         String[] nombresProductos = new String[6]; 
@@ -158,6 +151,7 @@ public boolean verificarCredenciales(String correoElectronico, String contrasena
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
     }
 
     return credencialesCorrectas;

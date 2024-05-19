@@ -6,6 +6,7 @@ package gmgmultiverso;
 
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ClienteDao;
+import gmgmultiverso.model.Cliente;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -190,31 +191,34 @@ public class CuentaCliente extends javax.swing.JFrame {
 
     private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed
         String nombreCliente = nombre.getText();
-        String apellidoCliente = apellido.getText();
-        String contrasenaCliente = new String(pass2.getPassword());
-        String direccionCliente = direc.getText();
-        int telefonoCliente = Integer.parseInt(telefono.getText());
-        String emailCliente = email.getText();
+    String apellidoCliente = apellido.getText();
+    String contrasenaCliente = new String(pass2.getPassword());
+    String direccionCliente = direc.getText();
+    int telefonoCliente = Integer.parseInt(telefono.getText());
+    String emailCliente = email.getText();
 
-        // Verificar que los campos no estén vacíos
-        if (nombreCliente.isEmpty() || apellidoCliente.isEmpty() || contrasenaCliente.isEmpty() || direccionCliente.isEmpty() || emailCliente.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    // Verificar que los campos no estén vacíos
+    if (nombreCliente.isEmpty() || apellidoCliente.isEmpty() || contrasenaCliente.isEmpty() || direccionCliente.isEmpty() || emailCliente.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        // Guardar en la base de datos
-        boolean resultado = clienteDao.guardarCliente(nombreCliente, apellidoCliente, contrasenaCliente, direccionCliente, telefonoCliente, emailCliente);
+    // Crear un objeto Cliente
+    Cliente cliente = new Cliente(nombreCliente, apellidoCliente, contrasenaCliente, direccionCliente, telefonoCliente, emailCliente);
 
-        if (resultado) {
-            JOptionPane.showMessageDialog(this, "¡Cuenta creada exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    // Guardar en la base de datos
+    boolean resultado = clienteDao.guardarCliente(cliente);
 
-            PantallaCliente pc = new PantallaCliente();
-            pc.setVisible(true);
+    if (resultado) {
+        JOptionPane.showMessageDialog(this, "¡Cuenta creada exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Hubo un error al crear la cuenta. Inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        PantallaCliente pc = new PantallaCliente();
+        pc.setVisible(true);
+
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this, "Hubo un error al crear la cuenta. Inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_botonActionPerformed
 
     /**

@@ -163,4 +163,40 @@ public boolean verificarCredenciales(String correoElectronico, String contrasena
     return credencialesCorrectas;
 }
 
+//perfil cliente
+public String[] obtenerDatosCliente(String correoElectronico) {
+        String[] datosCliente = new String[4]; // Array para almacenar los datos del cliente
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = con.abrirConexion();
+            String query = "SELECT nombre, apellido, direccion, telefono FROM cliente WHERE email = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, correoElectronico);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Obtener los datos del cliente de la consulta
+                datosCliente[0] = rs.getString("nombre");
+                datosCliente[1] = rs.getString("apellido");
+                datosCliente[2] = rs.getString("direccion");
+                datosCliente[3] = rs.getString("telefono");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) con.cerrarConexion(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return datosCliente;
+    }
 }

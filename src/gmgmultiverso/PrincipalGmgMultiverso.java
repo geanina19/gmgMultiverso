@@ -4,11 +4,58 @@
  */
 package gmgmultiverso;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
+import com.formdev.flatlaf.intellijthemes.*;
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author geanina.foanta
  */
-public class PrincipalGmgMultiverso extends javax.swing.JFrame {
+public class PrincipalGmgMultiverso extends javax.swing.JFrame 
+{
+    
+    private int currentThemeIndex = 0;
+    private final FlatLaf[] themes = {
+        new FlatArcIJTheme(),
+        new FlatCarbonIJTheme(),
+        new FlatCobalt2IJTheme(),
+        new FlatDarkFlatIJTheme(),
+        new FlatDarkPurpleIJTheme(),
+        new FlatGruvboxDarkHardIJTheme(),
+        new FlatGruvboxDarkMediumIJTheme(),
+        new FlatGruvboxDarkSoftIJTheme(),
+        new FlatHiberbeeDarkIJTheme(),
+        new FlatHighContrastIJTheme(),
+        new FlatLightFlatIJTheme(),
+        new FlatMaterialDesignDarkIJTheme(),
+        new FlatMonokaiProIJTheme(),
+        new FlatMonokaiProContrastIJTheme(),
+        new FlatNordIJTheme(),
+        new FlatOneDarkIJTheme(),
+        new FlatSpacegrayIJTheme(),
+        new FlatVuesionIJTheme(),
+        new FlatArcOrangeIJTheme(),
+        new FlatGitHubIJTheme(),
+        new FlatCyanLightIJTheme(),
+        new FlatSolarizedDarkContrastIJTheme(),
+        new FlatMaterialLighterIJTheme(),
+        new FlatMaterialDarkerIJTheme(),
+        new FlatMaterialDeepOceanIJTheme(),
+        new FlatDraculaContrastIJTheme(),
+        new FlatGitHubDarkIJTheme(),
+        new FlatArcDarkContrastIJTheme(),
+        new FlatArcOrangeIJTheme(),
+        new FlatGitHubDarkContrastIJTheme()
+    };
 
     /**
      * Creates new form PrincipalGmgMultiverso
@@ -17,6 +64,7 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
     {
         initComponents();
         this.setSize(1326, 670);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -28,8 +76,78 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuArchivo = new javax.swing.JMenu();
+        menugestion = new javax.swing.JMenu();
+        itemProveedores = new javax.swing.JMenuItem();
+        itemEmpleados = new javax.swing.JMenuItem();
+        itemProductos = new javax.swing.JMenuItem();
+        menuAyuda = new javax.swing.JMenu();
+        menuTema = new javax.swing.JMenu();
+        itemOscuro = new javax.swing.JMenuItem();
+        itemClaro = new javax.swing.JMenuItem();
+        itemOtro = new javax.swing.JMenuItem();
+        menuPerfil = new javax.swing.JMenu();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal GmgMultiverso");
+
+        menuArchivo.setText("Archivo");
+        jMenuBar1.add(menuArchivo);
+
+        menugestion.setText("Gestión");
+
+        itemProveedores.setText("Proveedores");
+        menugestion.add(itemProveedores);
+
+        itemEmpleados.setText("Empleados");
+        itemEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemEmpleadosActionPerformed(evt);
+            }
+        });
+        menugestion.add(itemEmpleados);
+
+        itemProductos.setText("Productos");
+        menugestion.add(itemProductos);
+
+        jMenuBar1.add(menugestion);
+
+        menuAyuda.setText("Ayuda");
+        jMenuBar1.add(menuAyuda);
+
+        menuTema.setText("Tema");
+
+        itemOscuro.setText("Oscuro");
+        itemOscuro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemOscuroActionPerformed(evt);
+            }
+        });
+        menuTema.add(itemOscuro);
+
+        itemClaro.setText("Claro");
+        itemClaro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemClaroActionPerformed(evt);
+            }
+        });
+        menuTema.add(itemClaro);
+
+        itemOtro.setText("Otro");
+        itemOtro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemOtroActionPerformed(evt);
+            }
+        });
+        menuTema.add(itemOtro);
+
+        jMenuBar1.add(menuTema);
+
+        menuPerfil.setText("Perfil");
+        jMenuBar1.add(menuPerfil);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -39,11 +157,52 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 670, Short.MAX_VALUE)
+            .addGap(0, 647, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void itemEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEmpleadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemEmpleadosActionPerformed
+
+    private void itemClaroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemClaroActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_itemClaroActionPerformed
+
+    private void itemOscuroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemOscuroActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_itemOscuroActionPerformed
+
+    private void itemOtroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemOtroActionPerformed
+        // TODO add your handling code here:
+        // Aplicar el siguiente tema de la lista
+        FlatLaf.setup(themes[currentThemeIndex]);
+
+        // Imprimir el nombre del tema actual por pantalla
+        System.out.println("Tema actual: " + themes[currentThemeIndex].getName());
+
+        // Actualizar la UI para aplicar el nuevo tema
+        javax.swing.SwingUtilities.updateComponentTreeUI(this);
+
+        // Incrementar el índice y volver al inicio si es necesario
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+    }//GEN-LAST:event_itemOtroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -81,5 +240,17 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemClaro;
+    private javax.swing.JMenuItem itemEmpleados;
+    private javax.swing.JMenuItem itemOscuro;
+    private javax.swing.JMenuItem itemOtro;
+    private javax.swing.JMenuItem itemProductos;
+    private javax.swing.JMenuItem itemProveedores;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu menuArchivo;
+    private javax.swing.JMenu menuAyuda;
+    private javax.swing.JMenu menuPerfil;
+    private javax.swing.JMenu menuTema;
+    private javax.swing.JMenu menugestion;
     // End of variables declaration//GEN-END:variables
 }

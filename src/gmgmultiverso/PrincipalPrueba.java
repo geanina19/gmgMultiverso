@@ -63,6 +63,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
         initComponents();
         
         this.setSize(1326, 670);
+        this.setLocationRelativeTo(null);
         tablaBuscarProveedor.setModel(miModelo);
         actualizarTablaBuscarProveedor();
         cargarNombreEmpresa();
@@ -176,78 +177,7 @@ public class PrincipalPrueba extends javax.swing.JFrame
             Object[] rowData = {proveedor.getNombre_empresa(), proveedor.getTelefono(), proveedor.getEmail()};
             miModelo.addRow(rowData);
             
-        }//        //creamos la tabla con el sql
-//        String sqlDatos = "select nombre_empresa, telefono, email from proveedor";
-//
-//        try
-//        {
-//            conet=con.abrirConexion();
-//            st=conet.createStatement();
-//            rs=st.executeQuery(sqlDatos);
-//            
-//            
-//            ResultSetMetaData metaData = rs.getMetaData();
-//            int columnCount = metaData.getColumnCount();
-//            
-//            miModelo = new DefaultTableModel(null, new Object[]{"Nombre de la empresa", "Telefono", "Email"})
-//            {
-//                @Override
-//                public Class<?> getColumnClass(int columnIndex) 
-//                {
-//                    // Devolver la clase de la columna, ImageIcon para las columnas de imágenes
-//                    return columnIndex >= 6 ? ImageIcon.class : super.getColumnClass(columnIndex);
-//                }
-//
-//                @Override
-//                public boolean isCellEditable(int row, int column) 
-//                {
-//                    // Hacer las columnas de no sean editables
-//                    return column >= 0 ? false : super.isCellEditable(row, column);
-//                }
-//            };
-//            tablaBuscarProveedor.setRowHeight(26);
-//            tablaBuscarProveedor.setModel(miModelo);
-//            miModelo.setRowCount(0);
-//            
-//            
-//            Object [] proveedores = new Object[9];
-//            miModelo = (DefaultTableModel) tablaBuscarProveedor.getModel();
-//            
-//            
-//            // Configurar la tabla con el nuevo modelo
-//            tablaBuscarProveedor.setRowHeight(26);
-//            tablaBuscarProveedor.setModel(miModelo);
-//            miModelo.setRowCount(0);
-//            
-//            
-//            while (rs.next()) 
-//            {
-//                proveedores[0] = rs.getString("nombre_empresa");
-//                proveedores[1] = rs.getString("telefono");
-//                proveedores[2] = rs.getString("email");
-//                miModelo.addRow(proveedores);
-//            }
-//            
-//            tablaBuscarProveedor.setModel(miModelo);
-//            mouseListenerAnadirColumnasExtra();
-//        } 
-//        catch (SQLException e) 
-//        {
-//            e.printStackTrace();
-//        } 
-//        finally 
-//        {
-//            try 
-//            {
-//                if (rs != null) rs.close();
-//                if (st != null) st.close();
-//                if (conet != null) conet.close();
-//            } 
-//            catch (SQLException ex) 
-//            {
-//                ex.printStackTrace();
-//            }
-//        }
+        }
     }
     
     

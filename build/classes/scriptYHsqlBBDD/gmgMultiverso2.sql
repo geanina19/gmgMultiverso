@@ -89,7 +89,12 @@ INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES
 ('Paula','Ruiz','paula3456',624662616,'oaula.ruiz@gmail.com');
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Romina','Ramos','romina7890',660518943,'romina.ramos@gmail.com');
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Zulema','Ortiz','zulema1234',613938195,'zulema.ortiz@gmail.com');
+<<<<<<< HEAD
+INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Admin','Admin','admin',695319038,'admin@gmgmultiverso.es');
+
+=======
 INSERT INTO empleado(nombre, apellido, contrasenia, telefono, email) VALUES('Admin','Admin','admin',695319038,'admin@gmgmultiverso.es')
+>>>>>>> efdd07a54ae68f75533deb7e9a02b6dd7d515572
 
 -- Datos pedido
 INSERT INTO pedido (id_cliente, fecha_pedido, id_empleado, estado, ultima_actualizacion) VALUES (1, '2024-03-15', 1, 1, '2023-03-15');
@@ -117,7 +122,7 @@ INSERT INTO producto (nombre, precio, unidad_existente, id_proveedor) VALUES ('P
 
 -- Datos detalle_pedido
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (1, 1, 2);
-INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (2, 2, 1);
+INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (2, 2, 4);
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (3, 3, 3);
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (4, 4, 2);
 INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad) VALUES (2, 1, 1);

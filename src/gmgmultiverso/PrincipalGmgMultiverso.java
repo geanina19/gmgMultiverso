@@ -27,34 +27,21 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
     private final FlatLaf[] themes = {
         new FlatArcIJTheme(),
         new FlatCarbonIJTheme(),
-        new FlatCobalt2IJTheme(),
-        new FlatDarkFlatIJTheme(),
         new FlatDarkPurpleIJTheme(),
         new FlatGruvboxDarkHardIJTheme(),
-        new FlatGruvboxDarkMediumIJTheme(),
-        new FlatGruvboxDarkSoftIJTheme(),
         new FlatHiberbeeDarkIJTheme(),
         new FlatHighContrastIJTheme(),
         new FlatLightFlatIJTheme(),
-        new FlatMaterialDesignDarkIJTheme(),
-        new FlatMonokaiProIJTheme(),
         new FlatMonokaiProContrastIJTheme(),
         new FlatNordIJTheme(),
         new FlatOneDarkIJTheme(),
-        new FlatSpacegrayIJTheme(),
-        new FlatVuesionIJTheme(),
         new FlatArcOrangeIJTheme(),
         new FlatGitHubIJTheme(),
-        new FlatCyanLightIJTheme(),
         new FlatSolarizedDarkContrastIJTheme(),
         new FlatMaterialLighterIJTheme(),
-        new FlatMaterialDarkerIJTheme(),
         new FlatMaterialDeepOceanIJTheme(),
         new FlatDraculaContrastIJTheme(),
-        new FlatGitHubDarkIJTheme(),
-        new FlatArcDarkContrastIJTheme(),
-        new FlatArcOrangeIJTheme(),
-        new FlatGitHubDarkContrastIJTheme()
+        new FlatArcOrangeIJTheme()
     };
 
     /**
@@ -76,6 +63,8 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         menugestion = new javax.swing.JMenu();
@@ -91,6 +80,13 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal GmgMultiverso");
+        setBackground(new java.awt.Color(255, 204, 204));
+
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logoGrande.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, -1, -1));
 
         menuArchivo.setText("Archivo");
         jMenuBar1.add(menuArchivo);
@@ -153,11 +149,17 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1326, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 647, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -246,7 +248,9 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
     private javax.swing.JMenuItem itemOtro;
     private javax.swing.JMenuItem itemProductos;
     private javax.swing.JMenuItem itemProveedores;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuPerfil;

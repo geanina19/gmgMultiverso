@@ -265,6 +265,7 @@ private String getCorreoElectronico() {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 221, 129));
 
         panel.setBackground(new java.awt.Color(255, 221, 129));
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -278,7 +279,7 @@ private String getCorreoElectronico() {
                 jButton1ActionPerformed(evt);
             }
         });
-        panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, -1, 100));
+        panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 110, 100));
 
         panelProductos.setBackground(new java.awt.Color(255, 221, 129));
 
@@ -402,7 +403,7 @@ private String getCorreoElectronico() {
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();

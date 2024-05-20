@@ -28,6 +28,7 @@ public class CuentaCliente extends javax.swing.JFrame {
     public CuentaCliente() {
         initComponents();
         clienteDao = new ClienteDao(new ManagerConexion());
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -60,6 +61,7 @@ public class CuentaCliente extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registrar cliente");
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

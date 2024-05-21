@@ -27,6 +27,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
     public PrincipalCliente() {
         initComponents();
         clienteDao = new ClienteDao(new ManagerConexion());
+        this.setLocationRelativeTo(null);
 
      
     }
@@ -58,6 +59,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         boton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Iniciar Sesión Cliente");
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

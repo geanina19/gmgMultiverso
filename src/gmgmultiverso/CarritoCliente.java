@@ -21,7 +21,8 @@ private int contadorCarrito = 0;
     public CarritoCliente() {
         initComponents();
         nombresProductosEnCarrito = new ArrayList<>(); 
-        imagenesProductosEnCarrito = new ArrayList<>(); 
+        imagenesProductosEnCarrito = new ArrayList<>();
+        this.setLocationRelativeTo(null);
     }
 
     // Método para agregar un producto al carrito
@@ -92,7 +93,8 @@ private int contadorCarrito = 0;
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Carrito Cliente");
 
         jPanel1.setBackground(new java.awt.Color(255, 221, 129));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

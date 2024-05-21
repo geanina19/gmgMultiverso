@@ -27,7 +27,8 @@ public class PerfilCliente extends javax.swing.JFrame {
         initComponents();
         ManagerConexion con = new ManagerConexion();
         clienteDao = new ClienteDao(con);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.setLocationRelativeTo(null);
        
     }
 
@@ -88,7 +89,8 @@ public class PerfilCliente extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Perfil del Cliente");
 
         jPanel1.setBackground(new java.awt.Color(255, 221, 129));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

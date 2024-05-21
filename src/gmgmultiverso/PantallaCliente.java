@@ -53,49 +53,50 @@ public class PantallaCliente extends javax.swing.JFrame {
 
     public PantallaCliente() {
         initComponents();
-    ManagerConexion con = new ManagerConexion(); 
-    clienteDao = new ClienteDao(con); 
-   
-    // Hacer que el botón de búsqueda no tenga color de fondo
-        jButton1.setOpaque(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setBorderPainted(false);
-    
-    ImageIcon iconoCarrito = new ImageIcon(getClass().getResource("/img/carrito.png"));
-    Image imagenEscaladaCarrito = iconoCarrito.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-    ImageIcon imagenEscaladaCarritoIcon = new ImageIcon(imagenEscaladaCarrito);
+        ManagerConexion con = new ManagerConexion(); 
+        clienteDao = new ClienteDao(con);
+        this.setLocationRelativeTo(null);
 
-    JLabel imagenCarrito = new JLabel(imagenEscaladaCarritoIcon);
-    imagenCarrito.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            abrirCarritoCliente(evt);
-        }
-    });
+        // Hacer que el botón de búsqueda no tenga color de fondo
+            jButton1.setOpaque(false);
+            jButton1.setContentAreaFilled(false);
+            jButton1.setBorderPainted(false);
 
-    jMenuBar1.add(Box.createHorizontalGlue());
-    jMenuBar1.add(imagenCarrito);
+        ImageIcon iconoCarrito = new ImageIcon(getClass().getResource("/img/carrito.png"));
+        Image imagenEscaladaCarrito = iconoCarrito.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        ImageIcon imagenEscaladaCarritoIcon = new ImageIcon(imagenEscaladaCarrito);
 
-    this.carritoCliente = new CarritoCliente();
+        JLabel imagenCarrito = new JLabel(imagenEscaladaCarritoIcon);
+        imagenCarrito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                abrirCarritoCliente(evt);
+            }
+        });
 
-    mostrarProductos();
-    
-    // Agregar DocumentListener al campo de búsqueda
-    buscador.getDocument().addDocumentListener(new DocumentListener() {
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            buscarProducto();
-        }
+        jMenuBar1.add(Box.createHorizontalGlue());
+        jMenuBar1.add(imagenCarrito);
 
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            buscarProducto();
-        }
+        this.carritoCliente = new CarritoCliente();
 
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            buscarProducto();
-        }
-    });
+        mostrarProductos();
+
+        // Agregar DocumentListener al campo de búsqueda
+        buscador.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                buscarProducto();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                buscarProducto();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                buscarProducto();
+            }
+        });
     
   
     }
@@ -265,6 +266,8 @@ private String getCorreoElectronico() {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pantalla proncipal del cliente");
+        setBackground(new java.awt.Color(255, 221, 129));
 
         panel.setBackground(new java.awt.Color(255, 221, 129));
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -278,7 +281,7 @@ private String getCorreoElectronico() {
                 jButton1ActionPerformed(evt);
             }
         });
-        panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, -1, 100));
+        panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 30, 110, 100));
 
         panelProductos.setBackground(new java.awt.Color(255, 221, 129));
 
@@ -402,7 +405,7 @@ private String getCorreoElectronico() {
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();

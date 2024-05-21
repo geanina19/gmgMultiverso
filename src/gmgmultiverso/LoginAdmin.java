@@ -105,13 +105,13 @@ public class LoginAdmin extends javax.swing.JFrame
         jPanel1 = new javax.swing.JPanel();
         labelIniciarSesion = new javax.swing.JLabel();
         labelUsuario = new javax.swing.JLabel();
-        ingresarUsuario = new javax.swing.JTextField();
         labelContrasenia = new javax.swing.JLabel();
         ingresarContrasenia = new javax.swing.JPasswordField();
         botonIniciarSesion = new javax.swing.JButton();
         userIcono = new javax.swing.JLabel();
         llave = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        ingresarUsuario = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         fondoLogin = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
@@ -131,16 +131,6 @@ public class LoginAdmin extends javax.swing.JFrame
         labelUsuario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelUsuario.setText("Administrador");
         jPanel1.add(labelUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, -1, -1));
-
-        ingresarUsuario.setForeground(new java.awt.Color(204, 204, 204));
-        ingresarUsuario.setText("Ingrese su nombre de usuario");
-        ingresarUsuario.setBorder(null);
-        ingresarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                ingresarUsuarioMousePressed(evt);
-            }
-        });
-        jPanel1.add(ingresarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, 240, 30));
 
         labelContrasenia.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelContrasenia.setText("Contraseña");
@@ -170,8 +160,17 @@ public class LoginAdmin extends javax.swing.JFrame
         llave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/llave.png"))); // NOI18N
         jPanel1.add(llave, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 30, 30));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logoGmgMultiverso (2).png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 350, -1, -1));
+        ingresarUsuario.setForeground(new java.awt.Color(204, 204, 204));
+        ingresarUsuario.setText("Ingrese su nombre de usuario");
+        ingresarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ingresarUsuarioMousePressed(evt);
+            }
+        });
+        jPanel1.add(ingresarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, 240, 30));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logox200.png"))); // NOI18N
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 310, -1, 150));
 
         fondoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"))); // NOI18N
         jPanel1.add(fondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 500));
@@ -240,6 +239,7 @@ public class LoginAdmin extends javax.swing.JFrame
             ingresarContrasenia.setText("********");
             ingresarContrasenia.setForeground(Color.gray);
         }
+
     }//GEN-LAST:event_ingresarUsuarioMousePressed
 
     /**
@@ -284,7 +284,7 @@ public class LoginAdmin extends javax.swing.JFrame
     private javax.swing.JPasswordField ingresarContrasenia;
     private javax.swing.JTextField ingresarUsuario;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelContrasenia;
     private javax.swing.JLabel labelIniciarSesion;

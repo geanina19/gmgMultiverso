@@ -15,6 +15,7 @@ public class AyudaCliente extends javax.swing.JFrame {
      */
     public AyudaCliente() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -50,7 +51,8 @@ public class AyudaCliente extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Ayuda Cliente");
 
         jPanel1.setBackground(new java.awt.Color(255, 221, 129));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

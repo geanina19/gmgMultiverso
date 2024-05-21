@@ -23,20 +23,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class PrincipalGmgMultiverso extends javax.swing.JFrame 
 {
-    
-    private int currentThemeIndex = 0;
-    private final FlatLaf[] themes = {
-        new FlatArcIJTheme(),
-        new FlatCarbonIJTheme(),
-        new FlatDarkPurpleIJTheme(),
-        new FlatHiberbeeDarkIJTheme(),
-        new FlatHighContrastIJTheme(),
-        new FlatLightFlatIJTheme(),
-        new FlatArcOrangeIJTheme(),
-        new FlatSolarizedDarkContrastIJTheme(),
-        new FlatMaterialLighterIJTheme(),
-        new FlatDraculaContrastIJTheme()
-    };
 
     /**
      * Creates new form PrincipalGmgMultiverso
@@ -81,7 +67,6 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
         menuTema = new javax.swing.JMenu();
         itemOscuro = new javax.swing.JMenuItem();
         itemClaro = new javax.swing.JMenuItem();
-        itemOtro = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         temaOp1 = new javax.swing.JMenuItem();
         temaOp2 = new javax.swing.JMenuItem();
@@ -163,14 +148,6 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
         });
         menuTema.add(itemClaro);
 
-        itemOtro.setText("Otro");
-        itemOtro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemOtroActionPerformed(evt);
-            }
-        });
-        menuTema.add(itemOtro);
-
         jMenu1.setText("Más ...");
 
         temaOp1.setText("Blanco - Azul Oscuro");
@@ -198,24 +175,59 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
         jMenu1.add(temaOp3);
 
         temaOp4.setText("Gris - Naranja");
+        temaOp4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp4ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp4);
 
         temaOp5.setText("Contraste");
+        temaOp5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp5ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp5);
 
         temaOp6.setText("Blanco - Azul Claro");
+        temaOp6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp6ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp6);
 
         temaOp7.setText("Blanco - Naranja ");
+        temaOp7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp7ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp7);
 
         temaOp8.setText("Verde Azulado ");
+        temaOp8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp8ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp8);
 
         temaOp9.setText("Blanco - Verde ");
+        temaOp9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp9ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp9);
 
         temaOp10.setText("Gris - Azul Claro ");
+        temaOp10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                temaOp10ActionPerformed(evt);
+            }
+        });
         jMenu1.add(temaOp10);
 
         menuTema.add(jMenu1);
@@ -253,6 +265,7 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("blanco");
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -264,25 +277,11 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("oscuro");
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_itemOscuroActionPerformed
-
-    private void itemOtroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemOtroActionPerformed
-        // TODO add your handling code here:
-        // Aplicar el siguiente tema de la lista
-        FlatLaf.setup(themes[currentThemeIndex]);
-
-        // Imprimir el nombre del tema actual por pantalla
-        System.out.println("Tema actual: " + themes[currentThemeIndex].getName());
-
-        // Actualizar la UI para aplicar el nuevo tema
-        javax.swing.SwingUtilities.updateComponentTreeUI(this);
-
-        // Incrementar el índice y volver al inicio si es necesario
-        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-    }//GEN-LAST:event_itemOtroActionPerformed
 
     private void temaOp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp1ActionPerformed
         // TODO add your handling code here:
@@ -319,6 +318,90 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
             ex.printStackTrace();
         }
     }//GEN-LAST:event_temaOp3ActionPerformed
+
+    private void temaOp4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatHiberbeeDarkIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("oscuro"); // Cambia el logo al blanco
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp4ActionPerformed
+
+    private void temaOp5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp5ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatHighContrastIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("oscuro"); // Cambia el logo al blanco
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp5ActionPerformed
+
+    private void temaOp6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp6ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatLightFlatIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("blanco"); // Cambia el logo al oscuro
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp6ActionPerformed
+
+    private void temaOp7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp7ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("blanco"); // Cambia el logo al oscuro
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp7ActionPerformed
+
+    private void temaOp8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp8ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatSolarizedDarkContrastIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("oscuro"); // Cambia el logo al blanco
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp8ActionPerformed
+
+    private void temaOp9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp9ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatMaterialLighterIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("blanco"); // Cambia el logo al oscuro
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp9ActionPerformed
+
+    private void temaOp10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_temaOp10ActionPerformed
+        // TODO add your handling code here:
+        try {
+            UIManager.setLookAndFeel(new FlatDraculaContrastIJTheme());
+            UIManager.put("TextComponent.arc", 100);
+            SwingUtilities.updateComponentTreeUI(this);
+            updateLogo("oscuro"); // Cambia el logo al blanco
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_temaOp10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,7 +448,6 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
     private javax.swing.JMenuItem itemBuscarProveedor;
     private javax.swing.JMenuItem itemClaro;
     private javax.swing.JMenuItem itemOscuro;
-    private javax.swing.JMenuItem itemOtro;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel labelLogo;

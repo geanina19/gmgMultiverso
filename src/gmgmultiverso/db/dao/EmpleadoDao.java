@@ -37,6 +37,7 @@ public class EmpleadoDao {
             List<Empleado> empleados = new ArrayList<>();
             while (resultSet.next()) {
                 Empleado empleado = new Empleado(
+                        resultSet.getInt("id"),
                         resultSet.getString("nombre"),
                         resultSet.getString("apellido"),
                         resultSet.getString("contrasenia"),

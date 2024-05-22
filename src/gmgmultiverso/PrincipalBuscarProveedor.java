@@ -16,13 +16,17 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.RowSorter.SortKey;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import propiedades.EvObjOverComp4;
 import propiedades.LisOverComp4;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -54,8 +58,9 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
     public PrincipalBuscarProveedor() {
         
         initComponents();
-        textFieldGmail.setSize(64, 22);
+        textFieldTelefono.setSize(64, 22);
         this.setSize(1091, 642);
+        inicializarTabla();
         
         tablaBuscarProveedor.setModel(miModelo);
         actualizarTablaBuscarProveedor();
@@ -73,7 +78,28 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
                 buscarProveedor(codProveedor);
             }
         });
+        
+
+        textFieldTelefono.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                buscarProveedor(codProveedor);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                buscarProveedor(codProveedor);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                buscarProveedor(codProveedor);
+            }
+        });
+
+        
     }
+    
     
     //-------------Métodos-----------------
 
@@ -168,37 +194,37 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
         }
     }
     
+    //-----------------------------------------
+    public void inicializarTabla() {
+        miModelo = new DefaultTableModel(null, new Object[]{"Nombre de la empresa", "Telefono", "Email", "Editar", "Eliminar"}) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                // Devolver la clase de la columna, ImageIcon para las columnas de imágenes
+                return columnIndex >= 3 ? ImageIcon.class : super.getColumnClass(columnIndex);
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Hacer las columnas de no sean editables
+                return column >= 0 ? false : super.isCellEditable(row, column);
+            }
+        };
+
+        tablaBuscarProveedor.setModel(miModelo);
+        tablaBuscarProveedor.setRowHeight(30);
+    }
+    
     //-------------Actualizar tabla------------
 
     public void actualizarTablaBuscarProveedor() {
         quitarListener(); // Eliminar cualquier listener previo
-
-        // Configurar el modelo de la tabla con las nuevas columnas
-        miModelo = new DefaultTableModel(null, new Object[]{"Nombre de la empresa", "Telefono", "Email", "Editar", "Eliminar"}) {
-            @Override
-                public Class<?> getColumnClass(int columnIndex) 
-                {
-                    // Devolver la clase de la columna, ImageIcon para las columnas de imágenes
-                    return columnIndex >= 3 ? ImageIcon.class : super.getColumnClass(columnIndex);
-                }
-
-                @Override
-                public boolean isCellEditable(int row, int column) 
-                {
-                    // Hacer las columnas de no sean editables
-                    return column >= 0 ? false : super.isCellEditable(row, column);
-                }
-        };
-
-        tablaBuscarProveedor.setRowHeight(26); // Establecer la altura de las filas
-        tablaBuscarProveedor.setModel(miModelo); // Asignar el modelo a la tabla
 
         // Limpiar el modelo antes de añadir filas
         miModelo.setRowCount(0);
 
         // Obtener la lista de proveedores
         List<Proveedor> proveedores = prov.list();
-
+        
         // Crear ImageIcons con las imágenes para los botones
         ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
         ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
@@ -243,93 +269,125 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
     //-------------Buscar proveedores------------
     
     public void buscarProveedor(int codProveedor) {
-        
-        String sqlDatos = "SELECT nombre_empresa AS Nombre_de_la_empresa, "
-                + "telefono AS Telefono, "
-                + "email AS Email, "
-                + "id "
-                + "FROM PROVEEDOR "
-                + "WHERE 1=1";
+        // Obtener el número de teléfono ingresado en el textField
+        String telefono = textFieldTelefono.getText().trim();
 
-        // Agregar condiciones a la consulta basadas en los códigos proporcionados
-        if (codProveedor != -1) {
-            sqlDatos += " AND id = " + codProveedor;
-        }
+        // Obtener la lista completa de proveedores
+        List<Proveedor> proveedores = prov.list();
 
-        // Ejecutar la consulta y actualizar la tabla
-        try {
-            conet = con.abrirConexion();
-            st = conet.createStatement();
-            rs = st.executeQuery(sqlDatos);
-
-            // Limpiar modelo actual de la tabla
-            miModelo.setRowCount(0);
-
-            boolean hayResultados = false;
-            
-            // Llenar el modelo con los resultados de la consulta
-            while (rs.next()) {
-                hayResultados = true;
-                
-                Object[] proveedor = new Object[]{
-                    rs.getString("Nombre_de_la_empresa"),
-                    rs.getString("Telefono"),
-                    rs.getString("Email"),
-                };
-                miModelo.addRow(proveedor);
-            }
-
-            // Actualizar la tabla con el nuevo modelo
-            tablaBuscarProveedor.setModel(miModelo);
-            
-            if (!hayResultados) {
-                JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } 
-        finally {
-            try {
-                if (rs != null) rs.close();
-                if (st != null) st.close();
-                if (conet != null) conet.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+        // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
+        List<Proveedor> proveedoresFiltrados = new ArrayList<>();
+        for (Proveedor proveedor : proveedores) {
+            if (codProveedor != -1) {
+                if (proveedor.getId() == codProveedor) {
+                    proveedoresFiltrados.add(proveedor);
+                }
+            } else {
+                // Si el código de proveedor es -1, mostrar todos los proveedores
+                proveedoresFiltrados = proveedores;
             }
         }
-    }
-    
-    //Metodos para eliminar un proveedor
-    
-    public void confirmarEliminarProveedor(int codigoProveedor) 
-    {
-            // Mostrar el cuadro de diálogo de confirmación solo si no hay productos asociados
-            int opcion = JOptionPane.showConfirmDialog(this,
-                    "¿Estás seguro de que quieres eliminar este proveedor?", "Confirmar eliminación",
-                    JOptionPane.YES_NO_OPTION);
-            
-            if (opcion == JOptionPane.YES_OPTION) {
-                // Si el usuario presiona "OK", procede con la eliminación
-                eliminarProveedor(codigoProveedor);
-            } 
-            else {
-                System.out.println("Eliminación cancelada");
+
+        // Filtrar la lista de proveedores por el número de teléfono ingresado
+        List<Proveedor> proveedoresFiltradosPorTelefono = new ArrayList<>();
+        for (Proveedor proveedor : proveedoresFiltrados) {
+            // Verificar si el número de teléfono del proveedor comienza con el número ingresado
+            if (Integer.toString(proveedor.getTelefono()).startsWith(telefono)) {
+                proveedoresFiltradosPorTelefono.add(proveedor);
             }
-        /*    
         }
-        */
+
+        // Limpiar el modelo actual de la tabla
+        miModelo.setRowCount(0);
+
+        // Crear ImageIcons con las imágenes
+        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
+        ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
+
+        boolean hayResultados = !proveedoresFiltradosPorTelefono.isEmpty();
+
+        // Llenar el modelo con los resultados de la búsqueda
+        for (Proveedor proveedor : proveedoresFiltradosPorTelefono) {
+            Object[] rowData = new Object[]{
+                proveedor.getNombre_empresa(),
+                proveedor.getTelefono(),
+                proveedor.getEmail(),
+                editarIcon,
+                eliminarIcon
+            };
+            miModelo.addRow(rowData);
+        }
+
+        // Actualizar la tabla con el nuevo modelo
+        tablaBuscarProveedor.setModel(miModelo);
+        mouseListenerAnadirColumnasExtra();
+
+        if (!hayResultados) {
+            JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
+
+
+
     
-    private void eliminarProveedor(int codigoProveedor) {
-    if (prov.eliminarProveedor(codigoProveedor)) {
-        JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        actualizarTablaBuscarProveedor(); // Actualiza la tabla después de eliminar el proveedor.
-    } else {
-        JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+    //------------Metodos para eliminar un proveedor------------
+    
+    public void confirmarEliminarProveedor(int codigoProveedor) {
+        String nombreEmpresa = null;
+
+        // Obtener la lista de proveedores
+        List<Proveedor> proveedores = prov.list();
+
+        // Buscar el proveedor correspondiente al código proporcionado
+        for (Proveedor proveedor : proveedores) {
+            if (proveedor.getId() == codigoProveedor) {
+                nombreEmpresa = proveedor.getNombre_empresa();
+                break; // Detener la búsqueda una vez que se encuentre el proveedor
+            }
+        }
+
+        // Guardar el estado actual de la ordenación de la tabla
+        List<? extends SortKey> sortKeys = tablaBuscarProveedor.getRowSorter().getSortKeys();
+
+        // Desactivar la ordenación de la tabla
+        tablaBuscarProveedor.setAutoCreateRowSorter(false);
+
+        // Mostrar el cuadro de diálogo de confirmación incluyendo el nombre de la empresa
+        int opcion = JOptionPane.showConfirmDialog(this,
+                "¿Estás seguro de que quieres eliminar el proveedor '" + nombreEmpresa + "'?", "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+            // Si el usuario presiona "OK", procede con la eliminación
+            if (eliminarProveedor(codigoProveedor)) {
+                JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                actualizarTablaBuscarProveedor(); // Actualiza la tabla después de eliminar el proveedor.
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            System.out.println("Eliminación cancelada");
+        }
+
+        // Reactivar la ordenación de la tabla utilizando el estado guardado
+        tablaBuscarProveedor.setAutoCreateRowSorter(true);
+        tablaBuscarProveedor.getRowSorter().setSortKeys(sortKeys);
     }
-}
+
+
+
+    public boolean eliminarProveedor(int codigoProveedor) {
+        return prov.eliminarProveedor(codigoProveedor);
+    }
+
+    //para asegurarnos de que se deseleccionan todas las filas
+    private void deseleccionarTodasFilas() {
+        int rowCount = tablaBuscarProveedor.getRowCount();
+        tablaBuscarProveedor.clearSelection();
+    }
+
     
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -342,8 +400,9 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaBuscarProveedor = new javax.swing.JTable();
         componenteNombreEmpresas = new propiedades.Componente4();
-        textFieldGmail = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        botonReiniciar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        textFieldTelefono = new javax.swing.JTextField();
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1091, 642));
@@ -354,7 +413,14 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
         componenteNombreEmpresas.setMensaje("\"Elije un nombre de empresa\"");
         componenteNombreEmpresas.setPrimerElementoEsMensaje(true);
 
-        jLabel1.setText("Gmail :");
+        botonReiniciar.setText("Reiniciar");
+        botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonReiniciarActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Telefono :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -366,37 +432,58 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(95, 95, 95)
-                        .addComponent(jLabel1)
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(textFieldGmail, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 247, Short.MAX_VALUE)))
+                        .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 235, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(462, 462, 462)
+                .addComponent(botonReiniciar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(292, 292, 292)
+                        .addGap(48, 48, 48)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(textFieldGmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(215, Short.MAX_VALUE))
+                            .addComponent(jLabel2)
+                            .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(61, 61, 61)
+                .addComponent(botonReiniciar)
+                .addGap(65, 65, 65))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReiniciarActionPerformed
+        // TODO add your handling code here:
+        quitarListener();
+        codProveedor = -1;
+        componenteNombreEmpresas.eliminarSeleccion();
+        tablaBuscarProveedor.clearSelection();
+        textFieldTelefono.setText("");
+        
+        actualizarTablaBuscarProveedor();
+        deseleccionarTodasFilas();
+        
+    }//GEN-LAST:event_botonReiniciarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonReiniciar;
     private propiedades.Componente4 componenteNombreEmpresas;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaBuscarProveedor;
-    private javax.swing.JTextField textFieldGmail;
+    private javax.swing.JTextField textFieldTelefono;
     // End of variables declaration//GEN-END:variables
 }

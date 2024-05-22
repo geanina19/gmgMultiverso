@@ -94,6 +94,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         temaOp9 = new javax.swing.JMenuItem();
         temaOp10 = new javax.swing.JMenuItem();
         menuPerfil = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal GmgMultiverso");
@@ -116,6 +117,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menugestion.setText("Gestión");
 
+        proveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
         proveedores.setText("Proveedores");
 
         itemBuscarProveedor.setText("Buscar");
@@ -131,6 +133,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menugestion.add(proveedores);
 
+        empleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
         empleados.setText("Empleados");
 
         itemBuscarEmpleado.setText("Buscar");
@@ -141,6 +144,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menugestion.add(empleados);
 
+        productos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
         productos.setText("Productos");
 
         itemBuscarProducto.setText("Buscar");
@@ -158,6 +162,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuTema.setText("Tema");
 
+        itemOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonNegro.png"))); // NOI18N
         itemOscuro.setText("Oscuro");
         itemOscuro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,6 +171,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         menuTema.add(itemOscuro);
 
+        itemClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonBlanco.png"))); // NOI18N
         itemClaro.setText("Claro");
         itemClaro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,8 +180,10 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         menuTema.add(itemClaro);
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gamaColores.png"))); // NOI18N
         jMenu1.setText("Más ...");
 
+        temaOp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blacoAzul.png"))); // NOI18N
         temaOp1.setText("Blanco - Azul Oscuro");
         temaOp1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -262,6 +270,9 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuPerfil.setText("Perfil");
         jMenuBar1.add(menuPerfil);
+
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/planeta.png"))); // NOI18N
+        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -431,22 +442,44 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
     private void itemBuscarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBuscarProveedorActionPerformed
         // TODO add your handling code here:
+        /*
         PrincipalBuscarProveedor pbp = new PrincipalBuscarProveedor();
         pbp.setSize(1091,642);
         pbp.setLocation(0,0);
-        //Para que el logo esté centrado en la pantalla
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panelPrincipal.add(pbp, gbc);
         
         getContentPane().removeAll();
         getContentPane().add(pbp,BorderLayout.CENTER);
         revalidate();
         repaint();
+        
+        
+        
+        panelPrincipal.removeAll();
+        panelPrincipal.setLayout(new BorderLayout()); // Usar BorderLayout para centrar el panel
+        PrincipalBuscarProveedor principalBuscarProveedor = new PrincipalBuscarProveedor();
+        panelPrincipal.add(principalBuscarProveedor, BorderLayout.CENTER); // Añadir el panel al centro
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+        */
+
+        PrincipalBuscarProveedor pbp = new PrincipalBuscarProveedor();
+        pbp.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 0.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(pbp, gbc);
+        revalidate();
+        repaint();
+
     }//GEN-LAST:event_itemBuscarProveedorActionPerformed
 
     /**
@@ -496,6 +529,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemClaro;
     private javax.swing.JMenuItem itemOscuro;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;

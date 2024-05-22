@@ -43,6 +43,7 @@ public class ProveedorDao {
             List<Proveedor> proveedores = new ArrayList<>();
             while (resultSet.next()) {
                 Proveedor proveedor = new Proveedor(
+                        resultSet.getInt("id"),
                         resultSet.getString("nombre_empresa"),
                         resultSet.getInt("telefono"),
                         resultSet.getString("email")
@@ -132,6 +133,9 @@ public class ProveedorDao {
         }
     }
     
+    
+    //-------------Actualizar proveedor-------------
+    
     public boolean actualizarProveedor(Proveedor proveedor) {
         Connection conect = null;
     
@@ -163,6 +167,7 @@ public class ProveedorDao {
             }
         }
     }
+    
 
 
 

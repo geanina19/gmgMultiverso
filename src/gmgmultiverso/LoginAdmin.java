@@ -209,11 +209,11 @@ public class LoginAdmin extends javax.swing.JFrame
         if (validarCredenciales(usuario, contrasenia)) 
         {
             try {
-                // Si las credenciales son válidas, abrir la ventana PrincipalGmgMultiverso
+                // Si las credenciales son válidas, abrir la ventana PrincipalAdministrador
                 
                 UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
                 UIManager.put("TextComponent.arc", 100);
-                PrincipalGmgMultiverso p1 = new PrincipalGmgMultiverso();
+                PrincipalAdministrador p1 = new PrincipalAdministrador();
                 SwingUtilities.updateComponentTreeUI(p1);
                 p1.setVisible(true);
                 this.dispose(); // Cerrar la ventana de login

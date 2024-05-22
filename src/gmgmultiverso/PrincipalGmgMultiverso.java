@@ -10,6 +10,7 @@ import com.formdev.flatlaf.intellijthemes.*;
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
+import java.awt.GridBagConstraints;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -31,7 +32,18 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
     {
         initComponents();
         this.setSize(1326, 670);
+        
+        //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
+        
+        //Para que el logo esté centrado en la pantalla
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panelPrincipal.add(labelLogo, gbc);
     }
     
     //------Cambiar Logo dependiendo del tema
@@ -48,6 +60,7 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         panelPrincipal = new javax.swing.JPanel();
         labelLogo = new javax.swing.JLabel();
@@ -84,11 +97,16 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
         setTitle("Principal GmgMultiverso");
         setBackground(new java.awt.Color(255, 204, 204));
 
-        panelPrincipal.setOpaque(false);
-        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelPrincipal.setBackground(new java.awt.Color(255, 153, 255));
+        panelPrincipal.setLayout(new java.awt.GridBagLayout());
 
         labelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logoGrande.png"))); // NOI18N
-        panelPrincipal.add(labelLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, -1, -1));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(90, 390, 52, 201);
+        panelPrincipal.add(labelLogo, gridBagConstraints);
 
         menuArchivo.setText("Archivo");
         jMenuBar1.add(menuArchivo);
@@ -250,8 +268,8 @@ public class PrincipalGmgMultiverso extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );

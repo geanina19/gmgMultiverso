@@ -7,6 +7,7 @@ package gmgmultiverso;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ProveedorDao;
 import gmgmultiverso.model.Proveedor;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,6 +22,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import propiedades.EvObjOverComp4;
@@ -32,7 +34,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author geanina.foanta
  */
-public class PrincipalBuscarProveedor extends javax.swing.JPanel {
+public class BuscarProveedor extends javax.swing.JPanel {
 
     
     private MouseListener mouseClickListener = null;
@@ -55,13 +57,14 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
     /**
      * Creates new form PrincipalBuscarProveedor
      */
-    public PrincipalBuscarProveedor() {
+    public BuscarProveedor() {
         
         initComponents();
         textFieldTelefono.setSize(64, 22);
         this.setSize(1091, 642);
         inicializarTabla();
         
+      
         tablaBuscarProveedor.setModel(miModelo);
         actualizarTablaBuscarProveedor();
         cargarNombreEmpresa();
@@ -385,7 +388,7 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
         int rowCount = tablaBuscarProveedor.getRowCount();
         tablaBuscarProveedor.clearSelection();
     }
-
+    
     
 
     /**
@@ -403,6 +406,7 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
         botonReiniciar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         textFieldTelefono = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1091, 642));
@@ -422,6 +426,9 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
 
         jLabel2.setText("Telefono :");
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
+        jLabel1.setText("Buscar proveedor");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -436,31 +443,34 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 235, Short.MAX_VALUE)))
+                        .addGap(0, 241, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(407, 407, 407)
+                        .addComponent(botonReiniciar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(462, 462, 462)
-                .addComponent(botonReiniciar)
+                .addGap(443, 443, 443)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
+                        .addGap(34, 34, 34)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(61, 61, 61)
+                            .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonReiniciar)
-                .addGap(65, 65, 65))
+                .addGap(205, 205, 205))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -481,6 +491,7 @@ public class PrincipalBuscarProveedor extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonReiniciar;
     private propiedades.Componente4 componenteNombreEmpresas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaBuscarProveedor;

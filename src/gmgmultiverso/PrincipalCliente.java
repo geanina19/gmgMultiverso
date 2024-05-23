@@ -28,7 +28,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         initComponents();
         clienteDao = new ClienteDao(new ManagerConexion());
         this.setLocationRelativeTo(null);
-
+        
      
     }
     
@@ -156,6 +156,8 @@ public class PrincipalCliente extends javax.swing.JFrame {
     private void boton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton6ActionPerformed
         CuentaCliente cc = new CuentaCliente();
         cc.setVisible(true);
+        this.dispose();  // Cierra la ventana actual
+
     }//GEN-LAST:event_boton6ActionPerformed
 
     private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed

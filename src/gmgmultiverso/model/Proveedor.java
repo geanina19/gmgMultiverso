@@ -21,7 +21,8 @@ public class Proveedor {
     }
     
     //-----------Constructor-----------
-    public Proveedor(String nombre_empresa, int telefono, String email) {
+    public Proveedor(int id, String nombre_empresa, int telefono, String email) {
+        this.id = id;
         this.nombre_empresa = nombre_empresa;
         this.telefono = telefono;
         this.email = email;

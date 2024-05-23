@@ -1,0 +1,157 @@
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:02:55
+nombreEmpresa = Gmg Multiverso
+Fecha y hora del cambio: 2024/05/23 16:02:55
+correo = gmgmultiverso@gmail.com
+Fecha y hora del cambio: 2024/05/23 16:02:55
+web = https://gmgmultiverso.wordpress.com/
+Fecha y hora del cambio: 2024/05/23 16:02:55
+telefono = 695319038
+Fecha y hora del cambio: 2024/05/23 16:02:55
+direccion = C/ Secoya, 22, Madrid 
+Fecha y hora del cambio: 2024/05/23 16:02:55
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:05:34
+nombreEmpresa = Nadax5
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:05:43
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:08:23
+nombreEmpresa = Nadax6
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:24:28
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:31:54
+nombreEmpresa = Nada
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:32:03
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:34:46
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:37:31
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:51:51
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:51:53
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 16:52:58
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 22:37:48
+nombreEmpresa = NadaOrdenadorCasa
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/23 22:37:54
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/24 01:01:25
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+

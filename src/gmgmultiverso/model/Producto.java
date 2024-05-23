@@ -26,6 +26,13 @@ public class Producto {
         this.unidad_existente = unidad_existente;
     }
     
+    //-----------Constructor sin el parámetro de ID-----------
+    public Producto(String nombre, double precio, int unidad_existente) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.unidad_existente = unidad_existente;
+    }
+    
     //-----------Getters y Setters-----------
 
     public int getId() {

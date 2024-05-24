@@ -155,3 +155,43 @@ instagram = @gmg_multiverso
 
 ------------------
 
+Fecha y hora del cambio: 2024/05/24 10:44:01
+nombreEmpresa = Nada
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/24 10:44:21
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/24 11:52:55
+nombreEmpresa = Nada
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/05/24 11:54:14
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695319038
+direccion = C/ Secoya, 22, Madrid 
+instagram = @gmg_multiverso
+
+------------------
+

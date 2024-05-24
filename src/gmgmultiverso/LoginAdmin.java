@@ -15,10 +15,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
+import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ContainerListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -27,22 +35,40 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-public class LoginAdmin extends javax.swing.JFrame 
-{
+
+public class LoginAdmin extends javax.swing.JFrame {
 
     //private ManagerConexion con;
     //int xMouse, yMouse;
-    
     /**
      * Creates new form Login
      */
-    public LoginAdmin() 
-    {
+    public LoginAdmin() {
         initComponents();
+
         this.setSize(860, 500);
         //[860, 500]
         this.setLocationRelativeTo(null);
-        
+/*
+        this.jPanel1.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new File("imagenes/foandoLogin.png"));
+                    Image dimg = img.getScaledInstance(labelFondoLogin.getWidth(), labelFondoLogin.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon imageIcon = new ImageIcon(dimg);
+                    labelFondoLogin.setIcon(imageIcon);
+                    jPanel1.repaint();
+                    jPanel1.revalidate();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        });
+*/
         ingresarContrasenia.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -52,41 +78,32 @@ public class LoginAdmin extends javax.swing.JFrame
             }
         });
     }
-    
-    private boolean validarCredenciales(String usuario, String contrasenia) 
-    {
+
+    private boolean validarCredenciales(String usuario, String contrasenia) {
         Connection conect;
         ManagerConexion con = new ManagerConexion();
-    
+
         //Statement st;
         //ResultSet rs;
-
-        try 
-        {
+        try {
             conect = con.abrirConexion();
             String sql = "SELECT * FROM empleado WHERE nombre = ? AND contrasenia = ?";
-            try (PreparedStatement statement = conect.prepareStatement(sql)) 
-            {
+            try (PreparedStatement statement = conect.prepareStatement(sql)) {
                 statement.setString(1, usuario);
                 statement.setString(2, contrasenia);
-                try (ResultSet resultSet = statement.executeQuery()) 
-                {
-                    if (resultSet.next()) 
-                    {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
                         String nombreEmpleado = resultSet.getString("nombre");
-                        if (nombreEmpleado.equals("Admin")) 
-                        {
+                        if (nombreEmpleado.equals("Admin")) {
                             // Si el usuario es Admin y la contraseña es correcta, permitir el inicio de sesión
-                            return true; 
+                            return true;
                         }
                     }
                     // Si el usuario no es Admin o la contraseña es incorrecta, denegar el inicio de sesión
-                    return false; 
+                    return false;
                 }
             }
-        } 
-        catch (SQLException e) 
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -112,7 +129,7 @@ public class LoginAdmin extends javax.swing.JFrame
         llave = new javax.swing.JLabel();
         ingresarUsuario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        fondoLogin = new javax.swing.JLabel();
+        labelFondoLogin = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -172,8 +189,8 @@ public class LoginAdmin extends javax.swing.JFrame
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logox200.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 310, -1, 150));
 
-        fondoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"))); // NOI18N
-        jPanel1.add(fondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 500));
+        labelFondoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"))); // NOI18N
+        jPanel1.add(labelFondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,11 +225,10 @@ public class LoginAdmin extends javax.swing.JFrame
         String usuario = ingresarUsuario.getText();
         String contrasenia = String.valueOf(ingresarContrasenia.getPassword());
 
-        if (validarCredenciales(usuario, contrasenia)) 
-        {
+        if (validarCredenciales(usuario, contrasenia)) {
             try {
                 // Si las credenciales son válidas, abrir la ventana PrincipalAdministrador
-                
+
                 UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
                 UIManager.put("TextComponent.arc", 100);
                 PrincipalAdministrador p1 = new PrincipalAdministrador();
@@ -222,13 +238,11 @@ public class LoginAdmin extends javax.swing.JFrame
             } catch (UnsupportedLookAndFeelException ex) {
                 Logger.getLogger(LoginAdmin.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
-        else 
-        {
+        } else {
             //javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             javax.swing.JOptionPane.showMessageDialog(this, "Intento de login con los datos:\nUsuario: " + ingresarUsuario.getText() + "\nContraseña: " + String.valueOf(ingresarContrasenia.getPassword()), "LOGIN", javax.swing.JOptionPane.INFORMATION_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_botonIniciarSesionMouseClicked
 
     private void ingresarUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingresarUsuarioMousePressed
@@ -282,13 +296,13 @@ public class LoginAdmin extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonIniciarSesion;
-    private javax.swing.JLabel fondoLogin;
     private javax.swing.JPasswordField ingresarContrasenia;
     private javax.swing.JTextField ingresarUsuario;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelContrasenia;
+    private javax.swing.JLabel labelFondoLogin;
     private javax.swing.JLabel labelIniciarSesion;
     private javax.swing.JLabel labelUsuario;
     private javax.swing.JLabel llave;

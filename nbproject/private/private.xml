@@ -3,8 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/geany/OneDrive/Documentos/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/LoginAdmin.java</file>
+            <file>file:/C:/Users/geany/OneDrive/Documentos/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/EmpleadoDao.java</file>
+            <file>file:/C:/Users/geany/OneDrive/Documentos/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ProveedorDao.java</file>
             <file>file:/C:/Users/geany/OneDrive/Documentos/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/BuscarProveedor.java</file>
-            <file>file:/C:/Users/geany/OneDrive/Documentos/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/AnadirProveedor.java</file>
             <file>file:/C:/Users/geany/OneDrive/Documentos/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalAdministrador.java</file>
         </group>
     </open-files>

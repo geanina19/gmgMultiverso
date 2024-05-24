@@ -466,6 +466,7 @@ private String getCorreoElectronico() {
 
     // Abrir el perfil del cliente y pasar el correo electrónico
     PerfilCliente pc = new PerfilCliente(correoElectronico);
+    
     pc.setVisible(true);
     this.dispose(); 
     }//GEN-LAST:event_jMenuItem1ActionPerformed

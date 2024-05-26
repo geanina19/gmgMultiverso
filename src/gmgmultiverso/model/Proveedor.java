@@ -28,6 +28,13 @@ public class Proveedor {
         this.email = email;
     }
     
+    //-----------Constructor sin el parámetro de ID-----------
+    public Proveedor(String nombre_empresa, int telefono, String email) {
+        this.nombre_empresa = nombre_empresa;
+        this.telefono = telefono;
+        this.email = email;
+    }
+
     //-----------id-----------
     public int getId() {
         return id;

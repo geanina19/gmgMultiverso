@@ -69,7 +69,7 @@ public class ProveedorDao {
     }
     
             
-    public boolean crearProveedor(Proveedor proveedor) {
+    public boolean anadirProveedor(Proveedor proveedor) {
         Connection conect = null;
     
         try {

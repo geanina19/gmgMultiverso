@@ -605,12 +605,13 @@ public class PantallaCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // Obtener el correo electrónico del cliente
+          // Obtener el correo electrónico del cliente
         String correoElectronico = getCorreoElectronico();
 
         // Abrir el perfil del cliente y pasar el correo electrónico
         PerfilCliente pc = new PerfilCliente(correoElectronico);
         pc.setVisible(true);
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

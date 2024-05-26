@@ -13,11 +13,13 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -29,7 +31,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class PrincipalAdministrador extends javax.swing.JFrame 
 {
 
-    private JLabel labelLogoPequenio;
+    
    
     /**
      * Creates new form PrincipalGmgMultiverso
@@ -78,7 +80,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
-        menugestion = new javax.swing.JMenu();
+        menuGestion = new javax.swing.JMenu();
         proveedores = new javax.swing.JMenu();
         itemBuscarProveedor = new javax.swing.JMenuItem();
         itemAnadirProveedor = new javax.swing.JMenuItem();
@@ -89,10 +91,11 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemBuscarProducto = new javax.swing.JMenuItem();
         itemAnadirProducto = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
         itemOscuro = new javax.swing.JMenuItem();
         itemClaro = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        itemMas = new javax.swing.JMenu();
         temaOp1 = new javax.swing.JMenuItem();
         temaOp2 = new javax.swing.JMenuItem();
         temaOp3 = new javax.swing.JMenuItem();
@@ -144,7 +147,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         jMenuBar1.add(menuArchivo);
 
-        menugestion.setText("Gestión");
+        menuGestion.setText("Gestión");
 
         proveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
         proveedores.setText("Proveedores");
@@ -160,9 +163,14 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         itemAnadirProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProveedor.setText("Añadir");
+        itemAnadirProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAnadirProveedorActionPerformed(evt);
+            }
+        });
         proveedores.add(itemAnadirProveedor);
 
-        menugestion.add(proveedores);
+        menuGestion.add(proveedores);
 
         empleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
         empleados.setText("Empleados");
@@ -175,7 +183,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemAnadirEmpleado.setText("Añadir");
         empleados.add(itemAnadirEmpleado);
 
-        menugestion.add(empleados);
+        menuGestion.add(empleados);
 
         productos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
         productos.setText("Productos");
@@ -188,11 +196,15 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemAnadirProducto.setText("Añadir");
         productos.add(itemAnadirProducto);
 
-        menugestion.add(productos);
+        menuGestion.add(productos);
 
-        jMenuBar1.add(menugestion);
+        jMenuBar1.add(menuGestion);
 
         menuAyuda.setText("Ayuda");
+
+        jMenuItem1.setText("jMenuItem1");
+        menuAyuda.add(jMenuItem1);
+
         jMenuBar1.add(menuAyuda);
 
         menuTema.setText("Tema");
@@ -215,8 +227,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         menuTema.add(itemClaro);
 
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gamaColores.png"))); // NOI18N
-        jMenu1.setText("Más ...");
+        itemMas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gamaColores.png"))); // NOI18N
+        itemMas.setText("Más ...");
 
         temaOp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzul.png"))); // NOI18N
         temaOp1.setText("Blanco - Azul Oscuro");
@@ -225,7 +237,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp1ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp1);
+        itemMas.add(temaOp1);
 
         temaOp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/oscuroAzulClaro.png"))); // NOI18N
         temaOp2.setText("Oscuro - Azul Claro");
@@ -234,7 +246,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp2ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp2);
+        itemMas.add(temaOp2);
 
         temaOp3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/oscuroMorado.png"))); // NOI18N
         temaOp3.setText("Oscuro - Morado ");
@@ -243,7 +255,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp3ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp3);
+        itemMas.add(temaOp3);
 
         temaOp4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grisNaranja.png"))); // NOI18N
         temaOp4.setText("Gris - Naranja");
@@ -252,7 +264,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp4ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp4);
+        itemMas.add(temaOp4);
 
         temaOp5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/contraste.png"))); // NOI18N
         temaOp5.setText("Contraste");
@@ -261,7 +273,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp5ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp5);
+        itemMas.add(temaOp5);
 
         temaOp6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzulClaro.png"))); // NOI18N
         temaOp6.setText("Blanco - Azul Claro");
@@ -270,7 +282,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp6ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp6);
+        itemMas.add(temaOp6);
 
         temaOp7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoNaranja.png"))); // NOI18N
         temaOp7.setText("Blanco - Naranja ");
@@ -279,7 +291,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp7ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp7);
+        itemMas.add(temaOp7);
 
         temaOp8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/verdeAzulado.png"))); // NOI18N
         temaOp8.setText("Verde Azulado ");
@@ -288,7 +300,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp8ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp8);
+        itemMas.add(temaOp8);
 
         temaOp9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoVerde.png"))); // NOI18N
         temaOp9.setText("Blanco - Verde ");
@@ -297,7 +309,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp9ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp9);
+        itemMas.add(temaOp9);
 
         temaOp10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grisAzulClaro.png"))); // NOI18N
         temaOp10.setText("Gris - Azul Claro ");
@@ -306,9 +318,9 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 temaOp10ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp10);
+        itemMas.add(temaOp10);
 
-        menuTema.add(jMenu1);
+        menuTema.add(itemMas);
 
         jMenuBar1.add(menuTema);
 
@@ -541,15 +553,11 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
     private void itemCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCerrarSesionMouseEntered
-        // TODO add your handling code here:
-        System.out.println("Mouse Entered");
-        //JMenuItem menuItem = (JMenuItem) evt.getSource();
-        itemCerrarSesion.setBackground(Color.RED);
-        itemCerrarSesion.setForeground(Color.WHITE);
+        
     }//GEN-LAST:event_itemCerrarSesionMouseEntered
 
     private void itemCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCerrarSesionMouseExited
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_itemCerrarSesionMouseExited
 
     private void menuPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPerfilMouseClicked
@@ -572,6 +580,39 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         revalidate();
         repaint();
     }//GEN-LAST:event_menuPerfilMouseClicked
+
+    private void itemAnadirProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnadirProveedorActionPerformed
+        // TODO add your handling code here:
+        
+        AnadirProveedor ap = new AnadirProveedor();
+        ap.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir ap ocupando todo el espacio disponible horizontalmente y verticalmente
+        panelPrincipal.removeAll();
+        panelPrincipal.setLayout(new GridBagLayout());
+
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints innerGbc = new GridBagConstraints();
+        innerGbc.gridx = 0;
+        innerGbc.gridy = 0;
+        innerGbc.anchor = GridBagConstraints.CENTER;
+        wrapperPanel.add(ap, innerGbc);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(wrapperPanel, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+
+    
+    }//GEN-LAST:event_itemAnadirProveedorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -619,16 +660,17 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemBuscarProveedor;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemClaro;
+    private javax.swing.JMenu itemMas;
     private javax.swing.JMenuItem itemOscuro;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
+    private javax.swing.JMenu menuGestion;
     private javax.swing.JMenu menuPerfil;
     private javax.swing.JMenu menuTema;
-    private javax.swing.JMenu menugestion;
     private javax.swing.JPanel panelPrincipal;
     private javax.swing.JMenu productos;
     private javax.swing.JMenu proveedores;

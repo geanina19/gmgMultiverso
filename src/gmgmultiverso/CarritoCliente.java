@@ -4,74 +4,123 @@
  */
 package gmgmultiverso;
 
+import static gmgmultiverso.model.Producto.getPrecioFromNombre;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 /**
  *
  * @author gema
  */
 public class CarritoCliente extends javax.swing.JFrame {
 
-private List<String> nombresProductosEnCarrito; // almacenar los nombres de los productos en el carrito
-private List<ImageIcon> imagenesProductosEnCarrito; // almacenar las imágenes de los productos en el carrito
-private int contadorCarrito = 0;
+    private List<String> nombresProductosEnCarrito; // almacenar los nombres de los productos en el carrito
+    private List<ImageIcon> imagenesProductosEnCarrito; // almacenar las imágenes de los productos en el carrito
 
     public CarritoCliente() {
         initComponents();
-        nombresProductosEnCarrito = new ArrayList<>(); 
+        nombresProductosEnCarrito = new ArrayList<>();
         imagenesProductosEnCarrito = new ArrayList<>();
         this.setLocationRelativeTo(null);
     }
 
-    // Método para agregar un producto al carrito
     public void agregarProductoAlCarrito(String nombreProducto, ImageIcon imagenProducto) {
         nombresProductosEnCarrito.add(nombreProducto);
         imagenesProductosEnCarrito.add(imagenProducto);
-        actualizarInterfazDeUsuario();
+        actualizarInterfazDeUsuario(); //Metodo que actualiza la interfaz
     }
-    
+
     private void actualizarInterfazDeUsuario() {
-    
-    name.setText(String.valueOf(contadorCarrito));
-    
-}
-    
- public void mostrarProducto(String nombreProducto, ImageIcon imagen, int cantidadProducto, double precioProducto) {
-    // Verificar si la imagen es null
-    if (imagen == null) {
-        // Si la imagen es null, no hacer nada y salir del método
-        return;
+        // primero limpio el panel antes de agregar los productos
+        panelProductos.removeAll();
+
+        // gridBagLayout para organizar los elementos en filas y columnas
+        panelProductos.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(10, 10, 10, 10); // Espacio entre los elementos
+
+        for (int i = 0; i < nombresProductosEnCarrito.size(); i++) {
+            String nombreProducto = nombresProductosEnCarrito.get(i);
+            ImageIcon imagenProducto = imagenesProductosEnCarrito.get(i);
+            double precioProducto = getPrecioFromNombre(nombreProducto);
+
+            // Mostrar la imagen del producto en un JLabel
+            JLabel imagenLabel = new JLabel();
+            ImageIcon imagenEscalada = new ImageIcon(imagenProducto.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+            imagenLabel.setIcon(imagenEscalada);
+            gbc.gridx = 0;
+            panelProductos.add(imagenLabel, gbc);
+
+            // Mostrar el nombre del producto en un JLabel
+            JLabel nombreLabel = new JLabel(nombreProducto);
+            gbc.gridx = 1;
+            gbc.insets = new Insets(10, 30, 5, 10); // Espacio entre el nombre y la imagen
+            panelProductos.add(nombreLabel, gbc);
+
+            // Mostrar la cantidad del producto en un JComboBox
+            JComboBox<String> cantidadComboBox = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
+            gbc.gridx = 2;
+            gbc.insets = new Insets(10, 10, 5, 10); // Espacio entre la cantidad y el nombre
+            panelProductos.add(cantidadComboBox, gbc);
+
+            // Mostrar el precio del producto en un JLabel
+            JLabel precioLabel = new JLabel(String.valueOf(precioProducto));
+            gbc.gridx = 3;
+            gbc.insets = new Insets(10, 10, 10, 10); 
+            panelProductos.add(precioLabel, gbc);
+        }
+
+        // Actualizar la interfaz
+        revalidate();
+        repaint();
     }
 
-    // Mostrar el nombre del producto
-    name.setText(nombreProducto);
+    public void mostrarProducto(String nombreProducto, ImageIcon imagen, int cantidadProducto, double precioProducto) {
+        // Verificar si la imagen es null
+        if (imagen == null) {
+            return;
+        }
 
-    // Mostrar la imagen del producto
-    ImageIcon imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(190, 190, Image.SCALE_SMOOTH));
-    jLabel2.setIcon(imagenEscalada);
+        // Mostrar el nombre del producto
+        name.setText(nombreProducto);
 
-    cantidad.removeAllItems();
+        // Mostrar la imagen del producto
+        ImageIcon imagenEscalada = new ImageIcon(imagen.getImage().getScaledInstance(190, 190, Image.SCALE_SMOOTH));
+        jLabel2.setIcon(imagenEscalada);
 
-    // Agregar opciones del 1 al 5 al JComboBox
-    for (int i = 1; i <= 5; i++) {
-        cantidad.addItem(String.valueOf(i));
+        cantidad.removeAllItems();
+
+        // opciones del 1 al 5 al JComboBox
+        for (int i = 1; i <= 5; i++) {
+            cantidad.addItem(String.valueOf(i));
+        }
+
+        if (cantidadProducto > 5) {
+            cantidad.setEditable(true);
+            cantidad.setSelectedItem(String.valueOf(cantidadProducto)); // Seleccionar la cantidad actual por defecto
+        } else {
+            cantidad.setEditable(false);
+            cantidad.setSelectedItem("1");
+        }
+
+        precio.setText(String.valueOf(precioProducto));
     }
-
-    if (cantidadProducto > 5) {
-        cantidad.setEditable(true);
-        cantidad.setSelectedItem(String.valueOf(cantidadProducto)); // Seleccionar la cantidad actual por defecto
-    } else {
-        cantidad.setEditable(false);
-        cantidad.setSelectedItem("1"); 
-    }
-
-    precio.setText(String.valueOf(precioProducto));
-}
-
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,8 +131,7 @@ private int contadorCarrito = 0;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        panelProductos = new javax.swing.JPanel();
         cantidad = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         precio = new javax.swing.JLabel();
@@ -91,13 +139,65 @@ private int contadorCarrito = 0;
         name = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Carrito Cliente");
 
-        jPanel1.setBackground(new java.awt.Color(255, 221, 129));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel3.setText("Cantidad");
+
+        precio.setText("jLabel5");
+
+        jLabel4.setText("Precio");
+
+        name.setText("jLabel5");
+
+        jLabel1.setText("Nombre");
+
+        javax.swing.GroupLayout panelProductosLayout = new javax.swing.GroupLayout(panelProductos);
+        panelProductos.setLayout(panelProductosLayout);
+        panelProductosLayout.setHorizontalGroup(
+            panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProductosLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
+                .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(precio, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelProductosLayout.setVerticalGroup(
+            panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProductosLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelProductosLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelProductosLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(24, 24, 24)
+                                .addComponent(name))
+                            .addGroup(panelProductosLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(24, 24, 24)
+                                .addComponent(cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelProductosLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(24, 24, 24)
+                                .addComponent(precio)))))
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
 
         jButton1.setText("continuar con el pago");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,55 +205,35 @@ private int contadorCarrito = 0;
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 250, -1, -1));
-
-        jPanel1.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 100, 80, -1));
-
-        jLabel3.setText("Cantidad");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, 58, -1));
-
-        precio.setText("jLabel5");
-        jPanel1.add(precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 100, 54, -1));
-
-        jLabel4.setText("Precio");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, 37, -1));
-
-        name.setText("jLabel5");
-        jPanel1.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 100, 57, -1));
-
-        jLabel1.setText("Nombre");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 57, -1));
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 190, 199));
-
-        jButton2.setText("seguir viendo");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, 150, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 529, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(14, 14, 14))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(panelProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(jButton1)
+                .addGap(0, 21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //boton de confirmar
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,13 +274,12 @@ private int contadorCarrito = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cantidad;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel name;
+    private javax.swing.JPanel panelProductos;
     private javax.swing.JLabel precio;
     // End of variables declaration//GEN-END:variables
 }

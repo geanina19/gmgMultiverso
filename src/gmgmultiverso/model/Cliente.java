@@ -17,12 +17,12 @@ public class Cliente {
     private String direccion;
     private int telefono;
     private String email;
-    
+
     // Constructor vacío
     public Cliente() {
-        // Aquí se podría inicializar los atributos si es necesario
+        // Inicializar los atributos si es necesario
     }
-    
+
     // Constructor con todos los parámetros
     public Cliente(String nombre, String apellido, String contrasenia, String direccion, int telefono, String email) {
         this.nombre = nombre;
@@ -32,9 +32,8 @@ public class Cliente {
         this.telefono = telefono;
         this.email = email;
     }
-    
+
     // Getters y setters
-    
     public int getId() {
         return id;
     }
@@ -90,11 +89,11 @@ public class Cliente {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     @Override
     public String toString(){
-        return "Proveedor{" + "id" + id + "nombre='" + nombre + '\'' + ", apellido='" + apellido + '\'' + 
+        return "Cliente{" + "id=" + id + ", nombre='" + nombre + '\'' + ", apellido='" + apellido + '\'' + 
                 ", contrasenia='" + contrasenia + '\'' + ", direccion='" + direccion + '\'' + 
-                ", telefono='" + telefono + '\'' + ", email='" + email + '}';
+                ", telefono=" + telefono + ", email='" + email + '\'' + '}';
     }
 }

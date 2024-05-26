@@ -64,4 +64,22 @@ public class Producto {
     public String toString() {
         return "Producto{" + "id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", unidad_existente=" + unidad_existente + '}';
     }    
+     // Método para obtener el precio de un producto dado su nombre
+    public static double getPrecioFromNombre(String nombreProducto) {
+        switch(nombreProducto) {
+            case "Hamburguesa":
+            case "Hamburguesa Vegana":
+                return 5.99;
+            case "Pizza":
+                return 7.99;
+            case "Pasta":
+                return 6.99;
+            case "Arroz":
+                return 4.99;
+            case "Tostadas":
+                return 3.99;
+            default:
+                return 0.0; 
+        }
+    }
 }

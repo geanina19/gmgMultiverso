@@ -152,6 +152,11 @@ public class LoginAdmin extends javax.swing.JFrame
                 botonIniciarSesionMouseClicked(evt);
             }
         });
+        botonIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonIniciarSesionActionPerformed(evt);
+            }
+        });
         jPanel1.add(botonIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, -1, 30));
 
         userIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/user.png"))); // NOI18N
@@ -243,6 +248,10 @@ public class LoginAdmin extends javax.swing.JFrame
         }
 
     }//GEN-LAST:event_ingresarUsuarioMousePressed
+
+    private void botonIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarSesionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonIniciarSesionActionPerformed
 
     /**
      * @param args the command line arguments

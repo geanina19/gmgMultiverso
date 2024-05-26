@@ -160,4 +160,32 @@ public class EmpleadoDao {
         }
     }
     
+    /* ------------Metodo para validar credenciales ----------------------*/
+    public boolean verificarCredenciales(String usuario, String contrasenia) {
+        Connection conect = null;
+        String query = "SELECT * FROM empleado WHERE email = ? AND contrasenia = ?";
+        
+        try {
+            conect = con.abrirConexion();
+                      
+            PreparedStatement stmt = conect.prepareStatement(query);
+            stmt.setString(1, usuario);
+            stmt.setString(2, contrasenia);
+            var rs = stmt.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
 }

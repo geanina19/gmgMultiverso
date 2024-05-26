@@ -34,7 +34,9 @@ public class PedidoDao {
             while (rs.next()) {
                 Pedido pedido = new Pedido(
                         rs.getInt("id"),
+                        rs.getInt("id_cliente"),
                         rs.getDate("fecha_pedido"),
+                        rs.getInt("id_empleado"),
                         rs.getInt("estado"),
                         rs.getDate("ultima_actualizacion")
                 );

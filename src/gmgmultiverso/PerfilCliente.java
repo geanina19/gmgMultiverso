@@ -27,23 +27,22 @@ public class PerfilCliente extends javax.swing.JFrame {
         initComponents();
         ManagerConexion con = new ManagerConexion();
         clienteDao = new ClienteDao(con);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
        
     }
 
     // Constructor con argumento de correo electrónico
-    public PerfilCliente(String correoElectronico) {
+     public PerfilCliente(String correoElectronico) {
         initComponents();
         this.correoElectronico = correoElectronico;
         ManagerConexion con = new ManagerConexion();
         clienteDao = new ClienteDao(con);
         mostrarDatosCliente(correoElectronico);
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); 
-     
+        this.setLocationRelativeTo(null);
     }
 
-    private void mostrarDatosCliente(String correoElectronico) {
+
+     private void mostrarDatosCliente(String correoElectronico) {
         String[] datosCliente = clienteDao.obtenerDatosCliente(correoElectronico);
 
         if (datosCliente != null) {
@@ -52,12 +51,12 @@ public class PerfilCliente extends javax.swing.JFrame {
             mail.setText(correoElectronico);
             direc.setText(datosCliente[2]);
             phone.setText(datosCliente[3]);
+            username.setText(datosCliente[0]);  // Mostrar el nombre de usuario
         } else {
             // Si no se encuentran datos del cliente, muestra un mensaje de error
             JOptionPane.showMessageDialog(this, "No se pudo obtener la información del cliente", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
    
 
     /**
@@ -81,90 +80,54 @@ public class PerfilCliente extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         phone = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jLabel7 = new javax.swing.JLabel();
+        username = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Perfil del Cliente");
 
-        jPanel1.setBackground(new java.awt.Color(255, 221, 129));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Nombre");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 90, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 90, -1));
 
         name.setText("jLabel3");
-        jPanel1.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, -1, -1));
+        jPanel1.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, -1, -1));
 
         jLabel3.setText("Apellido");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 60, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 60, -1));
 
         surname.setText("jLabel4");
-        jPanel1.add(surname, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, -1, -1));
+        jPanel1.add(surname, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 170, -1, -1));
 
         jLabel4.setText("Email");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, -1, -1));
 
         mail.setText("jLabel5");
-        jPanel1.add(mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, 240, -1));
+        jPanel1.add(mail, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 230, 240, -1));
 
         jLabel5.setText("Dirección");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 20, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1, -1));
 
         direc.setText("jLabel6");
-        jPanel1.add(direc, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, 110, -1));
+        jPanel1.add(direc, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 110, -1));
 
         jLabel6.setText("Teléfono");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 140, -1, -1));
 
         phone.setText("jLabel7");
-        jPanel1.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, 130, -1));
+        jPanel1.add(phone, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, 130, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/user.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, 100));
 
-        jMenu1.setText("Productos");
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel7.setText("Hola,");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 50, -1));
 
-        jMenuItem1.setText("Ver productos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Ayuda");
-
-        jMenuItem2.setText("contáctanos");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Perfil");
-
-        jMenuItem3.setText("Ver perfil");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem3);
-
-        jMenuBar1.add(jMenu3);
-
-        setJMenuBar(jMenuBar1);
+        username.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        username.setText("nombre_usuario");
+        jPanel1.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 20, 180, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -174,27 +137,11 @@ public class PerfilCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        PantallaCliente pc = new PantallaCliente();
-        pc.setVisible(true);
-        this.dispose(); 
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-     AyudaCliente ac = new AyudaCliente();
-       ac.setVisible(true);
-       this.dispose(); 
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,17 +186,12 @@ public class PerfilCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel mail;
     private javax.swing.JLabel name;
     private javax.swing.JLabel phone;
     private javax.swing.JLabel surname;
+    private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

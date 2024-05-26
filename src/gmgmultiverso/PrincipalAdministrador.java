@@ -11,10 +11,15 @@ import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -26,6 +31,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class PrincipalAdministrador extends javax.swing.JFrame 
 {
 
+    
+   
     /**
      * Creates new form PrincipalGmgMultiverso
      */
@@ -46,14 +53,18 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(labelLogo, gbc);
         
+        
     }
     
     //------Cambiar Logo dependiendo del tema
-    public void updateLogo(String theme) {
+    public void updateLogoGrande(String theme) {
         String logoPath = theme.equals("oscuro") ? "/imagenes/logoBlanco.png" : "/imagenes/logoGrande.png";
         labelLogo.setIcon(new ImageIcon(getClass().getResource(logoPath)));
+        
     }
-
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,7 +79,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         labelLogo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
-        menugestion = new javax.swing.JMenu();
+        itemCerrarSesion = new javax.swing.JMenuItem();
+        menuGestion = new javax.swing.JMenu();
         proveedores = new javax.swing.JMenu();
         itemBuscarProveedor = new javax.swing.JMenuItem();
         itemAnadirProveedor = new javax.swing.JMenuItem();
@@ -79,10 +91,11 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemBuscarProducto = new javax.swing.JMenuItem();
         itemAnadirProducto = new javax.swing.JMenuItem();
         menuAyuda = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
         itemOscuro = new javax.swing.JMenuItem();
         itemClaro = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        itemMas = new javax.swing.JMenu();
         temaOp1 = new javax.swing.JMenuItem();
         temaOp2 = new javax.swing.JMenuItem();
         temaOp3 = new javax.swing.JMenuItem();
@@ -113,13 +126,33 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         panelPrincipal.add(labelLogo, gridBagConstraints);
 
         menuArchivo.setText("Archivo");
+
+        itemCerrarSesion.setForeground(new java.awt.Color(255, 0, 0));
+        itemCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/x(roja).png"))); // NOI18N
+        itemCerrarSesion.setText("Cerrar sesión");
+        itemCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                itemCerrarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                itemCerrarSesionMouseExited(evt);
+            }
+        });
+        itemCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCerrarSesionActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(itemCerrarSesion);
+
         jMenuBar1.add(menuArchivo);
 
-        menugestion.setText("Gestión");
+        menuGestion.setText("Gestión");
 
         proveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
         proveedores.setText("Proveedores");
 
+        itemBuscarProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarProveedor.setText("Buscar");
         itemBuscarProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,36 +161,50 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         proveedores.add(itemBuscarProveedor);
 
+        itemAnadirProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProveedor.setText("Añadir");
+        itemAnadirProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAnadirProveedorActionPerformed(evt);
+            }
+        });
         proveedores.add(itemAnadirProveedor);
 
-        menugestion.add(proveedores);
+        menuGestion.add(proveedores);
 
         empleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
         empleados.setText("Empleados");
 
+        itemBuscarEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarEmpleado.setText("Buscar");
         empleados.add(itemBuscarEmpleado);
 
+        itemAnadirEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirEmpleado.setText("Añadir");
         empleados.add(itemAnadirEmpleado);
 
-        menugestion.add(empleados);
+        menuGestion.add(empleados);
 
         productos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
         productos.setText("Productos");
 
+        itemBuscarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarProducto.setText("Buscar");
         productos.add(itemBuscarProducto);
 
+        itemAnadirProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProducto.setText("Añadir");
         productos.add(itemAnadirProducto);
 
-        menugestion.add(productos);
+        menuGestion.add(productos);
 
-        jMenuBar1.add(menugestion);
+        jMenuBar1.add(menuGestion);
 
         menuAyuda.setText("Ayuda");
+
+        jMenuItem1.setText("jMenuItem1");
+        menuAyuda.add(jMenuItem1);
+
         jMenuBar1.add(menuAyuda);
 
         menuTema.setText("Tema");
@@ -180,95 +227,109 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         menuTema.add(itemClaro);
 
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gamaColores.png"))); // NOI18N
-        jMenu1.setText("Más ...");
+        itemMas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gamaColores.png"))); // NOI18N
+        itemMas.setText("Más ...");
 
-        temaOp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blacoAzul.png"))); // NOI18N
+        temaOp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzul.png"))); // NOI18N
         temaOp1.setText("Blanco - Azul Oscuro");
         temaOp1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp1ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp1);
+        itemMas.add(temaOp1);
 
-        temaOp2.setText("Oscuro Claro - Azul Claro");
+        temaOp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/oscuroAzulClaro.png"))); // NOI18N
+        temaOp2.setText("Oscuro - Azul Claro");
         temaOp2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp2ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp2);
+        itemMas.add(temaOp2);
 
+        temaOp3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/oscuroMorado.png"))); // NOI18N
         temaOp3.setText("Oscuro - Morado ");
         temaOp3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp3ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp3);
+        itemMas.add(temaOp3);
 
+        temaOp4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grisNaranja.png"))); // NOI18N
         temaOp4.setText("Gris - Naranja");
         temaOp4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp4ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp4);
+        itemMas.add(temaOp4);
 
+        temaOp5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/contraste.png"))); // NOI18N
         temaOp5.setText("Contraste");
         temaOp5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp5ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp5);
+        itemMas.add(temaOp5);
 
+        temaOp6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzulClaro.png"))); // NOI18N
         temaOp6.setText("Blanco - Azul Claro");
         temaOp6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp6ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp6);
+        itemMas.add(temaOp6);
 
+        temaOp7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoNaranja.png"))); // NOI18N
         temaOp7.setText("Blanco - Naranja ");
         temaOp7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp7ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp7);
+        itemMas.add(temaOp7);
 
+        temaOp8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/verdeAzulado.png"))); // NOI18N
         temaOp8.setText("Verde Azulado ");
         temaOp8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp8ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp8);
+        itemMas.add(temaOp8);
 
+        temaOp9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoVerde.png"))); // NOI18N
         temaOp9.setText("Blanco - Verde ");
         temaOp9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp9ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp9);
+        itemMas.add(temaOp9);
 
+        temaOp10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grisAzulClaro.png"))); // NOI18N
         temaOp10.setText("Gris - Azul Claro ");
         temaOp10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 temaOp10ActionPerformed(evt);
             }
         });
-        jMenu1.add(temaOp10);
+        itemMas.add(temaOp10);
 
-        menuTema.add(jMenu1);
+        menuTema.add(itemMas);
 
         jMenuBar1.add(menuTema);
 
         menuPerfil.setText("Perfil");
+        menuPerfil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuPerfilMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(menuPerfil);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/planeta.png"))); // NOI18N
@@ -289,7 +350,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -302,7 +363,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("blanco");
+            updateLogoGrande("blanco");
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -314,7 +375,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatArcDarkIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro");
+            updateLogoGrande("oscuro");
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -326,7 +387,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatArcIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("blanco"); // Cambia el logo al negro
+            updateLogoGrande("blanco"); // Cambia el logo al negro
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -338,7 +399,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatCarbonIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro"); // Cambia el logo al blanco
+            updateLogoGrande("oscuro"); // Cambia el logo al blanco
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -350,7 +411,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatDarkPurpleIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro"); // Cambia el logo al blanco
+            updateLogoGrande("oscuro"); // Cambia el logo al blanco
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -362,7 +423,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatHiberbeeDarkIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro"); // Cambia el logo al blanco
+            updateLogoGrande("oscuro"); // Cambia el logo al blanco
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -374,7 +435,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatHighContrastIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro"); // Cambia el logo al blanco
+            updateLogoGrande("oscuro"); // Cambia el logo al blanco
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -386,7 +447,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatLightFlatIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("blanco"); // Cambia el logo al oscuro
+            updateLogoGrande("blanco"); // Cambia el logo al oscuro
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -398,7 +459,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("blanco"); // Cambia el logo al oscuro
+            updateLogoGrande("blanco"); // Cambia el logo al oscuro
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -410,7 +471,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatSolarizedDarkContrastIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro"); // Cambia el logo al blanco
+            updateLogoGrande("oscuro"); // Cambia el logo al blanco
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -422,7 +483,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatMaterialLighterIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("blanco"); // Cambia el logo al oscuro
+            updateLogoGrande("blanco"); // Cambia el logo al oscuro
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -434,7 +495,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             UIManager.setLookAndFeel(new FlatDraculaContrastIJTheme());
             UIManager.put("TextComponent.arc", 100);
             SwingUtilities.updateComponentTreeUI(this);
-            updateLogo("oscuro"); // Cambia el logo al blanco
+            updateLogoGrande("oscuro"); // Cambia el logo al blanco
         } catch (UnsupportedLookAndFeelException ex) {
             ex.printStackTrace();
         }
@@ -443,7 +504,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private void itemBuscarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBuscarProveedorActionPerformed
         // TODO add your handling code here:
         /*
-        PrincipalBuscarProveedor pbp = new PrincipalBuscarProveedor();
+        BuscarProveedor pbp = new BuscarProveedor();
         pbp.setSize(1091,642);
         pbp.setLocation(0,0);
         
@@ -456,13 +517,13 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         
         panelPrincipal.removeAll();
         panelPrincipal.setLayout(new BorderLayout()); // Usar BorderLayout para centrar el panel
-        PrincipalBuscarProveedor principalBuscarProveedor = new PrincipalBuscarProveedor();
+        BuscarProveedor principalBuscarProveedor = new BuscarProveedor();
         panelPrincipal.add(principalBuscarProveedor, BorderLayout.CENTER); // Añadir el panel al centro
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
         */
 
-        PrincipalBuscarProveedor pbp = new PrincipalBuscarProveedor();
+        BuscarProveedor pbp = new BuscarProveedor();
         pbp.setSize(panelPrincipal.getSize());
 
         // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
@@ -472,7 +533,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
-        gbc.weighty = 0.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
         gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
         gbc.anchor = GridBagConstraints.CENTER;
 
@@ -481,6 +542,77 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         repaint();
 
     }//GEN-LAST:event_itemBuscarProveedorActionPerformed
+
+    private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        
+        this.dispose();
+        
+        LoginAdmin loginAdmin = new LoginAdmin();
+        loginAdmin.setVisible(true);
+    }//GEN-LAST:event_itemCerrarSesionActionPerformed
+
+    private void itemCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCerrarSesionMouseEntered
+        
+    }//GEN-LAST:event_itemCerrarSesionMouseEntered
+
+    private void itemCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_itemCerrarSesionMouseExited
+        
+    }//GEN-LAST:event_itemCerrarSesionMouseExited
+
+    private void menuPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPerfilMouseClicked
+        // TODO add your handling code here:
+        PerfilAdministrador pa = new PerfilAdministrador();
+        pa.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(pa, gbc);
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_menuPerfilMouseClicked
+
+    private void itemAnadirProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnadirProveedorActionPerformed
+        // TODO add your handling code here:
+        
+        AnadirProveedor ap = new AnadirProveedor();
+        ap.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir ap ocupando todo el espacio disponible horizontalmente y verticalmente
+        panelPrincipal.removeAll();
+        panelPrincipal.setLayout(new GridBagLayout());
+
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints innerGbc = new GridBagConstraints();
+        innerGbc.gridx = 0;
+        innerGbc.gridy = 0;
+        innerGbc.anchor = GridBagConstraints.CENTER;
+        wrapperPanel.add(ap, innerGbc);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(wrapperPanel, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+
+    
+    }//GEN-LAST:event_itemAnadirProveedorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -526,17 +658,19 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemBuscarEmpleado;
     private javax.swing.JMenuItem itemBuscarProducto;
     private javax.swing.JMenuItem itemBuscarProveedor;
+    private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemClaro;
+    private javax.swing.JMenu itemMas;
     private javax.swing.JMenuItem itemOscuro;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
+    private javax.swing.JMenu menuGestion;
     private javax.swing.JMenu menuPerfil;
     private javax.swing.JMenu menuTema;
-    private javax.swing.JMenu menugestion;
     private javax.swing.JPanel panelPrincipal;
     private javax.swing.JMenu productos;
     private javax.swing.JMenu proveedores;

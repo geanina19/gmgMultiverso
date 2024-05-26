@@ -8,8 +8,26 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Archivo"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="itemCerrarSesion">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/imagenes/x(roja).png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Cerrar sesi&#xf3;n"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="itemCerrarSesionMouseEntered"/>
+                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="itemCerrarSesionMouseExited"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemCerrarSesionActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="menugestion">
+        <Menu class="javax.swing.JMenu" name="menuGestion">
           <Properties>
             <Property name="text" type="java.lang.String" value="Gesti&#xf3;n"/>
           </Properties>
@@ -24,6 +42,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="itemBuscarProveedor">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/lupa.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Buscar"/>
                   </Properties>
                   <Events>
@@ -32,8 +53,14 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="itemAnadirProveedor">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/signoMas.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemAnadirProveedorActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -47,11 +74,17 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="itemBuscarEmpleado">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/lupa.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Buscar"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="itemAnadirEmpleado">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/signoMas.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
                   </Properties>
                 </MenuItem>
@@ -67,11 +100,17 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="itemBuscarProducto">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/lupa.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Buscar"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="itemAnadirProducto">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/signoMas.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="A&#xf1;adir"/>
                   </Properties>
                 </MenuItem>
@@ -83,6 +122,13 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Ayuda"/>
           </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="menuTema">
           <Properties>
@@ -111,7 +157,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemClaroActionPerformed"/>
               </Events>
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="jMenu1">
+            <Menu class="javax.swing.JMenu" name="itemMas">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/imagenes/gamaColores.png"/>
@@ -122,7 +168,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp1">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/imagenes/blacoAzul.png"/>
+                      <Image iconType="3" name="/imagenes/blancoAzul.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Blanco - Azul Oscuro"/>
                   </Properties>
@@ -132,7 +178,10 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp2">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Oscuro Claro - Azul Claro"/>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/oscuroAzulClaro.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Oscuro - Azul Claro"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="temaOp2ActionPerformed"/>
@@ -140,6 +189,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp3">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/oscuroMorado.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Oscuro - Morado "/>
                   </Properties>
                   <Events>
@@ -148,6 +200,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp4">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/grisNaranja.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Gris - Naranja"/>
                   </Properties>
                   <Events>
@@ -156,6 +211,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp5">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/contraste.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Contraste"/>
                   </Properties>
                   <Events>
@@ -164,6 +222,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp6">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/blancoAzulClaro.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Blanco - Azul Claro"/>
                   </Properties>
                   <Events>
@@ -172,6 +233,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp7">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/blancoNaranja.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Blanco - Naranja "/>
                   </Properties>
                   <Events>
@@ -180,6 +244,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp8">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/verdeAzulado.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Verde Azulado "/>
                   </Properties>
                   <Events>
@@ -188,6 +255,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp9">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/blancoVerde.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Blanco - Verde "/>
                   </Properties>
                   <Events>
@@ -196,6 +266,9 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="temaOp10">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/grisAzulClaro.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Gris - Azul Claro "/>
                   </Properties>
                   <Events>
@@ -210,6 +283,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Perfil"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="menuPerfilMouseClicked"/>
+          </Events>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
@@ -259,7 +335,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelPrincipal" max="32767" attributes="0"/>
+              <Component id="panelPrincipal" pref="669" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>

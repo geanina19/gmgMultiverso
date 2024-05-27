@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
-
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
@@ -22,22 +21,24 @@ import java.awt.event.ContainerListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author geanina.foanta
  */
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
 
 public class LoginAdmin extends javax.swing.JFrame {
 
+    private String nombreUsuario;
+    
     //private ManagerConexion con;
     //int xMouse, yMouse;
     /**
@@ -78,8 +79,8 @@ public class LoginAdmin extends javax.swing.JFrame {
             }
         });
     }
-
-    private boolean validarCredenciales(String usuario, String contrasenia) {
+    
+    public boolean validarCredenciales(String usuario, String contrasenia) {
         Connection conect;
         ManagerConexion con = new ManagerConexion();
 
@@ -94,8 +95,12 @@ public class LoginAdmin extends javax.swing.JFrame {
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
                         String nombreEmpleado = resultSet.getString("nombre");
-                        if (nombreEmpleado.equals("Admin")) {
+                        if (nombreEmpleado.equals("Admin") ||
+                            nombreEmpleado.equals("Gema") ||
+                            nombreEmpleado.equals("Monica") ||
+                            nombreEmpleado.equals("Geanina")) {
                             // Si el usuario es Admin y la contraseña es correcta, permitir el inicio de sesión
+                            
                             return true;
                         }
                     }
@@ -236,7 +241,7 @@ public class LoginAdmin extends javax.swing.JFrame {
 
                 UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
                 UIManager.put("TextComponent.arc", 100);
-                PrincipalAdministrador p1 = new PrincipalAdministrador();
+                PrincipalAdministrador p1 = new PrincipalAdministrador(usuario);
                 SwingUtilities.updateComponentTreeUI(p1);
                 p1.setVisible(true);
                 this.dispose(); // Cerrar la ventana de login

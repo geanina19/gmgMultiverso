@@ -31,14 +31,21 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class PrincipalAdministrador extends javax.swing.JFrame 
 {
 
-    
+    private String nombreUsuario;
    
     /**
      * Creates new form PrincipalGmgMultiverso
      */
+    
     public PrincipalAdministrador() 
     {
+        
+    }
+    
+    public PrincipalAdministrador(String nombreUsuario) 
+    {
         initComponents();
+        this.nombreUsuario = nombreUsuario;
         this.setSize(1326, 670);
         
         //La pantalla se abra en el centro
@@ -53,7 +60,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(labelLogo, gbc);
         
-        
+        itemCerrarSesion.setText("Cerrar sesión de " + nombreUsuario);
     }
     
     //------Cambiar Logo dependiendo del tema
@@ -341,7 +348,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -562,7 +569,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
     private void menuPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPerfilMouseClicked
         // TODO add your handling code here:
-        PerfilAdministrador pa = new PerfilAdministrador();
+        PerfilAdministrador pa = new PerfilAdministrador(nombreUsuario);
         pa.setSize(panelPrincipal.getSize());
 
         // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente

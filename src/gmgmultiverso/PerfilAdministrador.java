@@ -9,8 +9,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,12 +40,16 @@ public class PerfilAdministrador extends javax.swing.JPanel {
     
     private boolean cambiosRealizados = false;
     
+    private String nombreUsuario;
+    
     /**
      * Creates new form PerfilAdministrador
      */
-    public PerfilAdministrador() {
+    public PerfilAdministrador(String nombreUsuario) {
         initComponents();
+        this.nombreUsuario = nombreUsuario;
         this.setSize(1091, 642);
+        cargarDatos();
         
         textFieldWeb.addMouseListener(new MouseAdapter() {
             @Override
@@ -73,9 +79,6 @@ public class PerfilAdministrador extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
-    //------Para detectar si ha habido cambios
-    
     
     
     //-------getters y setters
@@ -136,14 +139,69 @@ public class PerfilAdministrador extends javax.swing.JPanel {
     
     //----------Para guardar cambios
     
+    public void cargarDatos() {
+        File archivo = new File("src/archivosGenerados/configPerfilAdmin.txt");
+        if (!archivo.exists()) {
+            return; // Si el archivo no existe, no hacer nada
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            StringBuilder ultimoCambio = new StringBuilder();
+            String separador = "------------------";
+
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.equals(separador)) {
+                    procesarCambios(ultimoCambio.toString());
+                    ultimoCambio.setLength(0);
+                } else {
+                    ultimoCambio.append(linea).append("\n");
+                }
+            }
+            if (ultimoCambio.length() > 0) {
+                procesarCambios(ultimoCambio.toString());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los cambios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void procesarCambios(String cambios) {
+        String[] lines = cambios.split("\n");
+        for (String line : lines) {
+            if (line.contains("=")) {
+                String[] parts = line.split(" = ", 2);
+                switch (parts[0]) {
+                    case "nombreEmpresa":
+                        setNombreEmpresa(parts[1]);
+                        break;
+                    case "correo":
+                        setCorreo(parts[1]);
+                        break;
+                    case "web":
+                        setWeb(parts[1]);
+                        break;
+                    case "telefono":
+                        setTelefono(parts[1]);
+                        break;
+                    case "direccion":
+                        setDireccion(parts[1]);
+                        break;
+                    case "instagram":
+                        setInstagram(parts[1]);
+                        break;
+                }
+            }
+        }
+    }
+
     public void guardarCambios() {
         String camposVacios = camposVacios();
         if (camposVacios.isEmpty()) {
             try {
-                // Obtener la ruta del directorio del proyecto
                 File archivo = new File("src/archivosGenerados/configPerfilAdmin.txt");
 
-                // Crear el directorio y archivo si no existen
                 if (!archivo.getParentFile().exists()) {
                     archivo.getParentFile().mkdirs();
                 }
@@ -151,11 +209,12 @@ public class PerfilAdministrador extends javax.swing.JPanel {
                     archivo.createNewFile();
                 }
 
-                // Escribir los datos en el archivo junto con la fecha y la hora
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date date = new Date();
+
                 try (FileWriter writer = new FileWriter(archivo, true)) {
                     writer.write("Fecha y hora del cambio: " + dateFormat.format(date) + "\n");
+                    writer.write("Usuario que hizo el cambio: " + nombreUsuario + "\n");
                     writer.write("nombreEmpresa = " + getNombreEmpresa() + "\n");
                     writer.write("correo = " + getCorreo() + "\n");
                     writer.write("web = " + getWeb() + "\n");
@@ -166,9 +225,9 @@ public class PerfilAdministrador extends javax.swing.JPanel {
                     writer.write("------------------\n");
                     writer.write("\n");
                 }
+
                 JOptionPane.showMessageDialog(this, "Cambios guardados correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 cambiosRealizados = false;
-                
             } catch (IOException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -199,9 +258,7 @@ public class PerfilAdministrador extends javax.swing.JPanel {
             camposVacios.append("- Instagram\n");
         }
         return camposVacios.toString();
-        
     }
-
 
 
     /**

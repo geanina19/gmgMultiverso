@@ -11,6 +11,8 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,17 +25,22 @@ public class PrincipalCliente extends javax.swing.JFrame {
 
     private final ClienteDao clienteDao;
 
-
     public PrincipalCliente() {
         initComponents();
         clienteDao = new ClienteDao(new ManagerConexion());
         this.setLocationRelativeTo(null);
 
-     
+        //boton
+        pass.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    botonActionPerformed(null); // Llama al método del botón "Iniciar sesión"
+                }
+            }
+        });
     }
-    
 
-  
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,6 +67,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Iniciar Sesión Cliente");
+        setResizable(false);
 
         background.setBackground(new java.awt.Color(255, 255, 255));
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -91,7 +99,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
             }
         });
 
-        boton.setText("inicia sesión");
+        boton.setText("Inicia sesión");
         boton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonActionPerformed(evt);
@@ -156,16 +164,18 @@ public class PrincipalCliente extends javax.swing.JFrame {
     private void boton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton6ActionPerformed
         CuentaCliente cc = new CuentaCliente();
         cc.setVisible(true);
+        this.dispose();  // Cierra la ventana actual
+
     }//GEN-LAST:event_boton6ActionPerformed
 
     private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed
- String correo = email.getText();
+        String correo = email.getText();
         String contrasena = new String(pass.getPassword());
 
         // Verificar credenciales
         if (clienteDao.verificarCredenciales(correo, contrasena)) {
             // Crear una instancia de PantallaCliente y pasar el correo electrónico como argumento
-          PantallaCliente pantallaCliente = new PantallaCliente();
+            PantallaCliente pantallaCliente = new PantallaCliente();
             pantallaCliente.setCorreoElectronico(correo);
             pantallaCliente.setVisible(true);
             this.dispose();

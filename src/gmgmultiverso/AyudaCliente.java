@@ -4,6 +4,11 @@
  */
 package gmgmultiverso;
 
+import java.awt.Desktop;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
+
 /**
  *
  * @author gema
@@ -16,8 +21,22 @@ public class AyudaCliente extends javax.swing.JFrame {
     public AyudaCliente() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
+         textFieldWeb.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                abrirPagina("https://gmgmultiverso.wordpress.com/");
+            }
+        });
     }
 
+     public void abrirPagina(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,135 +47,125 @@ public class AyudaCliente extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        textFieldWeb = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        textFieldCorreo = new javax.swing.JTextField();
+        textFieldInstagram = new javax.swing.JTextField();
+        textFieldDireccion = new javax.swing.JTextField();
+        textFieldTelefono = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ayuda Cliente");
 
-        jPanel1.setBackground(new java.awt.Color(255, 221, 129));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        textFieldWeb.setEditable(false);
+        textFieldWeb.setBackground(new java.awt.Color(0, 0, 0));
+        textFieldWeb.setForeground(new java.awt.Color(51, 204, 255));
+        textFieldWeb.setText("https://gmgmultiverso.wordpress.com/");
+        textFieldWeb.setBorder(null);
+        jPanel1.add(textFieldWeb, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 390, 250, 20));
+
         jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(236, 142, 0));
         jLabel1.setText("Contacta");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 340, -1));
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 3, 48)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(236, 142, 0));
         jLabel2.setText(" con nosotros");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 100, 310, -1));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ubi.png"))); // NOI18N
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, 120, 100));
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ubicacion.png"))); // NOI18N
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 120, 120));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(236, 142, 0));
-        jLabel3.setText("Calle Secoya, 22, Madrid");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 150, -1));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/insta.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/instagram.png"))); // NOI18N
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, 110, 100));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/email.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/gmail.png"))); // NOI18N
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 130, 100));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(236, 142, 0));
-        jLabel7.setText("@gmg_multiverso");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 320, 110, -1));
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(236, 142, 0));
-        jLabel8.setText("           +34 695319038");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 320, 170, -1));
-
-        jLabel9.setBackground(new java.awt.Color(236, 142, 0));
+        jLabel9.setBackground(new java.awt.Color(0, 0, 0));
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("                                                                             O visita nuestra web:    https://gmgmultiverso.wordpress.com/");
+        jLabel9.setText("                                                                             O visita nuestra web:  ");
         jLabel9.setOpaque(true);
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 760, 30));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 760, 40));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(236, 142, 0));
         jLabel10.setText("En nuestra sede:");
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 120, -1));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(236, 142, 0));
         jLabel11.setText("En instagram:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, 100, -1));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(236, 142, 0));
         jLabel12.setText("A través de nuestro teléfono:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 290, 170, -1));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/phone.png"))); // NOI18N
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/whatsapp (1).png"))); // NOI18N
         jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 180, 120, 110));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(236, 142, 0));
         jLabel14.setText("Por nuestro correo:");
         jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, 140, -1));
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(236, 142, 0));
-        jLabel15.setText("gmgmultiverso@gmail.com");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 320, 170, -1));
-
-        jMenu1.setText("Productos");
-
-        jMenuItem1.setText("Ver productos");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        textFieldCorreo.setEditable(false);
+        textFieldCorreo.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        textFieldCorreo.setForeground(new java.awt.Color(255, 51, 51));
+        textFieldCorreo.setText("gmgmultiverso@gmail.com");
+        textFieldCorreo.setBorder(null);
+        textFieldCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                textFieldCorreoActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jPanel1.add(textFieldCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 320, -1, -1));
 
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Ayuda");
-
-        jMenuItem3.setText("Contáctanos");
-        jMenu2.add(jMenuItem3);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Perfil");
-
-        jMenuItem2.setText("Ver perfil");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        textFieldInstagram.setEditable(false);
+        textFieldInstagram.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        textFieldInstagram.setForeground(new java.awt.Color(255, 102, 255));
+        textFieldInstagram.setText("@gmg_multiverso");
+        textFieldInstagram.setBorder(null);
+        textFieldInstagram.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        textFieldInstagram.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                textFieldInstagramActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem2);
+        jPanel1.add(textFieldInstagram, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 320, -1, -1));
 
-        jMenuBar1.add(jMenu3);
+        textFieldDireccion.setEditable(false);
+        textFieldDireccion.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        textFieldDireccion.setForeground(new java.awt.Color(204, 0, 0));
+        textFieldDireccion.setText("C/ Secoya, 22, Madrid ");
+        textFieldDireccion.setBorder(null);
+        textFieldDireccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldDireccionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(textFieldDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, -1, -1));
 
-        setJMenuBar(jMenuBar1);
+        textFieldTelefono.setEditable(false);
+        textFieldTelefono.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        textFieldTelefono.setForeground(new java.awt.Color(51, 204, 0));
+        textFieldTelefono.setText("695319038");
+        textFieldTelefono.setBorder(null);
+        textFieldTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldTelefonoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(textFieldTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 320, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,23 +175,27 @@ public class AyudaCliente extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        PantallaCliente pc = new PantallaCliente();
-        pc.setVisible(true);
-        this.dispose(); 
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void textFieldCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldCorreoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldCorreoActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-       PerfilCliente cp = new PerfilCliente();
-       cp.setVisible(true);
-       this.dispose(); 
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void textFieldInstagramActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldInstagramActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldInstagramActionPerformed
+
+    private void textFieldDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldDireccionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldDireccionActionPerformed
+
+    private void textFieldTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldTelefonoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,22 +239,16 @@ public class AyudaCliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField textFieldCorreo;
+    private javax.swing.JTextField textFieldDireccion;
+    private javax.swing.JTextField textFieldInstagram;
+    private javax.swing.JTextField textFieldTelefono;
+    private javax.swing.JTextField textFieldWeb;
     // End of variables declaration//GEN-END:variables
 }

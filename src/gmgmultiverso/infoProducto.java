@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package gmgmultiverso;
+
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 /**
@@ -13,56 +15,55 @@ import javax.swing.JLabel;
  */
 public class infoProducto extends javax.swing.JDialog {
 
-
+    private CarritoCliente carritoCliente;
     private String nombreProducto;
     private int cantidadProductosEnCarrito;
-    
-    
+
     /**
      * Creates new form infoProducto
      */
-public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
-    super(parent, modal);
-    initComponents();
-}
+    public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
+        super(parent, modal);
+        initComponents();
+    }
 
- public void setNombreProducto(String nombreProducto, double precioProducto) {
-    this.nombreProducto = nombreProducto;
-    // Mostrar el nombre del producto en el label correspondiente
-    name.setText(nombreProducto);
-    // Mostrar el precio del producto en el label correspondiente
-    precio.setText(String.valueOf(precioProducto));
-    // Cargar la imagen 
-    ImageIcon imageIcon = null;
-    switch (nombreProducto) {
-        case "Hamburguesa":
-            imageIcon = new ImageIcon(getClass().getResource("/img/burger.png"));
-            break;
-        case "Hamburguesa Vegana":
-            imageIcon = new ImageIcon(getClass().getResource("/img/burgervegan.png"));
-            break;
-        case "Pizza":
-            imageIcon = new ImageIcon(getClass().getResource("/img/pizza.png"));
-            break;
-        case "Pasta":
-            imageIcon = new ImageIcon(getClass().getResource("/img/pasta.png"));
-            break;
-        case "Arroz":
-            imageIcon = new ImageIcon(getClass().getResource("/img/arroz.png"));
-            break;
-        case "Tostadas":
-            imageIcon = new ImageIcon(getClass().getResource("/img/tostadas.png"));
-            break;
-        default:
-            // En caso de que el nombre del producto no coincida con ninguno esperado, mostrar un mensaje de error
-            name.setText("Error: Producto no encontrado");
-            break;
+    public void setNombreProducto(String nombreProducto, double precioProducto) {
+        this.nombreProducto = nombreProducto;
+        // Mostrar el nombre del producto en el label correspondiente
+        name.setText(nombreProducto);
+        // Mostrar el precio del producto en el label correspondiente
+        precio.setText(String.valueOf(precioProducto));
+        // Cargar la imagen 
+        ImageIcon imageIcon = null;
+        switch (nombreProducto) {
+            case "Hamburguesa":
+                imageIcon = new ImageIcon(getClass().getResource("/img/burger.png"));
+                break;
+            case "Hamburguesa Vegana":
+                imageIcon = new ImageIcon(getClass().getResource("/img/burgervegan.png"));
+                break;
+            case "Pizza":
+                imageIcon = new ImageIcon(getClass().getResource("/img/pizza.png"));
+                break;
+            case "Pasta":
+                imageIcon = new ImageIcon(getClass().getResource("/img/pasta.png"));
+                break;
+            case "Arroz":
+                imageIcon = new ImageIcon(getClass().getResource("/img/arroz.png"));
+                break;
+            case "Tostadas":
+                imageIcon = new ImageIcon(getClass().getResource("/img/tostadas.png"));
+                break;
+            default:
+                // En caso de que el nombre del producto no coincida con ninguno esperado, mostrar un mensaje de error
+                name.setText("Error: Producto no encontrado");
+                break;
+        }
+        if (imageIcon != null) {
+            Image image = imageIcon.getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
+            jLabel1.setIcon(new ImageIcon(image));
+        }
     }
-    if (imageIcon != null) {
-        Image image = imageIcon.getImage().getScaledInstance(200, 200, java.awt.Image.SCALE_SMOOTH);
-        jLabel1.setIcon(new ImageIcon(image));
-    }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,12 +84,7 @@ public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 221, 129));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         name.setText("Nombre del producto ");
-        jPanel1.add(name, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 100, 216, -1));
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 263, 274));
 
         jButton1.setText("Añadir al carrito");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -96,16 +92,50 @@ public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 240, -1, 29));
 
         jLabel2.setText("Precio:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 130, -1));
 
         precio.setText("jLabel3");
-        jPanel1.add(precio, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 180, -1, -1));
 
         jLabel4.setText("Nombre del Producto:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 70, 190, -1));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(precio)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jButton1))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jLabel4)
+                        .addGap(14, 14, 14)
+                        .addComponent(name)
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel2)
+                        .addGap(14, 14, 14)
+                        .addComponent(precio)
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(121, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,15 +145,16 @@ public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    // Cerrar la ventana de infoProducto
-    dispose();    
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -155,15 +186,15 @@ public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
         //</editor-fold>
 
         /* Create and display the dialog */
-      java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            // Crear una instancia de la pantalla cliente
-            PantallaCliente pantallaCliente = new PantallaCliente();
-            // Hacer visible la pantalla cliente
-            pantallaCliente.setVisible(true);
-        }
-    });
-}
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                // Crear una instancia de la pantalla cliente
+                PantallaCliente pantallaCliente = new PantallaCliente();
+                // Hacer visible la pantalla cliente
+                pantallaCliente.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

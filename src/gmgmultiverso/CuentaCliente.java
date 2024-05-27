@@ -11,8 +11,11 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 /**
  *
  * @author gema
@@ -22,13 +25,22 @@ public class CuentaCliente extends javax.swing.JFrame {
     /**
      * Creates new form CuentaCliente
      */
-    
     private ClienteDao clienteDao;
-    
+
     public CuentaCliente() {
         initComponents();
         clienteDao = new ClienteDao(new ManagerConexion());
         this.setLocationRelativeTo(null);
+
+        //boton
+        pass2.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    botonActionPerformed(null);
+                }
+            }
+        });
     }
 
     /**
@@ -56,6 +68,7 @@ public class CuentaCliente extends javax.swing.JFrame {
         telefono = new javax.swing.JTextField();
         apellido = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -89,45 +102,46 @@ public class CuentaCliente extends javax.swing.JFrame {
 
         jLabel10.setText("Telefono");
 
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelcuentaLayout = new javax.swing.GroupLayout(panelcuenta);
         panelcuenta.setLayout(panelcuentaLayout);
         panelcuentaLayout.setHorizontalGroup(
             panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelcuentaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(direc, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(panelcuentaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(196, 196, 196))
             .addGroup(panelcuentaLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelcuentaLayout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(boton))
+                        .addGroup(panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(direc, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(telefono, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelcuentaLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelcuentaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelcuentaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelcuentaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelcuentaLayout.createSequentialGroup()
+                                .addComponent(boton)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelcuentaLayout.setVerticalGroup(
             panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +173,9 @@ public class CuentaCliente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(pass2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(boton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelcuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(boton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -192,36 +208,82 @@ public class CuentaCliente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActionPerformed
-        String nombreCliente = nombre.getText();
-    String apellidoCliente = apellido.getText();
-    String contrasenaCliente = new String(pass2.getPassword());
-    String direccionCliente = direc.getText();
-    int telefonoCliente = Integer.parseInt(telefono.getText());
-    String emailCliente = email.getText();
+        // Variables para almacenar los valores de los campos
+        String nombreText = nombre.getText().trim();
+        String apellidoText = apellido.getText().trim();
+        String telefonoText = telefono.getText().trim();
+        String direcText = direc.getText().trim();
+        String emailText = email.getText().trim();
+        String passText = new String(pass2.getPassword()).trim();
 
-    // Verificar que los campos no estén vacíos
-    if (nombreCliente.isEmpty() || apellidoCliente.isEmpty() || contrasenaCliente.isEmpty() || direccionCliente.isEmpty() || emailCliente.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        // Reiniciar los fondos de los campos
+        resetFieldBackgrounds();
 
-    // Crear un objeto Cliente
-    Cliente cliente = new Cliente(nombreCliente, apellidoCliente, contrasenaCliente, direccionCliente, telefonoCliente, emailCliente);
+        // Verificar si todos los campos están llenos
+        if (nombreText.isEmpty() || apellidoText.isEmpty() || telefonoText.isEmpty() || direcText.isEmpty() || emailText.isEmpty() || passText.isEmpty()) {
+            highlightEmptyFields();
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Parsear telefono
+            int telefonoInt = 0;
+            try {
+                telefonoInt = Integer.parseInt(telefonoText);
+            } catch (NumberFormatException e) {
+                telefono.setBackground(Color.RED);
+                JOptionPane.showMessageDialog(this, "El campo 'Teléfono' debe contener solo números.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-    // Guardar en la base de datos
-    boolean resultado = clienteDao.guardarCliente(cliente);
-
-    if (resultado) {
-        JOptionPane.showMessageDialog(this, "¡Cuenta creada exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-        PantallaCliente pc = new PantallaCliente();
-        pc.setVisible(true);
-
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Hubo un error al crear la cuenta. Inténtelo de nuevo.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+            // Crear objeto Cliente y guardar en la base de datos
+            Cliente cliente = new Cliente(nombreText, apellidoText, passText, direcText, telefonoInt, emailText);
+            boolean isSaved = clienteDao.guardarCliente(cliente);
+            if (isSaved) {
+                JOptionPane.showMessageDialog(this, "Cuenta creada correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                PantallaCliente pantallaCliente = new PantallaCliente();
+                pantallaCliente.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al crear la cuenta", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_botonActionPerformed
+
+    //volver para atras 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        PrincipalCliente pc = new PrincipalCliente();
+        pc.setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+    private void resetFieldBackgrounds() {
+        nombre.setBackground(Color.WHITE);
+        apellido.setBackground(Color.WHITE);
+        telefono.setBackground(Color.WHITE);
+        direc.setBackground(Color.WHITE);
+        email.setBackground(Color.WHITE);
+        pass2.setBackground(Color.WHITE);
+    }
+
+    private void highlightEmptyFields() {
+        if (nombre.getText().trim().isEmpty()) {
+            nombre.setBackground(Color.RED);
+        }
+        if (apellido.getText().trim().isEmpty()) {
+            apellido.setBackground(Color.RED);
+        }
+        if (telefono.getText().trim().isEmpty()) {
+            telefono.setBackground(Color.RED);
+        }
+        if (direc.getText().trim().isEmpty()) {
+            direc.setBackground(Color.RED);
+        }
+        if (email.getText().trim().isEmpty()) {
+            email.setBackground(Color.RED);
+        }
+        if (new String(pass2.getPassword()).trim().isEmpty()) {
+            pass2.setBackground(Color.RED);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -263,6 +325,7 @@ public class CuentaCliente extends javax.swing.JFrame {
     private javax.swing.JButton boton;
     private javax.swing.JTextField direc;
     private javax.swing.JTextField email;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

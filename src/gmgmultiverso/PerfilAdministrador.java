@@ -4,13 +4,18 @@
  */
 package gmgmultiverso;
 
+import gmgmultiverso.db.ManagerConexion;
+import gmgmultiverso.db.dao.EmpleadoDao;
+import gmgmultiverso.model.Empleado;
 import java.awt.Desktop;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -22,6 +27,10 @@ import javax.swing.JOptionPane;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.Color;
 
 /**
  *
@@ -35,15 +44,27 @@ public class PerfilAdministrador extends javax.swing.JPanel {
     private String telefono;
     private String direccion;
     private String instagram;
-    
+    private int telefonoOriginal;
     private boolean cambiosRealizados = false;
+    
+    //private String nombreUsuario;
+    private int idEmpleado;
+    private EmpleadoDao empleadoDao;
     
     /**
      * Creates new form PerfilAdministrador
      */
-    public PerfilAdministrador() {
+    public PerfilAdministrador(int idEmpleado) {
         initComponents();
+        this.idEmpleado = idEmpleado;
         this.setSize(1091, 642);
+        this.empleadoDao = new EmpleadoDao(new ManagerConexion());
+        cargarDatos();
+        cargarTelefonoEmpleado(idEmpleado);
+        cambiarColorSegunID(idEmpleado);
+        
+        botonGuardarCambios.setEnabled(false);
+        addChangeListeners();
         
         textFieldWeb.addMouseListener(new MouseAdapter() {
             @Override
@@ -59,10 +80,32 @@ public class PerfilAdministrador extends javax.swing.JPanel {
             }
         });
         
-
     }
 
-    
+    public void addChangeListeners() {
+        DocumentListener documentListener = new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                // Habilitar el botón cuando hay cambios
+                botonGuardarCambios.setEnabled(true);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                botonGuardarCambios.setEnabled(true);
+            }
+
+            public void insertUpdate(DocumentEvent e) {
+                botonGuardarCambios.setEnabled(true);
+            }
+        };
+
+        textFieldNombreEmpresa.getDocument().addDocumentListener(documentListener);
+        textFieldCorreo.getDocument().addDocumentListener(documentListener);
+        textFieldWeb.getDocument().addDocumentListener(documentListener);
+        textFieldTelefono.getDocument().addDocumentListener(documentListener);
+        textFieldDireccion.getDocument().addDocumentListener(documentListener);
+        textFieldInstagram.getDocument().addDocumentListener(documentListener);
+    }
+
     
     //--------Para que me lleve a la pagina web---------------------
     
@@ -73,9 +116,6 @@ public class PerfilAdministrador extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }
-    
-    //------Para detectar si ha habido cambios
-    
     
     
     //-------getters y setters
@@ -134,16 +174,96 @@ public class PerfilAdministrador extends javax.swing.JPanel {
         textFieldInstagram.setText(info);
     }
     
+    //----------------------------
+    
+    public void cargarTelefonoEmpleado(int idEmpleado) {
+        // Obtener el teléfono del empleado desde la base de datos
+        String telefonoEmpleado = empleadoDao.obtenerTelefonoEmpleado(idEmpleado);
+        setTelefono(telefonoEmpleado);
+    }
+    
+    //----------------------------
+    
+    public void cambiarColorSegunID(int idEmpleado) {
+        if (idEmpleado == 8) {
+            labelNombreMonica.setForeground(Color.RED);
+        } else if (idEmpleado == 9) {
+            labelNombreGema.setForeground(Color.RED);
+        } else if (idEmpleado == 10) {
+            labelNombreGeanina.setForeground(Color.RED);
+        }
+    }
+    
+    //----------------------------
+    
+    
     //----------Para guardar cambios
     
+    public void cargarDatos() {
+        File archivo = new File("src/archivosGenerados/configPerfilAdmin.txt");
+        if (!archivo.exists()) {
+            return; // Si el archivo no existe, no hacer nada
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            StringBuilder ultimoCambio = new StringBuilder();
+            String separador = "------------------";
+
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.equals(separador)) {
+                    procesarCambios(ultimoCambio.toString());
+                    ultimoCambio.setLength(0);
+                } else {
+                    ultimoCambio.append(linea).append("\n");
+                }
+            }
+            if (ultimoCambio.length() > 0) {
+                procesarCambios(ultimoCambio.toString());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los cambios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public void procesarCambios(String cambios) {
+        String[] lines = cambios.split("\n");
+        for (String line : lines) {
+            if (line.contains("=")) {
+                String[] parts = line.split(" = ", 2);
+                switch (parts[0]) {
+                    case "nombreEmpresa":
+                        setNombreEmpresa(parts[1]);
+                        break;
+                    case "correo":
+                        setCorreo(parts[1]);
+                        break;
+                    case "web":
+                        setWeb(parts[1]);
+                        break;
+                    case "telefono":
+                        setTelefono(parts[1]);
+                        break;
+                    case "direccion":
+                        setDireccion(parts[1]);
+                        break;
+                    case "instagram":
+                        setInstagram(parts[1]);
+                        break;
+                }
+            }
+        }
+    }
+
     public void guardarCambios() {
         String camposVacios = camposVacios();
         if (camposVacios.isEmpty()) {
             try {
-                // Obtener la ruta del directorio del proyecto
                 File archivo = new File("src/archivosGenerados/configPerfilAdmin.txt");
 
-                // Crear el directorio y archivo si no existen
                 if (!archivo.getParentFile().exists()) {
                     archivo.getParentFile().mkdirs();
                 }
@@ -151,11 +271,12 @@ public class PerfilAdministrador extends javax.swing.JPanel {
                     archivo.createNewFile();
                 }
 
-                // Escribir los datos en el archivo junto con la fecha y la hora
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date date = new Date();
+
                 try (FileWriter writer = new FileWriter(archivo, true)) {
                     writer.write("Fecha y hora del cambio: " + dateFormat.format(date) + "\n");
+                    writer.write("Usuario que hizo el cambio: " + empleadoDao.obtenerNombreEmpleado(idEmpleado) + "\n");
                     writer.write("nombreEmpresa = " + getNombreEmpresa() + "\n");
                     writer.write("correo = " + getCorreo() + "\n");
                     writer.write("web = " + getWeb() + "\n");
@@ -166,9 +287,14 @@ public class PerfilAdministrador extends javax.swing.JPanel {
                     writer.write("------------------\n");
                     writer.write("\n");
                 }
+
+                // Actualizar el número de teléfono
+                String telefonoStr = textFieldTelefono.getText();
+                int telefono = Integer.parseInt(telefonoStr);
+                actualizarNumeroTelefono(idEmpleado, telefono);
+
                 JOptionPane.showMessageDialog(this, "Cambios guardados correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 cambiosRealizados = false;
-                
             } catch (IOException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error al guardar los cambios: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -177,6 +303,7 @@ public class PerfilAdministrador extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Uno o más campos están vacíos:\n" + camposVacios, "Campos vacíos", JOptionPane.WARNING_MESSAGE);
         }
     }
+
 
     public String camposVacios() {
         StringBuilder camposVacios = new StringBuilder();
@@ -199,7 +326,17 @@ public class PerfilAdministrador extends javax.swing.JPanel {
             camposVacios.append("- Instagram\n");
         }
         return camposVacios.toString();
-        
+    }
+    
+    
+    public boolean actualizarNumeroTelefono(int idEmpleado, int nuevoTelefono) {
+        if (empleadoDao.actualizarTelefonoEmpleado(idEmpleado, nuevoTelefono)) {
+            System.out.println("El número de teléfono se actualizó correctamente en la base de datos.");
+            return true;
+        } else {
+            System.out.println("Hubo un problema al actualizar el número de teléfono en la base de datos.");
+            return false;
+        }
     }
 
 
@@ -217,9 +354,9 @@ public class PerfilAdministrador extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        labelNombreMonica = new javax.swing.JLabel();
+        labelNombreGema = new javax.swing.JLabel();
+        labelNombreGeanina = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -250,23 +387,26 @@ public class PerfilAdministrador extends javax.swing.JPanel {
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/monica.png"))); // NOI18N
+        jLabel3.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/imagenes/planeta.png")))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 3, 18)); // NOI18N
         jLabel4.setText("Empresa");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel5.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
-        jLabel5.setText("Mónica Salinas");
+        labelNombreMonica.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
+        labelNombreMonica.setText("Mónica Salinas");
 
-        jLabel6.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
-        jLabel6.setText("Gema Castellano");
+        labelNombreGema.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
+        labelNombreGema.setText("Gema Castellano");
 
-        jLabel7.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
-        jLabel7.setText("Geanina Foanta");
+        labelNombreGeanina.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
+        labelNombreGeanina.setText("Geanina Foanta");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gema.png"))); // NOI18N
+        jLabel8.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/imagenes/planeta.png")))); // NOI18N
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/geanina.png"))); // NOI18N
+        jLabel9.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/imagenes/planeta.png")))); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("Century Schoolbook", 3, 14)); // NOI18N
         jLabel10.setText("Nombre empresa : ");
@@ -351,63 +491,61 @@ public class PerfilAdministrador extends javax.swing.JPanel {
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(89, 89, 89)
-                        .addComponent(jLabel2)))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(89, 89, 89)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(18, 18, 18)
-                                .addComponent(textFieldWeb))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(18, 18, 18)
-                                .addComponent(textFieldCorreo))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(textFieldNombreEmpresa)))
-                        .addGap(176, 176, 176)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jLabel16))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textFieldDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                                    .addComponent(textFieldTelefono)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textFieldInstagram)))))
-                .addGap(120, 120, 120)
-                .addComponent(botonGuardarCambios)
+                                    .addComponent(jLabel4)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(54, 54, 54)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel13)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(textFieldWeb))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel12)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(textFieldCorreo))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel10)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(textFieldNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(176, 176, 176)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel14)
+                                                    .addComponent(jLabel16))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(textFieldDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                                    .addComponent(textFieldTelefono)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel15)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(textFieldInstagram)))))
+                                .addGap(120, 120, 120)
+                                .addComponent(botonGuardarCambios))
+                            .addComponent(jLabel2))))
                 .addGap(108, 108, 108))
             .addGroup(layout.createSequentialGroup()
                 .addGap(129, 129, 129)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(38, 38, 38)
-                        .addComponent(jLabel6))
+                        .addComponent(labelNombreGema))
                     .addComponent(jLabel8))
-                .addGap(124, 124, 124)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jLabel5))
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(95, 95, 95)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(143, 143, 143)
+                        .addComponent(labelNombreMonica)
+                        .addGap(223, 223, 223)
+                        .addComponent(labelNombreGeanina))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
-                        .addComponent(jLabel7))
-                    .addComponent(jLabel9))
+                        .addGap(86, 86, 86)
+                        .addComponent(jLabel3)
+                        .addGap(93, 93, 93)
+                        .addComponent(jLabel9)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -419,45 +557,43 @@ public class PerfilAdministrador extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(218, 218, 218)
-                                .addComponent(jLabel7))
-                            .addComponent(jLabel9)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5)))
-                        .addGap(50, 50, 50)
-                        .addComponent(jLabel4)
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel14)
-                            .addComponent(textFieldNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel16)
-                                    .addComponent(textFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(textFieldDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(botonGuardarCambios)
-                                .addGap(20, 20, 20)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel15)
-                            .addComponent(textFieldWeb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textFieldInstagram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(labelNombreGeanina))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(labelNombreMonica))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel6)))
-                .addContainerGap(79, Short.MAX_VALUE))
+                        .addComponent(labelNombreGema)))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel4)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel14)
+                    .addComponent(textFieldNombreEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel16)
+                            .addComponent(textFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textFieldDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(botonGuardarCambios)
+                        .addGap(20, 20, 20)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel15)
+                    .addComponent(textFieldWeb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textFieldInstagram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -487,7 +623,8 @@ public class PerfilAdministrador extends javax.swing.JPanel {
     }//GEN-LAST:event_botonGuardarCambiosActionPerformed
 
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
-    
+
+        
     }//GEN-LAST:event_formFocusLost
 
 
@@ -503,11 +640,11 @@ public class PerfilAdministrador extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel labelNombreGeanina;
+    private javax.swing.JLabel labelNombreGema;
+    private javax.swing.JLabel labelNombreMonica;
     private javax.swing.JTextField textFieldCorreo;
     private javax.swing.JTextField textFieldDireccion;
     private javax.swing.JTextField textFieldInstagram;

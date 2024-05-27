@@ -22,6 +22,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -29,6 +30,7 @@ import propiedades.EvObjOverComp4;
 import propiedades.LisOverComp4;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -36,7 +38,7 @@ import javax.swing.event.DocumentListener;
  */
 public class BuscarProveedor extends javax.swing.JPanel {
 
-    
+    private PrincipalAdministrador principalAdmin;
     private MouseListener mouseClickListener = null;
     private MouseListener mouseOrdenarTabla = null;
 
@@ -57,11 +59,13 @@ public class BuscarProveedor extends javax.swing.JPanel {
     /**
      * Creates new form PrincipalBuscarProveedor
      */
-    public BuscarProveedor() {
+    public BuscarProveedor(PrincipalAdministrador principalAdmin) {
         
         initComponents();
+        this.principalAdmin = principalAdmin;
         textFieldTelefono.setSize(64, 22);
         this.setSize(1091, 642);
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 20, 30));
         inicializarTabla();
         
       
@@ -103,6 +107,10 @@ public class BuscarProveedor extends javax.swing.JPanel {
         
     }
     
+    public PrincipalAdministrador getPrincipalAdmin() {
+        return this.principalAdmin;
+    }
+
     
     //-------------Métodos-----------------
 
@@ -130,54 +138,59 @@ public class BuscarProveedor extends javax.swing.JPanel {
         tablaBuscarProveedor.addMouseListener(mouseOrdenarTabla);
     }
     
-    public void mouseListenerAnadirColumnasExtra() 
-    {
+    public void mouseListenerAnadirColumnasExtra() {
         quitarListener();
-        
+
         mouseClickListener = new MouseAdapter() {
-            
-        @Override
-        public void mouseClicked(MouseEvent evt){
-            
-            int editarColumna = tablaBuscarProveedor.getColumnCount() - 2;
-            int eliminarColumna = tablaBuscarProveedor.getColumnCount() - 1;
 
-            int column = tablaBuscarProveedor.columnAtPoint(evt.getPoint());
-            int row = tablaBuscarProveedor.rowAtPoint(evt.getPoint());
+            @Override
+            public void mouseClicked(MouseEvent evt) {
 
-            if (row >= 0 && row < tablaBuscarProveedor.getRowCount()) {
+                int editarColumna = tablaBuscarProveedor.getColumnCount() - 2;
+                int eliminarColumna = tablaBuscarProveedor.getColumnCount() - 1;
 
-                String codigoProveedorSeleccionado = "SELECT id FROM proveedor WHERE nombre_empresa = '" +  tablaBuscarProveedor.getValueAt(row, 0) + "' "
-                            + "AND telefono = '" + tablaBuscarProveedor.getValueAt(row, 1) + "'";
-                int codigoProveedor = 0;
+                int column = tablaBuscarProveedor.columnAtPoint(evt.getPoint());
+                int row = tablaBuscarProveedor.rowAtPoint(evt.getPoint());
 
-                try {
-                    
-                    conet=con.abrirConexion();
-                    st=conet.createStatement();
-                    rs=st.executeQuery(codigoProveedorSeleccionado);
-                    
-                    if (rs.next()) {
-                        codigoProveedor = rs.getInt("id");
+                if (row >= 0 && row < tablaBuscarProveedor.getRowCount() && column >= 0 && column < miModelo.getColumnCount()) {
+                    String codigoProveedorSeleccionado = "SELECT id FROM proveedor WHERE nombre_empresa = '" +  tablaBuscarProveedor.getValueAt(row, 0) + "' "
+                                + "AND telefono = '" + tablaBuscarProveedor.getValueAt(row, 1) + "'";
+                    int codigoProveedor = 0;
+
+                    try {
+
+                        conet=con.abrirConexion();
+                        st=conet.createStatement();
+                        rs=st.executeQuery(codigoProveedorSeleccionado);
+
+                        if (rs.next()) {
+                            codigoProveedor = rs.getInt("id");
+                        }
+
+                        rs.close();
+                        st.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
                     }
 
-                    rs.close();
-                    st.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-
-                if (column == editarColumna) {
-                    //abrirFrameEditar(codigoProveedor);
-                } 
-                else if (column == eliminarColumna) {
-                    confirmarEliminarProveedor(codigoProveedor);
+                    if (column == editarColumna) {
+                        abrirFrameEditar(codigoProveedor);
+                    } else if (column == eliminarColumna) {
+                        confirmarEliminarProveedor(codigoProveedor);
+                    }
                 }
             }
-        }
-    };
+        };
 
-    tablaBuscarProveedor.addMouseListener(mouseClickListener);
+        tablaBuscarProveedor.addMouseListener(mouseClickListener);
+    }
+
+    
+    //------------------------------Abrir Frame Editar de Proveedores------------------------------
+    
+    public void abrirFrameEditar(int codigoProveedor) 
+    {
+        principalAdmin.mostrarEditarProveedor(codigoProveedor, this);
     }
     
     //------------Crear objetos imagen------------
@@ -215,6 +228,14 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         tablaBuscarProveedor.setModel(miModelo);
         tablaBuscarProveedor.setRowHeight(30);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < tablaBuscarProveedor.getColumnCount() - 2; i++) {
+            tablaBuscarProveedor.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
     }
     
     //-------------Actualizar tabla------------
@@ -390,6 +411,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
     }
     
     
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -402,20 +424,16 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaBuscarProveedor = new javax.swing.JTable();
-        componenteNombreEmpresas = new propiedades.Componente4();
         botonReiniciar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         textFieldTelefono = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        componenteNombreEmpresas = new propiedades.Componente4();
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1091, 642));
 
         jScrollPane1.setViewportView(tablaBuscarProveedor);
-
-        componenteNombreEmpresas.setEtiqueta("Nombre Empresas  :");
-        componenteNombreEmpresas.setMensaje("\"Elije un nombre de empresa\"");
-        componenteNombreEmpresas.setPrimerElementoEsMensaje(true);
 
         botonReiniciar.setText("Reiniciar");
         botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -429,30 +447,34 @@ public class BuscarProveedor extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         jLabel1.setText("Buscar proveedor");
 
+        componenteNombreEmpresas.setEtiqueta("Nombre empresa  :");
+        componenteNombreEmpresas.setMensaje("\"Elije una empresa\"");
+        componenteNombreEmpresas.setPrimerElementoEsMensaje(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(90, 90, 90)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 241, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(407, 407, 407)
-                        .addComponent(botonReiniciar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(96, 96, 96)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(443, 443, 443)
+                                .addComponent(jLabel1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(409, 409, 409)
+                                .addComponent(botonReiniciar)))
+                        .addGap(0, 228, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(443, 443, 443)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -460,17 +482,18 @@ public class BuscarProveedor extends javax.swing.JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(34, 34, 34)
+                        .addGap(63, 63, 63)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botonReiniciar)
-                .addGap(205, 205, 205))
+                            .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(botonReiniciar)))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

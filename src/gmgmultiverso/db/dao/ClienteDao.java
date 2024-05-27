@@ -28,6 +28,7 @@ public class ClienteDao {
     }
 
     
+   
     public boolean verificarCorreo(String correoElectronico) {
         boolean correoEncontrado = false;
         Connection conect = null;
@@ -59,23 +60,22 @@ public class ClienteDao {
         return correoEncontrado;
     }
 
+    // Guardar cliente
+    public boolean guardarCliente(Cliente cliente) {
+        Connection conect = null;
 
-//guardar cliente 
-public boolean guardarCliente(Cliente cliente) {
-    Connection conect = null;
-
-    try {
-        conect = con.abrirConexion();
-        var ps = conect.prepareStatement("INSERT INTO cliente (nombre, apellido, contrasenia, direccion, telefono, email) VALUES (?, ?, ?, ?, ?, ?)");
-        
-        ps.setString(1, cliente.getNombre());
-        ps.setString(2, cliente.getApellido());
-        ps.setString(3, cliente.getContrasenia());
-        ps.setString(4, cliente.getDireccion());
-        ps.setInt(5, cliente.getTelefono());
-        ps.setString(6, cliente.getEmail());
-        
-        int insertedRows = ps.executeUpdate();
+        try {
+            conect = con.abrirConexion();
+            var ps = conect.prepareStatement("INSERT INTO cliente (nombre, apellido, contrasenia, direccion, telefono, email) VALUES (?, ?, ?, ?, ?, ?)");
+            
+            ps.setString(1, cliente.getNombre());
+            ps.setString(2, cliente.getApellido());
+            ps.setString(3, cliente.getContrasenia());
+            ps.setString(4, cliente.getDireccion());
+            ps.setInt(5, cliente.getTelefono());
+            ps.setString(6, cliente.getEmail());
+            
+            int insertedRows = ps.executeUpdate();
             return insertedRows == 1;
         } catch (SQLException e) {
             e.printStackTrace();

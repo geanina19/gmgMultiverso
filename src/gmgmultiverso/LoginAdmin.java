@@ -13,36 +13,68 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
-
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
-
+import gmgmultiverso.db.dao.EmpleadoDao;
+import gmgmultiverso.model.Empleado;
+import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ContainerListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
  * @author geanina.foanta
  */
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-public class LoginAdmin extends javax.swing.JFrame 
-{
 
+
+public class LoginAdmin extends javax.swing.JFrame {
+
+    //private String nombreUsuario;
+    private int idEmpleado;
+    
     //private ManagerConexion con;
     //int xMouse, yMouse;
-    
     /**
      * Creates new form Login
      */
-    public LoginAdmin() 
-    {
+    
+    public LoginAdmin() {
         initComponents();
+
         this.setSize(860, 500);
         //[860, 500]
         this.setLocationRelativeTo(null);
-        
+/*
+        this.jPanel1.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                BufferedImage img = null;
+                try {
+                    img = ImageIO.read(new File("imagenes/foandoLogin.png"));
+                    Image dimg = img.getScaledInstance(labelFondoLogin.getWidth(), labelFondoLogin.getHeight(), Image.SCALE_SMOOTH);
+                    ImageIcon imageIcon = new ImageIcon(dimg);
+                    labelFondoLogin.setIcon(imageIcon);
+                    jPanel1.repaint();
+                    jPanel1.revalidate();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        });
+*/
         ingresarContrasenia.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -53,44 +85,54 @@ public class LoginAdmin extends javax.swing.JFrame
         });
     }
     
-    private boolean validarCredenciales(String usuario, String contrasenia) 
-    {
-        Connection conect;
-        ManagerConexion con = new ManagerConexion();
     
-        //Statement st;
-        //ResultSet rs;
+    public boolean validarCredenciales(String usuario, String contrasenia) {
+        // Crear una instancia de EmpleadoDao
+        EmpleadoDao empleadoDao = new EmpleadoDao(new ManagerConexion());
 
-        try 
-        {
-            conect = con.abrirConexion();
-            String sql = "SELECT * FROM empleado WHERE nombre = ? AND contrasenia = ?";
-            try (PreparedStatement statement = conect.prepareStatement(sql)) 
-            {
-                statement.setString(1, usuario);
-                statement.setString(2, contrasenia);
-                try (ResultSet resultSet = statement.executeQuery()) 
-                {
-                    if (resultSet.next()) 
-                    {
-                        String nombreEmpleado = resultSet.getString("nombre");
-                        if (nombreEmpleado.equals("Admin")) 
-                        {
-                            // Si el usuario es Admin y la contraseña es correcta, permitir el inicio de sesión
-                            return true; 
-                        }
-                    }
-                    // Si el usuario no es Admin o la contraseña es incorrecta, denegar el inicio de sesión
-                    return false; 
+        // Obtener la lista de empleados con el EmpleadoDao
+        List<Empleado> empleados = empleadoDao.list();
+
+        // Iterar sobre la lista de empleados para verificar las credenciales
+        for (Empleado empleado : empleados) {
+            // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
+            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
+                // Si el usuario es Admin o alguno de los cuatro nombres específicos, permitir el inicio de sesión
+                if (usuario.equals("Admin") ||
+                    usuario.equals("Gema") ||
+                    usuario.equals("Monica") ||
+                    usuario.equals("Geanina")) {
+                    return true;
                 }
             }
-        } 
-        catch (SQLException e) 
-        {
-            e.printStackTrace();
-            return false;
         }
+
+        // Si no se encuentra el usuario en la lista de empleados o la contraseña es incorrecta, denegar el inicio de sesión
+        return false;
     }
+
+    
+    public int obtenerIdUsuario(String usuario, String contrasenia) {
+        // Crear una instancia de EmpleadoDao
+        EmpleadoDao empleadoDao = new EmpleadoDao(new ManagerConexion());
+
+        // Obtener la lista de empleados con el EmpleadoDao
+        List<Empleado> empleados = empleadoDao.list();
+
+        // Iterar sobre la lista de empleados para buscar el usuario y la contraseña
+        for (Empleado empleado : empleados) {
+            // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
+            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
+                // Si coinciden, devolver el ID del empleado
+                return empleado.getId();
+            }
+        }
+
+        // Si no se encuentra el usuario o la contraseña no coincide, devolver -1
+        return -1;
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -112,7 +154,7 @@ public class LoginAdmin extends javax.swing.JFrame
         llave = new javax.swing.JLabel();
         ingresarUsuario = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        fondoLogin = new javax.swing.JLabel();
+        labelFondoLogin = new javax.swing.JLabel();
 
         jCheckBox1.setText("jCheckBox1");
 
@@ -152,6 +194,11 @@ public class LoginAdmin extends javax.swing.JFrame
                 botonIniciarSesionMouseClicked(evt);
             }
         });
+        botonIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonIniciarSesionActionPerformed(evt);
+            }
+        });
         jPanel1.add(botonIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, -1, 30));
 
         userIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/user.png"))); // NOI18N
@@ -172,8 +219,8 @@ public class LoginAdmin extends javax.swing.JFrame
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logox200.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 310, -1, 150));
 
-        fondoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"))); // NOI18N
-        jPanel1.add(fondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 500));
+        labelFondoLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondoLogin.png"))); // NOI18N
+        jPanel1.add(labelFondoLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,27 +255,33 @@ public class LoginAdmin extends javax.swing.JFrame
         String usuario = ingresarUsuario.getText();
         String contrasenia = String.valueOf(ingresarContrasenia.getPassword());
 
-        if (validarCredenciales(usuario, contrasenia)) 
-        {
-            try {
-                // Si las credenciales son válidas, abrir la ventana PrincipalAdministrador
-                
-                UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
-                UIManager.put("TextComponent.arc", 100);
-                PrincipalAdministrador p1 = new PrincipalAdministrador();
-                SwingUtilities.updateComponentTreeUI(p1);
-                p1.setVisible(true);
-                this.dispose(); // Cerrar la ventana de login
-            } catch (UnsupportedLookAndFeelException ex) {
-                Logger.getLogger(LoginAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        // Validar las credenciales ingresadas
+        if (validarCredenciales(usuario, contrasenia)) {
+            // Si las credenciales son válidas, obtener el ID del empleado
+            int idEmpleado = obtenerIdUsuario(usuario, contrasenia);
+
+            // Verificar si se pudo obtener el ID del empleado
+            if (idEmpleado != 0) {
+                try {
+                    // Crear la ventana principal del administrador con el ID del empleado
+                    UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
+                    UIManager.put("TextComponent.arc", 100);
+                    PrincipalAdministrador p1 = new PrincipalAdministrador(idEmpleado);
+                    SwingUtilities.updateComponentTreeUI(p1);
+                    p1.setVisible(true);
+                    this.dispose(); // Cerrar la ventana de login
+                } catch (UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(LoginAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                // Manejar el caso en que no se pueda obtener el ID del empleado
+                javax.swing.JOptionPane.showMessageDialog(this, "No se pudo obtener el ID del empleado.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
             }
-        } 
-        else 
-        {
-            //javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-            javax.swing.JOptionPane.showMessageDialog(this, "Intento de login con los datos:\nUsuario: " + ingresarUsuario.getText() + "\nContraseña: " + String.valueOf(ingresarContrasenia.getPassword()), "LOGIN", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            // Manejar el caso en que las credenciales no sean válidas
+            javax.swing.JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_botonIniciarSesionMouseClicked
 
     private void ingresarUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ingresarUsuarioMousePressed
@@ -243,6 +296,10 @@ public class LoginAdmin extends javax.swing.JFrame
         }
 
     }//GEN-LAST:event_ingresarUsuarioMousePressed
+
+    private void botonIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarSesionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonIniciarSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -282,13 +339,13 @@ public class LoginAdmin extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonIniciarSesion;
-    private javax.swing.JLabel fondoLogin;
     private javax.swing.JPasswordField ingresarContrasenia;
     private javax.swing.JTextField ingresarUsuario;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelContrasenia;
+    private javax.swing.JLabel labelFondoLogin;
     private javax.swing.JLabel labelIniciarSesion;
     private javax.swing.JLabel labelUsuario;
     private javax.swing.JLabel llave;

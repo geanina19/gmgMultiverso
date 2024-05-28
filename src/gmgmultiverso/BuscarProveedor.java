@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -110,7 +111,6 @@ public class BuscarProveedor extends javax.swing.JPanel {
     public PrincipalAdministrador getPrincipalAdmin() {
         return this.principalAdmin;
     }
-
     
     //-------------Métodos-----------------
 
@@ -295,6 +295,12 @@ public class BuscarProveedor extends javax.swing.JPanel {
     public void buscarProveedor(int codProveedor) {
         // Obtener el número de teléfono ingresado en el textField
         String telefono = textFieldTelefono.getText().trim();
+
+        // Verificar si el teléfono contiene solo números
+        if (!telefono.matches("\\d*")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe contener solo números", "Error", JOptionPane.ERROR_MESSAGE);
+            return; 
+        }
 
         // Obtener la lista completa de proveedores
         List<Proveedor> proveedores = prov.list();

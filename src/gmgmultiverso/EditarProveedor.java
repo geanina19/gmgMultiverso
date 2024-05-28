@@ -214,6 +214,69 @@ public class EditarProveedor extends javax.swing.JPanel {
         }
     }
     
+    
+    public void momdificar(){
+         
+        String nuevoNombreEmpresa = componenteNombreEmpresa.getEscritura();
+        String nuevoTelefono = componenteTelefono.getEscritura();
+        String nuevoEmail = componenteEmail.getEscritura();
+
+        // Variables para verificar la validez del teléfono y el email
+        boolean telefonoValido = true;
+        boolean emailValido = true;
+        
+        // Verificar si el teléfono es un número válido
+        int telefono = 0;
+        try {
+            telefono = Integer.parseInt(nuevoTelefono);
+            if (String.valueOf(telefono).length() != 9) {
+                telefonoValido = false;
+            }
+        } catch (NumberFormatException e) {
+            telefonoValido = false;
+        }
+
+        // Verificar si el email contiene un '@'
+        if (!nuevoEmail.contains("@")) {
+            emailValido = false;
+        }
+
+        // Si alguna de las validaciones falla, mostrar el mensaje de error correspondiente
+        if (!telefonoValido || !emailValido) {
+            String mensajeError = "Error de entrada:\n";
+            if (!telefonoValido) {
+                mensajeError += "- El teléfono debe ser un número válido.\n";
+            }
+            if (!emailValido) {
+                mensajeError += "- El email debe ser válido.\n";
+            }
+            JOptionPane.showMessageDialog(this, mensajeError, "Error de entrada", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        // Obtener el ID del proveedor
+        int idProveedor = codProveedor;
+
+        // Crear una instancia de Proveedor con los nuevos valores
+        Proveedor proveedorModificado = new Proveedor(idProveedor, nuevoNombreEmpresa, Integer.parseInt(nuevoTelefono), nuevoEmail);
+
+        // Crear una instancia de ProveedorDao
+        ManagerConexion managerConexion = new ManagerConexion();
+        ProveedorDao proveedorDao = new ProveedorDao(managerConexion);
+
+        // Intentar actualizar el proveedor en la base de datos
+        boolean exito = proveedorDao.actualizarProveedor(proveedorModificado);
+
+        // Verificar si la actualización fue exitosa
+        if (exito) {
+            JOptionPane.showMessageDialog(this, "Proveedor modificado correctamente.");
+            BuscarProveedor pbp = new BuscarProveedor(principalAdmin);
+            principalAdmin.mostrarPanel(pbp);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al modificar el proveedor.");
+        }
+    }
         
 
     /**
@@ -336,44 +399,33 @@ public class EditarProveedor extends javax.swing.JPanel {
 
     private void labelVolverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelVolverMouseClicked
         // TODO add your handling code here:
-        BuscarProveedor pbp = new BuscarProveedor(principalAdmin);
-        principalAdmin.mostrarPanel(pbp);
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea volver a la ventana anterior?, no se realizarán cambios", "Confirmar acción", JOptionPane.YES_NO_OPTION);
+
+        // Verificar la opción seleccionada por el usuario
+        if (opcion == JOptionPane.YES_OPTION) {
+            BuscarProveedor pbp = new BuscarProveedor(principalAdmin);
+            principalAdmin.mostrarPanel(pbp);
+        } else {
+            // no hace nada
+        }
     }//GEN-LAST:event_labelVolverMouseClicked
 
     private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
-        // TODO add your handling code here:
-        BuscarProveedor pbp = new BuscarProveedor(principalAdmin);
-        principalAdmin.mostrarPanel(pbp);
+    
+        int opcion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea volver a la ventana anterior?, no se realizarán cambios", "Confirmar acción", JOptionPane.YES_NO_OPTION);
+
+        // Verificar la opción seleccionada por el usuario
+        if (opcion == JOptionPane.YES_OPTION) {
+            BuscarProveedor pbp = new BuscarProveedor(principalAdmin);
+            principalAdmin.mostrarPanel(pbp);
+        } else {
+            // no hace nada
+        }
     }//GEN-LAST:event_botonCancelarActionPerformed
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         // TODO add your handling code here:
-        
-        String nuevoNombreEmpresa = componenteNombreEmpresa.getEscritura();
-        String nuevoTelefono = componenteTelefono.getEscritura();
-        String nuevoEmail = componenteEmail.getEscritura();
-
-        // Obtener el ID del proveedor
-        int idProveedor = codProveedor;
-
-        // Crear una instancia de Proveedor con los nuevos valores
-        Proveedor proveedorModificado = new Proveedor(idProveedor, nuevoNombreEmpresa, Integer.parseInt(nuevoTelefono), nuevoEmail);
-
-        // Crear una instancia de ProveedorDao
-        ManagerConexion managerConexion = new ManagerConexion();
-        ProveedorDao proveedorDao = new ProveedorDao(managerConexion);
-
-        // Intentar actualizar el proveedor en la base de datos
-        boolean exito = proveedorDao.actualizarProveedor(proveedorModificado);
-
-        // Verificar si la actualización fue exitosa
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Proveedor modificado correctamente.");
-            BuscarProveedor pbp = new BuscarProveedor(principalAdmin);
-            principalAdmin.mostrarPanel(pbp);
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al modificar el proveedor.");
-        }
+       momdificar();
     }//GEN-LAST:event_botonModificarActionPerformed
 
 

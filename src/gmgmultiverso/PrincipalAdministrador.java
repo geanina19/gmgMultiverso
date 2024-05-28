@@ -139,15 +139,17 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         menuArchivo = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
         menuGestion = new javax.swing.JMenu();
-        proveedores = new javax.swing.JMenu();
+        menuProveedores = new javax.swing.JMenu();
         itemBuscarProveedor = new javax.swing.JMenuItem();
         itemAnadirProveedor = new javax.swing.JMenuItem();
-        empleados = new javax.swing.JMenu();
+        menuEmpleados = new javax.swing.JMenu();
         itemBuscarEmpleado = new javax.swing.JMenuItem();
         itemAnadirEmpleado = new javax.swing.JMenuItem();
-        productos = new javax.swing.JMenu();
+        menuProductos = new javax.swing.JMenu();
         itemBuscarProducto = new javax.swing.JMenuItem();
         itemAnadirProducto = new javax.swing.JMenuItem();
+        menuPedidos = new javax.swing.JMenu();
+        menuInformes = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
@@ -207,8 +209,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuGestion.setText("Gestión");
 
-        proveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
-        proveedores.setText("Proveedores");
+        menuProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
+        menuProveedores.setText("Proveedores");
 
         itemBuscarProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarProveedor.setText("Buscar");
@@ -217,7 +219,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 itemBuscarProveedorActionPerformed(evt);
             }
         });
-        proveedores.add(itemBuscarProveedor);
+        menuProveedores.add(itemBuscarProveedor);
 
         itemAnadirProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProveedor.setText("Añadir");
@@ -226,41 +228,49 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 itemAnadirProveedorActionPerformed(evt);
             }
         });
-        proveedores.add(itemAnadirProveedor);
+        menuProveedores.add(itemAnadirProveedor);
 
-        menuGestion.add(proveedores);
+        menuGestion.add(menuProveedores);
 
-        empleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
-        empleados.setText("Empleados");
+        menuEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
+        menuEmpleados.setText("Empleados");
 
         itemBuscarEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarEmpleado.setText("Buscar");
-        empleados.add(itemBuscarEmpleado);
+        menuEmpleados.add(itemBuscarEmpleado);
 
         itemAnadirEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirEmpleado.setText("Añadir");
-        empleados.add(itemAnadirEmpleado);
+        menuEmpleados.add(itemAnadirEmpleado);
 
-        menuGestion.add(empleados);
+        menuGestion.add(menuEmpleados);
 
-        productos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
-        productos.setText("Productos");
+        menuProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
+        menuProductos.setText("Productos");
 
         itemBuscarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarProducto.setText("Buscar");
-        productos.add(itemBuscarProducto);
+        menuProductos.add(itemBuscarProducto);
 
         itemAnadirProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProducto.setText("Añadir");
-        productos.add(itemAnadirProducto);
+        menuProductos.add(itemAnadirProducto);
 
-        menuGestion.add(productos);
+        menuGestion.add(menuProductos);
+
+        menuPedidos.setText("Pedidos");
+        menuGestion.add(menuPedidos);
+
+        menuInformes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/graficox20.png"))); // NOI18N
+        menuInformes.setText("Informes");
+        menuGestion.add(menuInformes);
 
         jMenuBar1.add(menuGestion);
 
         menuAyuda.setText("Ayuda");
 
-        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
+        jMenuItem1.setText("Ver ayuda");
         menuAyuda.add(jMenuItem1);
 
         jMenuBar1.add(menuAyuda);
@@ -709,7 +719,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu empleados;
     private javax.swing.JMenuItem itemAnadirEmpleado;
     private javax.swing.JMenuItem itemAnadirProducto;
     private javax.swing.JMenuItem itemAnadirProveedor;
@@ -726,12 +735,15 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
+    private javax.swing.JMenu menuEmpleados;
     private javax.swing.JMenu menuGestion;
+    private javax.swing.JMenu menuInformes;
+    private javax.swing.JMenu menuPedidos;
     private javax.swing.JMenu menuPerfil;
+    private javax.swing.JMenu menuProductos;
+    private javax.swing.JMenu menuProveedores;
     private javax.swing.JMenu menuTema;
     private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JMenu productos;
-    private javax.swing.JMenu proveedores;
     private javax.swing.JMenuItem temaOp1;
     private javax.swing.JMenuItem temaOp10;
     private javax.swing.JMenuItem temaOp2;

@@ -28,6 +28,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
         initComponents();
         this.setSize(1091, 642);
         botonAnadir.setEnabled(false);
+        visorErrores.setEditable(false);
         
         // Inicializar la lista con los nombres de los campos obligatorios
         listaCamposObligPorCompletar.add(componenteNombreEmpresa.getEtiqueta());

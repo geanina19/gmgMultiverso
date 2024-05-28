@@ -10,10 +10,14 @@ import com.formdev.flatlaf.intellijthemes.*;
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
+import gmgmultiverso.db.ManagerConexion;
+import gmgmultiverso.db.dao.EmpleadoDao;
+import gmgmultiverso.model.Empleado;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -30,8 +34,12 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class PrincipalAdministrador extends javax.swing.JFrame 
 {
+    
+    BuscarProveedor buscarproveedor;
+    private int idEmpleado;
+    private EmpleadoDao empleadoDao;
 
-    private String nombreUsuario;
+    /**
    
     /**
      * Creates new form PrincipalGmgMultiverso
@@ -42,15 +50,16 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         
     }
     
-    public PrincipalAdministrador(String nombreUsuario) 
+    public PrincipalAdministrador(int idEmpleado) 
     {
         initComponents();
-        this.nombreUsuario = nombreUsuario;
+        this.idEmpleado = idEmpleado;
         this.setSize(1326, 670);
+        
+        this.empleadoDao = new EmpleadoDao(new ManagerConexion());
         
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
-        
         //Para que el logo esté centrado en la pantalla
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -60,7 +69,10 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(labelLogo, gbc);
         
-        itemCerrarSesion.setText("Cerrar sesión de " + nombreUsuario);
+        // Obtener el nombre del empleado usando el EmpleadoDao
+        String nombreEmpleado = empleadoDao.obtenerNombreEmpleado(idEmpleado);
+        itemCerrarSesion.setText("Cerrar sesión de " + nombreEmpleado);
+        
     }
     
     //------Cambiar Logo dependiendo del tema
@@ -70,6 +82,64 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         
     }
     
+    public void mostrarPanel(JPanel panel) {
+        panel.setSize(panelPrincipal.getSize());
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(panel, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    
+    public void mostrarEditarProveedor(int codigoProveedor, BuscarProveedor buscarProveedor) {
+        EditarProveedor ep = new EditarProveedor(codigoProveedor, buscarProveedor);
+        ep.setSize(panelPrincipal.getSize());
+        
+        panelPrincipal.removeAll();
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+        panelPrincipal.add(ep, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    
+    public void mostrarEditarEmpleado(int codigoEmpleado, BuscarEmpleado buscarEmpleado) {
+        EditarEmpleado ee = new EditarEmpleado(codigoEmpleado, buscarEmpleado);
+        ee.setSize(panelPrincipal.getSize());
+        
+        panelPrincipal.removeAll();
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+        panelPrincipal.add(ee, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
+    }
     
     
     /**
@@ -88,15 +158,17 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         menuArchivo = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
         menuGestion = new javax.swing.JMenu();
-        proveedores = new javax.swing.JMenu();
+        menuProveedores = new javax.swing.JMenu();
         itemBuscarProveedor = new javax.swing.JMenuItem();
         itemAnadirProveedor = new javax.swing.JMenuItem();
-        empleados = new javax.swing.JMenu();
+        menuEmpleados = new javax.swing.JMenu();
         itemBuscarEmpleado = new javax.swing.JMenuItem();
         itemAnadirEmpleado = new javax.swing.JMenuItem();
-        productos = new javax.swing.JMenu();
+        menuProductos = new javax.swing.JMenu();
         itemBuscarProducto = new javax.swing.JMenuItem();
         itemAnadirProducto = new javax.swing.JMenuItem();
+        menuPedidos = new javax.swing.JMenu();
+        menuInformes = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
@@ -156,8 +228,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuGestion.setText("Gestión");
 
-        proveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
-        proveedores.setText("Proveedores");
+        menuProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/proveedores.png"))); // NOI18N
+        menuProveedores.setText("Proveedores");
 
         itemBuscarProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarProveedor.setText("Buscar");
@@ -166,7 +238,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 itemBuscarProveedorActionPerformed(evt);
             }
         });
-        proveedores.add(itemBuscarProveedor);
+        menuProveedores.add(itemBuscarProveedor);
 
         itemAnadirProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProveedor.setText("Añadir");
@@ -175,41 +247,54 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 itemAnadirProveedorActionPerformed(evt);
             }
         });
-        proveedores.add(itemAnadirProveedor);
+        menuProveedores.add(itemAnadirProveedor);
 
-        menuGestion.add(proveedores);
+        menuGestion.add(menuProveedores);
 
-        empleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
-        empleados.setText("Empleados");
+        menuEmpleados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/empleados.png"))); // NOI18N
+        menuEmpleados.setText("Empleados");
 
         itemBuscarEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarEmpleado.setText("Buscar");
-        empleados.add(itemBuscarEmpleado);
+        itemBuscarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBuscarEmpleadoActionPerformed(evt);
+            }
+        });
+        menuEmpleados.add(itemBuscarEmpleado);
 
         itemAnadirEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirEmpleado.setText("Añadir");
-        empleados.add(itemAnadirEmpleado);
+        menuEmpleados.add(itemAnadirEmpleado);
 
-        menuGestion.add(empleados);
+        menuGestion.add(menuEmpleados);
 
-        productos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
-        productos.setText("Productos");
+        menuProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
+        menuProductos.setText("Productos");
 
         itemBuscarProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarProducto.setText("Buscar");
-        productos.add(itemBuscarProducto);
+        menuProductos.add(itemBuscarProducto);
 
         itemAnadirProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProducto.setText("Añadir");
-        productos.add(itemAnadirProducto);
+        menuProductos.add(itemAnadirProducto);
 
-        menuGestion.add(productos);
+        menuGestion.add(menuProductos);
+
+        menuPedidos.setText("Pedidos");
+        menuGestion.add(menuPedidos);
+
+        menuInformes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/graficox20.png"))); // NOI18N
+        menuInformes.setText("Informes");
+        menuGestion.add(menuInformes);
 
         jMenuBar1.add(menuGestion);
 
         menuAyuda.setText("Ayuda");
 
-        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
+        jMenuItem1.setText("Ver ayuda");
         menuAyuda.add(jMenuItem1);
 
         jMenuBar1.add(menuAyuda);
@@ -530,7 +615,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         panelPrincipal.repaint();
         */
 
-        BuscarProveedor pbp = new BuscarProveedor();
+        BuscarProveedor pbp = new BuscarProveedor(this);
         pbp.setSize(panelPrincipal.getSize());
 
         // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
@@ -569,7 +654,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
     private void menuPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPerfilMouseClicked
         // TODO add your handling code here:
-        PerfilAdministrador pa = new PerfilAdministrador(nombreUsuario);
+        PerfilAdministrador pa = new PerfilAdministrador(idEmpleado);
         pa.setSize(panelPrincipal.getSize());
 
         // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
@@ -621,6 +706,28 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     
     }//GEN-LAST:event_itemAnadirProveedorActionPerformed
 
+    private void itemBuscarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBuscarEmpleadoActionPerformed
+        // TODO add your handling code here:
+        BuscarEmpleado be = new BuscarEmpleado(this);
+        be.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(be, gbc);
+        revalidate();
+        repaint();
+        
+    }//GEN-LAST:event_itemBuscarEmpleadoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -658,7 +765,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu empleados;
     private javax.swing.JMenuItem itemAnadirEmpleado;
     private javax.swing.JMenuItem itemAnadirProducto;
     private javax.swing.JMenuItem itemAnadirProveedor;
@@ -675,12 +781,15 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;
+    private javax.swing.JMenu menuEmpleados;
     private javax.swing.JMenu menuGestion;
+    private javax.swing.JMenu menuInformes;
+    private javax.swing.JMenu menuPedidos;
     private javax.swing.JMenu menuPerfil;
+    private javax.swing.JMenu menuProductos;
+    private javax.swing.JMenu menuProveedores;
     private javax.swing.JMenu menuTema;
     private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JMenu productos;
-    private javax.swing.JMenu proveedores;
     private javax.swing.JMenuItem temaOp1;
     private javax.swing.JMenuItem temaOp10;
     private javax.swing.JMenuItem temaOp2;

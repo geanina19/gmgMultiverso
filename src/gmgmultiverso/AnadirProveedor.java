@@ -28,6 +28,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
         initComponents();
         this.setSize(1091, 642);
         botonAnadir.setEnabled(false);
+        visorErrores.setEditable(false);
         
         // Inicializar la lista con los nombres de los campos obligatorios
         listaCamposObligPorCompletar.add(componenteNombreEmpresa.getEtiqueta());
@@ -343,17 +344,22 @@ public class AnadirProveedor extends javax.swing.JPanel {
         String telefonoTexto = componenteTelefono.getEscritura();
         String email = componenteEmail.getEscritura();
 
-        // Validar y convertir el teléfono a un número entero
-        int telefono;
-        try {
-            telefono = Integer.parseInt(telefonoTexto);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El teléfono debe ser un número entero", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        
+        if (!telefonoTexto.matches("\\d{9}") || !email.contains("@")) {
+            String mensajeError = "";
+            if (!telefonoTexto.matches("\\d{9}")) {
+                mensajeError += "El teléfono debe contener 9 dígitos numéricos.\n";
+            }
+            if (!email.contains("@")) {
+                mensajeError += "El email debe ser válido.\n";
+            }
+            JOptionPane.showMessageDialog(this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Crear un objeto Proveedor con los datos ingresados
-        Proveedor nuevoProveedor = new Proveedor(nombre, telefono, email);
+        Proveedor nuevoProveedor = new Proveedor(nombre, Integer.parseInt(telefonoTexto), email);
 
         // Instanciar ProveedorDao
         ManagerConexion managerConexion = new ManagerConexion();

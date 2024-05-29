@@ -17,12 +17,14 @@ import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import gmgmultiverso.db.dao.EmpleadoDao;
 import gmgmultiverso.model.Empleado;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ContainerListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,26 +57,10 @@ public class LoginAdmin extends javax.swing.JFrame {
         this.setSize(860, 500);
         //[860, 500]
         this.setLocationRelativeTo(null);
-/*
-        this.jPanel1.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
-                BufferedImage img = null;
-                try {
-                    img = ImageIO.read(new File("imagenes/foandoLogin.png"));
-                    Image dimg = img.getScaledInstance(labelFondoLogin.getWidth(), labelFondoLogin.getHeight(), Image.SCALE_SMOOTH);
-                    ImageIcon imageIcon = new ImageIcon(dimg);
-                    labelFondoLogin.setIcon(imageIcon);
-                    jPanel1.repaint();
-                    jPanel1.revalidate();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
+        
+        //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
 
-        });
-*/
         ingresarContrasenia.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -85,6 +71,19 @@ public class LoginAdmin extends javax.swing.JFrame {
         });
     }
     
+    //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
+    }
+
+
     
     public boolean validarCredenciales(String usuario, String contrasenia) {
         // Crear una instancia de EmpleadoDao
@@ -160,6 +159,7 @@ public class LoginAdmin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Iniciar sesión Administrador");
+        setIconImage(getIconImage());
         setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
 

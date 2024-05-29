@@ -43,7 +43,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
     private MouseListener mouseClickListener = null;
     private MouseListener mouseOrdenarTabla = null;
 
-    ManagerConexion con = new ManagerConexion();
+    ManagerConexion managerConexion = new ManagerConexion();
     Connection conet;
     
     Statement st;
@@ -55,7 +55,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
     DefaultTableModel miModelo = new DefaultTableModel(null, cabecera);
     
     //PARA HACERLO CON EL DAO 
-    ProveedorDao prov = new ProveedorDao(con);
+    ProveedorDao prov = new ProveedorDao(managerConexion);
     
     /**
      * Creates new form PrincipalBuscarProveedor
@@ -108,12 +108,13 @@ public class BuscarProveedor extends javax.swing.JPanel {
         
     }
     
+    //-------------Métodos-----------------
+    
     public PrincipalAdministrador getPrincipalAdmin() {
         return this.principalAdmin;
     }
     
-    //-------------Métodos-----------------
-
+    
     public void quitarListener()
     {
         tablaBuscarProveedor.removeMouseListener(mouseClickListener);
@@ -159,9 +160,9 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
                     try {
 
-                        conet=con.abrirConexion();
-                        st=conet.createStatement();
-                        rs=st.executeQuery(codigoProveedorSeleccionado);
+                        conet = managerConexion.abrirConexion();
+                        st = conet.createStatement();
+                        rs = st.executeQuery(codigoProveedorSeleccionado);
 
                         if (rs.next()) {
                             codigoProveedor = rs.getInt("id");
@@ -174,7 +175,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
                     }
 
                     if (column == editarColumna) {
-                        abrirFrameEditar(codigoProveedor);
+                        abrirEditarProveedor(codigoProveedor);
                     } else if (column == eliminarColumna) {
                         confirmarEliminarProveedor(codigoProveedor);
                     }
@@ -186,9 +187,9 @@ public class BuscarProveedor extends javax.swing.JPanel {
     }
 
     
-    //------------------------------Abrir Frame Editar de Proveedores------------------------------
+    //------------------------------Abrir Editar Proveedor------------------------------
     
-    public void abrirFrameEditar(int codigoProveedor) 
+    public void abrirEditarProveedor(int codigoProveedor) 
     {
         principalAdmin.mostrarEditarProveedor(codigoProveedor, this);
     }
@@ -275,7 +276,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         
         String slqPaises = "select nombre_empresa, id from proveedor";
         try{
-            conet = con.abrirConexion();
+            conet = managerConexion.abrirConexion();
             st = conet.createStatement();
             rs = st.executeQuery(slqPaises);
             
@@ -302,28 +303,39 @@ public class BuscarProveedor extends javax.swing.JPanel {
             return; 
         }
 
-        // Obtener la lista completa de proveedores
-        List<Proveedor> proveedores = prov.list();
-
-        // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
+        // Lista para almacenar los proveedores filtrados
         List<Proveedor> proveedoresFiltrados = new ArrayList<>();
-        for (Proveedor proveedor : proveedores) {
-            if (codProveedor != -1) {
-                if (proveedor.getId() == codProveedor) {
-                    proveedoresFiltrados.add(proveedor);
-                }
-            } else {
-                // Si el código de proveedor es -1, mostrar todos los proveedores
-                proveedoresFiltrados = proveedores;
-            }
-        }
 
-        // Filtrar la lista de proveedores por el número de teléfono ingresado
-        List<Proveedor> proveedoresFiltradosPorTelefono = new ArrayList<>();
-        for (Proveedor proveedor : proveedoresFiltrados) {
-            // Verificar si el número de teléfono del proveedor comienza con el número ingresado
-            if (Integer.toString(proveedor.getTelefono()).startsWith(telefono)) {
-                proveedoresFiltradosPorTelefono.add(proveedor);
+        // Si no se ingresa un número de teléfono, simplemente mostrar todos los proveedores con el codProveedor
+        if (telefono.isEmpty()) {
+            // Obtener la lista completa de proveedores
+            List<Proveedor> proveedores = prov.list();
+
+            // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
+            for (Proveedor proveedor : proveedores) {
+                if (codProveedor != -1) {
+                    if (proveedor.getId() == codProveedor) {
+                        proveedoresFiltrados.add(proveedor);
+                    }
+                } else {
+                    // Si el código de proveedor es -1, mostrar todos los proveedores
+                    proveedoresFiltrados = proveedores;
+                }
+            }
+        } else {
+            // Obtener la lista de proveedores filtrados por teléfono
+            List<Proveedor> proveedoresPorTelefono = prov.buscarProveedoresPorTelefono(Integer.parseInt(telefono));
+
+            // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
+            for (Proveedor proveedor : proveedoresPorTelefono) {
+                if (codProveedor != -1) {
+                    if (proveedor.getId() == codProveedor) {
+                        proveedoresFiltrados.add(proveedor);
+                    }
+                } else {
+                    // Si el código de proveedor es -1, mostrar todos los proveedores filtrados por teléfono
+                    proveedoresFiltrados = proveedoresPorTelefono;
+                }
             }
         }
 
@@ -334,10 +346,10 @@ public class BuscarProveedor extends javax.swing.JPanel {
         ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
         ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
 
-        boolean hayResultados = !proveedoresFiltradosPorTelefono.isEmpty();
+        boolean hayResultados = !proveedoresFiltrados.isEmpty();
 
         // Llenar el modelo con los resultados de la búsqueda
-        for (Proveedor proveedor : proveedoresFiltradosPorTelefono) {
+        for (Proveedor proveedor : proveedoresFiltrados) {
             Object[] rowData = new Object[]{
                 proveedor.getNombre_empresa(),
                 proveedor.getTelefono(),
@@ -478,7 +490,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(409, 409, 409)
                                 .addComponent(botonReiniciar)))
-                        .addGap(0, 228, Short.MAX_VALUE))
+                        .addGap(0, 229, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -495,9 +507,9 @@ public class BuscarProveedor extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
+                        .addGap(26, 26, 26)
                         .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(29, 29, 29)
                         .addComponent(botonReiniciar)))
                 .addContainerGap(72, Short.MAX_VALUE))
         );

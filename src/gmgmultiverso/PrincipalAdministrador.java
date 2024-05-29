@@ -17,6 +17,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,6 +61,9 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         
         this.empleadoDao = new EmpleadoDao(new ManagerConexion());
         
+        //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
+        
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
         //Para que el logo esté centrado en la pantalla
@@ -73,6 +79,18 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         String nombreEmpleado = empleadoDao.obtenerNombreEmpleado(idEmpleado);
         itemCerrarSesion.setText("Cerrar sesión de " + nombreEmpleado);
         
+    }
+    
+    //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
     }
     
     //------Cambiar Logo dependiendo del tema
@@ -114,6 +132,25 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         gbc.anchor = GridBagConstraints.CENTER;
         
         panelPrincipal.add(ep, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    
+    public void mostrarEditarEmpleado(int codigoEmpleado, BuscarEmpleado buscarEmpleado) {
+        EditarEmpleado ee = new EditarEmpleado(codigoEmpleado, buscarEmpleado);
+        ee.setSize(panelPrincipal.getSize());
+        
+        panelPrincipal.removeAll();
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+        panelPrincipal.add(ee, gbc);
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
     }
@@ -167,7 +204,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         temaOp9 = new javax.swing.JMenuItem();
         temaOp10 = new javax.swing.JMenuItem();
         menuPerfil = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Principal GmgMultiverso");
@@ -237,10 +273,20 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         itemBuscarEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lupa.png"))); // NOI18N
         itemBuscarEmpleado.setText("Buscar");
+        itemBuscarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBuscarEmpleadoActionPerformed(evt);
+            }
+        });
         menuEmpleados.add(itemBuscarEmpleado);
 
         itemAnadirEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirEmpleado.setText("Añadir");
+        itemAnadirEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAnadirEmpleadoActionPerformed(evt);
+            }
+        });
         menuEmpleados.add(itemAnadirEmpleado);
 
         menuGestion.add(menuEmpleados);
@@ -400,9 +446,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         jMenuBar1.add(menuPerfil);
 
-        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/planeta.png"))); // NOI18N
-        jMenuBar1.add(jMenu2);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -418,7 +461,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
+                .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -682,6 +725,59 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     
     }//GEN-LAST:event_itemAnadirProveedorActionPerformed
 
+    private void itemBuscarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBuscarEmpleadoActionPerformed
+        // TODO add your handling code here:
+        BuscarEmpleado be = new BuscarEmpleado(this);
+        be.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(be, gbc);
+        revalidate();
+        repaint();
+        
+    }//GEN-LAST:event_itemBuscarEmpleadoActionPerformed
+
+    private void itemAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnadirEmpleadoActionPerformed
+        // TODO add your handling code here:
+        AnadirEmpleado ae = new AnadirEmpleado();
+        ae.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir ap ocupando todo el espacio disponible horizontalmente y verticalmente
+        panelPrincipal.removeAll();
+        panelPrincipal.setLayout(new GridBagLayout());
+
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints innerGbc = new GridBagConstraints();
+        innerGbc.gridx = 0;
+        innerGbc.gridy = 0;
+        innerGbc.anchor = GridBagConstraints.CENTER;
+        wrapperPanel.add(ae, innerGbc);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(wrapperPanel, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+
+    }//GEN-LAST:event_itemAnadirEmpleadoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -729,7 +825,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemClaro;
     private javax.swing.JMenu itemMas;
     private javax.swing.JMenuItem itemOscuro;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelLogo;

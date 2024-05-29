@@ -66,7 +66,7 @@ public class EmpleadoDao {
         }
     }
     
-    public boolean crearEmpleado(Empleado empleado) {
+    public boolean anadirEmpleado(Empleado empleado) {
         Connection conect = null;
     
         try {
@@ -127,6 +127,8 @@ public class EmpleadoDao {
             }
         }
     }
+    
+    //-------------Actualizar empleado-------------
     
     public boolean actualizarEmpleado(Empleado empleado) {
         Connection conect = null;
@@ -269,10 +271,65 @@ public class EmpleadoDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
-                    // Manejar la excepción de cierre de conexión si es necesario
+                    e.printStackTrace();
                 }
             }
         }
     }
+    
+    public List<Empleado> buscarEmpleadosPorNombre(String nombre) {
+        List<Empleado> empleados = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM empleado WHERE nombre LIKE ?";
+
+        try (Connection conet = con.abrirConexion();
+             PreparedStatement pstmt = conet.prepareStatement(consultaSQL)) {
+
+            pstmt.setString(1, "%" + nombre + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Empleado empleado = new Empleado();
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setApellido(rs.getString("apellido"));
+                empleado.setContrasenia(rs.getString("contrasenia"));
+                empleado.setTelefono(rs.getInt("telefono"));
+                empleado.setEmail(rs.getString("email"));
+                empleados.add(empleado);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return empleados;
+    }
+    
+    public List<Empleado> buscarEmpleadosPorApellido(String apellido) {
+        List<Empleado> empleados = new ArrayList<>();
+        String consultaSQL = "SELECT * FROM empleado WHERE apellido LIKE ?";
+
+        try (Connection conet = con.abrirConexion();
+             PreparedStatement pstmt = conet.prepareStatement(consultaSQL)) {
+
+            pstmt.setString(1, "%" + apellido + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Empleado empleado = new Empleado();
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setApellido(rs.getString("apellido"));
+                empleado.setContrasenia(rs.getString("contrasenia"));
+                empleado.setTelefono(rs.getInt("telefono"));
+                empleado.setEmail(rs.getString("email"));
+                empleados.add(empleado);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return empleados;
+    }
+
 
 }

@@ -31,7 +31,8 @@ public class AnadirEmpleado extends javax.swing.JPanel {
         botonAnadir.setEnabled(false);
         visorErrores.setEditable(false);
         
-        //componenteContrasenia.getDocument().setDocumentFilter(new PasswordDocumentFilter());
+        // Convertir componenteContrasenia a campo de contraseña
+        componenteContrasenia.convertirAContrasena();
 
         
         // Inicializar la lista con los nombres de los campos obligatorios
@@ -297,11 +298,6 @@ public class AnadirEmpleado extends javax.swing.JPanel {
             e1.printStackTrace();
         }
         try {
-            componenteContrasenia = new propiedades.Componente2Anadir();
-        } catch (java.beans.PropertyVetoException e1) {
-            e1.printStackTrace();
-        }
-        try {
             componenteTelefono = new propiedades.Componente2Anadir();
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
@@ -311,6 +307,11 @@ public class AnadirEmpleado extends javax.swing.JPanel {
         botonReiniciar = new javax.swing.JButton();
         try {
             componenteEmail = new propiedades.Componente2Anadir();
+        } catch (java.beans.PropertyVetoException e1) {
+            e1.printStackTrace();
+        }
+        try {
+            componenteContrasenia = new propiedades.Componente2Anadir();
         } catch (java.beans.PropertyVetoException e1) {
             e1.printStackTrace();
         }
@@ -327,9 +328,6 @@ public class AnadirEmpleado extends javax.swing.JPanel {
 
         componenteApellido.setEtiqueta("Apellido :");
         componenteApellido.setObligatorio(true);
-
-        componenteContrasenia.setEtiqueta("Contraseña :");
-        componenteContrasenia.setObligatorio(true);
 
         componenteTelefono.setEtiqueta("Teléfono :");
         componenteTelefono.setObligatorio(true);
@@ -355,28 +353,30 @@ public class AnadirEmpleado extends javax.swing.JPanel {
         componenteEmail.setEtiqueta("Email :");
         componenteEmail.setObligatorio(true);
 
+        componenteContrasenia.setEtiqueta("Clave :");
+        componenteContrasenia.setObligatorio(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(456, 456, 456)
-                .addComponent(labelTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(componenteApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(componenteNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(componenteContrasenia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(componenteTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                        .addComponent(componenteEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(componenteApellido, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                    .addComponent(componenteNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                    .addComponent(componenteTelefono, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                    .addComponent(componenteEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(componenteContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(126, 126, 126)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(53, 53, 53))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(456, 456, 456)
+                .addComponent(labelTitulo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

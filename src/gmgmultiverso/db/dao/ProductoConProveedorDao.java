@@ -28,17 +28,9 @@ public class ProductoConProveedorDao {
         try {
             conect = con.abrirConexion();
 
-            /*
-            SELECT producto.id, proveedor.nombre AS nombre_proveedor, producto.nombre, producto.precio, producto.unidad_existente 
-FROM producto 
-JOIN proveedor ON producto.id_proveedor = proveedor.id;
-
-            */
-            
-            String query = "SELECT p.id, c.nombre AS nombre_cliente, p.fecha_pedido, e.nombre AS nombre_empleado, p.estado, p.ultima_actualizacion " +
-                           "FROM pedido p " +
-                           "JOIN cliente c ON p.id_cliente = c.id " +
-                           "JOIN empleado e ON p.id_empleado = e.id";
+            String query = "SELECT p.id AS id_producto, pr.nombre_empresa AS nombre_proveedor, p.nombre AS nombre_producto, p.precio, p.unidad_existente "
+                    + "FROM producto p "
+                    + "JOIN proveedor pr ON p.id_proveedor = pr.id";
 
             var ps = conect.prepareStatement(query);
 
@@ -46,9 +38,9 @@ JOIN proveedor ON producto.id_proveedor = proveedor.id;
             List<ProductoConProveedor> productos = new ArrayList<>();
             while (rs.next()) {
                 ProductoConProveedor producto = new ProductoConProveedor(
-                        rs.getInt("id"),
-                        rs.getString("nombre_proveedor"),
-                        rs.getString("nombre"),
+                        rs.getInt("id_producto"),
+                        rs.getString("nombre_empresa"),
+                        rs.getString("nombre_producto"),
                         rs.getDouble("precio"),
                         rs.getInt("unidad_existente")
                 );

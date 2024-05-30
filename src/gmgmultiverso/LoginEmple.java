@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 public class LoginEmple extends javax.swing.JFrame {
 
     private EmpleadoDao empleadoDao;
-    int idEmpleado;
     
     public LoginEmple() {
         initComponents();
@@ -111,21 +110,12 @@ public class LoginEmple extends javax.swing.JFrame {
         String contraseña = new String(textFieldPassword.getPassword());
 
         if (empleadoDao.verificarCredenciales(usuario, contraseña)) {
-//            PrincipalEmple pEmple = new PrincipalEmple();
-//            pEmple.setVisible(true);
-            abrirVentanaPrincipalPedido(idEmpleado);
+            PrincipalEmple pEmple = new PrincipalEmple();
+            pEmple.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    
-    private void abrirVentanaPrincipalPedido(int codigoPedido) {
-        
-        PrincipalEmple principal = new PrincipalEmple(this, true, codigoPedido);
-        principal.setVisible(true);
-        
-        
     }
     
     /**

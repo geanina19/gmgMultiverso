@@ -19,23 +19,21 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedDarkC
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.PedidoConNombreDao;
 import gmgmultiverso.model.PedidoConNombre;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.net.URL;
+import java.awt.Color;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -43,289 +41,85 @@ import javax.swing.table.TableRowSorter;
  * @author monic
  */
 public class PrincipalEmple extends javax.swing.JFrame {
-    //CONEXION
+
     ManagerConexion con = new ManagerConexion();
-    Connection conet;  
+    Connection conet;
+    
     Statement st;
     ResultSet rs;
+    Object[] cabecera = new Object[]{"Numero de pedido", "ID cliente", "Fecha pedido", "ID empleado", "Estado del pedido","Última actualización"};
+    DefaultTableModel miModelo = new DefaultTableModel(null, cabecera);
     
-    private DefaultTableModel miModelo;
-    
-    int codigoEmpleado;
-
+   // PedidoDao pedido = new PedidoDao(con);
     PedidoConNombreDao pedidoCompleto = new PedidoConNombreDao(con);
     
-    private TableRowSorter<DefaultTableModel> sorter;
-    public PrincipalEmple(){
+    public PrincipalEmple() {
         initComponents();
-    }
-    
-    public PrincipalEmple(java.awt.Frame parent, boolean modal,int codigoEmpleado) {
-        initComponents();
-        this.codigoEmpleado = codigoEmpleado;
-        anadirDatosTabla(codigoEmpleado);
-        this.setIconImage(getIconImage());
-        
-        sorter = new TableRowSorter<>(miModelo);
-        tablePedidos.setRowSorter(sorter);
+        anadirDatosTabla();
         
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
-        tablePedidos.setRowHeight(50); // Ajusta la altura de las filas
+        tablePedidos.setRowHeight(25); // Ajusta la altura de las filas
         tablePedidos.getColumnModel().getColumn(0).setPreferredWidth(25); // Ajusta el ancho de la primera columna
      //   tabla.setEnabled(false);
         tablePedidos.setModel(miModelo);
         // Esto hace que la tabla no sea editable
         tablePedidos.setDefaultEditor(Object.class, null); 
         // Esto permite la selección de una sola fila
-//        tablePedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION); 
+        tablePedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION); 
 
         // Agregar ordenación alfabética al hacer clic en los encabezados de las columnas
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
-        tablePedidos.setRowSorter(sorter);        
+        tablePedidos.setRowSorter(sorter);
+    }
+
+    public void anadirDatosTabla(){
+       // Obtener lista de pedidos
+        List<PedidoConNombre> pedidos = pedidoCompleto.list();
         
-    }
-    
-//    public PrincipalEmple() {
-//        initComponents();
-//        anadirDatosTabla();
-//        this.setIconImage(getIconImage());
-//        
-//        sorter = new TableRowSorter<>(miModelo);
-//        tablePedidos.setRowSorter(sorter);
-//        
-//        //La pantalla se abra en el centro
-//        this.setLocationRelativeTo(null);
-//        tablePedidos.setRowHeight(50); // Ajusta la altura de las filas
-//        tablePedidos.getColumnModel().getColumn(0).setPreferredWidth(25); // Ajusta el ancho de la primera columna
-//     //   tabla.setEnabled(false);
-//        tablePedidos.setModel(miModelo);
-//        // Esto hace que la tabla no sea editable
-//        tablePedidos.setDefaultEditor(Object.class, null); 
-//        // Esto permite la selección de una sola fila
-////        tablePedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION); 
-//
-//        // Agregar ordenación alfabética al hacer clic en los encabezados de las columnas
-//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
-//        tablePedidos.setRowSorter(sorter);
-//    }
-//    
-
-    
-    @Override
-    public Image getIconImage() {
-        URL url = getClass().getResource("/imagenes/planeta.png") ;
-        if (url != null){
-            return Toolkit.getDefaultToolkit().getImage(url) ;
-        } else {
-            System.err.println("Resource not found: /imagenes/planeta.png");
-            return  null;
-        }
-    }
-    
-    /*--------- METODO PARA LOS ICONOS --------------*/
-    public ImageIcon crearImageIcon(String path) {
-        URL urlImagen = getClass().getResource(path);
-        if (urlImagen != null) 
-        {
-            ImageIcon imagen = new ImageIcon(urlImagen);
-            return new ImageIcon(imagen.getImage().getScaledInstance(23, 23, java.awt.Image.SCALE_SMOOTH));
-        } 
-        else
-        {
-            System.err.println("No se pudo encontrar el archivo: " + path);
-            return null;
-        }
-    }
-    
-/*--------------------- METODO PARA AÑADIR LOS DATOS A LA TABLA ------------------*/
-//    public void anadirDatosTabla(){
-//        
-//    
-//       // Obtener lista de pedidos
-//        List<PedidoConNombre> pedidos = pedidoCompleto.list();
-//        miModelo = new DefaultTableModel(new Object[]{
-//                "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización", "Editar"}, 0) {
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                if (column == 4 || column == 6) {
-//                    return ImageIcon.class;
-//                }
-//                return Object.class;
-//            }
-//        };
-//        // imágenes para los botones
-//        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
-//        
-//        // imagenes para los diferentes estados
-//        ImageIcon estado1Icon = crearImageIcon("/imgEmple/recibidoIcono.png");
-//        ImageIcon estado2Icon = crearImageIcon("/imgEmple/preparacionIcono.png");
-//        ImageIcon estado3Icon = crearImageIcon("/imgEmple/enviadoIcono.png");
-//        
-//        for (PedidoConNombre pedido : pedidos) {
-//            ImageIcon estadoIcon;
-//            switch (pedido.getEstado()) {
-//                case 1:
-//                    estadoIcon = estado1Icon;
-//                    break;
-//                case 2:
-//                    estadoIcon = estado2Icon;
-//                    break;
-//                case 3:
-//                    estadoIcon = estado3Icon;
-//                    break;
-//                default:
-//                    estadoIcon = null; 
-//                    break;
-//            }
-//            miModelo.addRow(new Object[]{
-//                pedido.getId(),
-//                pedido.getNombreCliente(),
-//                pedido.getFechaPedido(),
-//                pedido.getNombreEmpleado(),
-//                estadoIcon,
-//                pedido.getUltimaActualizacion(),
-//                editarIcon
-//            });
-//        }
-//        tablePedidos.setModel(miModelo);
-//        
-////        // Crear y aplicar el renderizador de celda centrado
-////        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-////        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-////        // Aplicar el renderizador a cada columna excepto la de imagen
-////        TableColumnModel columnModel = tablePedidos.getColumnModel();
-////        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-////            if (i != 4 && i != 6) { 
-////                columnModel.getColumn(i).setCellRenderer(centerRenderer);
-////            }
-////        }
-////
-////        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-////        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-////        // cambia el color de fondo de los encabezados
-////        headerRenderer.setBackground(Color.LIGHT_GRAY); 
-////        // poner el texto en negrita
-////        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
-////        // Aplicar el renderizador de encabezado a cada columna
-////        JTableHeader tableHeader = tablePedidos.getTableHeader();
-////        tableHeader.setDefaultRenderer(headerRenderer);
-//
-//        // Añadir el MouseListener para el evento de clic
-//        tablePedidos.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                int columnaModificar = tablePedidos.getColumnModel().getColumnIndex("Editar");
-//                int fila = tablePedidos.rowAtPoint(e.getPoint());
-//                if (fila >= 0 && tablePedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-//                    // Código para abrir el panel de edición
-//                    abrirVentanaPedido(fila);
-//                }
-//            }
-//        });
-//        
-//
-//    }
-    public void anadirDatosTabla(int idEmpleado) {
-        // Obtener lista de pedidos
-        List<PedidoConNombre> pedidos = pedidoCompleto.listarPedidosPorIdEmpleado(idEmpleado); // Filtrar por idEmpleado
-
+        // Crear modelo de tabla
         miModelo = new DefaultTableModel(new Object[]{
-                "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización", "Editar"}, 0) {
-            @Override
-            public Class<?> getColumnClass(int column) {
-                if (column == 4 || column == 6) {
-                    return ImageIcon.class;
-                }
-                return Object.class;
-            }
-        };
+            "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización"}, 0);
 
-        // imágenes para los botones
-        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
-
-        // imagenes para los diferentes estados
-        ImageIcon estado1Icon = crearImageIcon("/imgEmple/recibidoIcono.png");
-        ImageIcon estado2Icon = crearImageIcon("/imgEmple/preparacionIcono.png");
-        ImageIcon estado3Icon = crearImageIcon("/imgEmple/enviadoIcono.png");
-
+        // Añadir filas al modelo de la tabla
         for (PedidoConNombre pedido : pedidos) {
-            ImageIcon estadoIcon;
-            switch (pedido.getEstado()) {
-                case 1:
-                    estadoIcon = estado1Icon;
-                    break;
-                case 2:
-                    estadoIcon = estado2Icon;
-                    break;
-                case 3:
-                    estadoIcon = estado3Icon;
-                    break;
-                default:
-                    estadoIcon = null; 
-                    break;
-            }
             miModelo.addRow(new Object[]{
                 pedido.getId(),
                 pedido.getNombreCliente(),
                 pedido.getFechaPedido(),
                 pedido.getNombreEmpleado(),
-                estadoIcon,
-                pedido.getUltimaActualizacion(),
-                editarIcon
+                pedido.getEstado(),
+                pedido.getUltimaActualizacion()
             });
         }
+
+        // Establecer modelo de tabla en tablePedidos
         tablePedidos.setModel(miModelo);
+        
+        // Crear y aplicar el renderizador de celda centrado
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        // Añadir el MouseListener para el evento de clic
-        tablePedidos.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int columnaModificar = tablePedidos.getColumnModel().getColumnIndex("Editar");
-                int fila = tablePedidos.rowAtPoint(e.getPoint());
-                if (fila >= 0 && tablePedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-                    // Código para abrir el panel de edición
-                    abrirVentanaPedido(fila);
-                }
-            }
-        });
-    }
-    
-    
-    
-    
-    /******************* Obtener id de la fila seleccionada *************/
-    private int obtenerCodigoPedido(int fila) {
-        int codigoPedido = -1;
-        try {
-            String nombre = tablePedidos.getValueAt(fila, 1).toString();
-            String fechaStr = tablePedidos.getValueAt(fila, 4).toString();
-
-            // Convertir la fecha a java.sql.Date
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); // Ajustar el formato según sea necesario
-            java.util.Date parsedDate = format.parse(fechaStr);
-            java.sql.Date fechaPedido = new java.sql.Date(parsedDate.getTime());
-            
-            // Obtener el ID del pedido utilizando el método del DAO
-            codigoPedido = pedidoCompleto.getPedidoIdByNombreYFecha(nombre, fechaPedido);
-            System.out.println(codigoPedido);
-        } catch (ParseException e) {
-            e.printStackTrace(); // Manejar la excepción adecuadamente
+        // Aplicar el renderizador a cada columna
+        TableColumnModel columnModel = tablePedidos.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
         }
-        return codigoPedido;
+        
+        // Crear y aplicar el renderizador de encabezado centrado
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        headerRenderer.setBackground(Color.LIGHT_GRAY); // Opcional: cambia el color de fondo de los encabezados
+        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); // Opcional: poner el texto en negrita
 
+        // Aplicar el renderizador de encabezado a cada columna
+        JTableHeader tableHeader = tablePedidos.getTableHeader();
+        tableHeader.setDefaultRenderer(headerRenderer);
+        tablePedidos.setRowHeight(30);
     }
     
-        /*-------------- MODIFICAR PEDIDO --------------*/
 
-    private void abrirVentanaPedido(int codigoPedido) {
-        
-        FrameEditarPedido panelEditar = new FrameEditarPedido(this, true, codigoPedido,this);
-        panelEditar.setVisible(true);
-        
-        
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -337,13 +131,6 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablePedidos = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        textNombre = new javax.swing.JTextField();
-        textFecha = new javax.swing.JTextField();
-        buscarButton = new javax.swing.JButton();
-        labelInicio = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuCerrarSesion = new javax.swing.JMenuItem();
@@ -367,62 +154,19 @@ public class PrincipalEmple extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Gestión de Pedidos");
-        setBackground(new java.awt.Color(255, 204, 153));
-        setResizable(false);
 
         tablePedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
         jScrollPane1.setViewportView(tablePedidos);
-
-        jLabel2.setText("Nombre cliente");
-
-        jLabel1.setText("Fecha del pedido");
-
-        buscarButton.setText("Buscar");
-        buscarButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buscarButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(textNombre)
-                    .addComponent(textFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                .addGap(142, 142, 142)
-                .addComponent(buscarButton)
-                .addContainerGap(665, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscarButton))
-                .addGap(85, 85, 85)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(textFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(158, Short.MAX_VALUE))
-        );
 
         jMenu1.setText("Archivo");
 
@@ -470,7 +214,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gamaColores.png"))); // NOI18N
         jMenu5.setText("Más ...");
 
-        temaOp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzul.png"))); // NOI18N
+        temaOp1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blacoAzul.png"))); // NOI18N
         temaOp1.setText("Blanco - Azul Oscuro");
         temaOp1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -479,7 +223,6 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp1);
 
-        temaOp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzulClaro.png"))); // NOI18N
         temaOp2.setText("Oscuro Claro - Azul Claro");
         temaOp2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -570,23 +313,16 @@ public class PrincipalEmple extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(482, Short.MAX_VALUE))
         );
 
         pack();
@@ -746,10 +482,6 @@ public class PrincipalEmple extends javax.swing.JFrame {
               
     }//GEN-LAST:event_menuCerrarSesionActionPerformed
 
-    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
-
-    }//GEN-LAST:event_buscarButtonActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -786,9 +518,6 @@ public class PrincipalEmple extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buscarButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -796,9 +525,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelInicio;
     private javax.swing.JMenuItem menuCerrar;
     private javax.swing.JMenuItem menuCerrarSesion;
     private javax.swing.JMenuItem menuClaro;
@@ -814,7 +541,5 @@ public class PrincipalEmple extends javax.swing.JFrame {
     private javax.swing.JMenuItem temaOp7;
     private javax.swing.JMenuItem temaOp8;
     private javax.swing.JMenuItem temaOp9;
-    private javax.swing.JTextField textFecha;
-    private javax.swing.JTextField textNombre;
     // End of variables declaration//GEN-END:variables
 }

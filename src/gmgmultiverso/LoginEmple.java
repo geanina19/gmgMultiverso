@@ -6,12 +6,14 @@ package gmgmultiverso;
 
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.EmpleadoDao;
+import gmgmultiverso.model.Empleado;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -104,6 +106,23 @@ public class LoginEmple extends javax.swing.JFrame {
         });                   
     }
 
+        public int obtenerIdUsuario(String usuario, String contrasenia) {      
+
+        // Obtener la lista de empleados con el EmpleadoDao
+        List<Empleado> empleados = empleadoDao.list();
+
+        // Iterar sobre la lista de empleados para buscar el usuario y la contraseña
+        for (Empleado empleado : empleados) {
+            // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
+            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
+                // Si coinciden, devolver el ID del empleado
+                return empleado.getId();
+            }
+        }
+
+        // Si no se encuentra el usuario o la contraseña no coincide, devolver -1
+        return -1;
+    }
     
     private void iniciarSesion() {
         String usuario = textFieldUser.getText();

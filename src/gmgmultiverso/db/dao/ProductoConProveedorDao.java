@@ -41,6 +41,7 @@ public class ProductoConProveedorDao {
                 ProductoConProveedor producto = new ProductoConProveedor(
                         rs.getInt("id_producto"),
                         rs.getInt("id_proveedor"),
+                        rs.getString("nombre_proveedor"),
                         rs.getString("nombre_producto"),
                         rs.getDouble("precio"),
                         rs.getInt("unidad_existente")
@@ -68,7 +69,7 @@ public class ProductoConProveedorDao {
             conect = con.abrirConexion();
             String query = "INSERT INTO producto (nombre, precio, unidad_existente, id_proveedor) VALUES (?, ?, ?, ?)";
             var ps = conect.prepareStatement(query);
-            ps.setString(1, producto.getNombre());
+            ps.setString(1, producto.getNombreProducto());
             ps.setDouble(2, producto.getPrecio());
             ps.setInt(3, producto.getUnidad_existente());
             ps.setInt(4, producto.getIdProveedor());
@@ -113,7 +114,7 @@ public class ProductoConProveedorDao {
         }
     }
     
-    // Método para actualizar un producto
+    
     // Método para actualizar un producto
     public boolean actualizarProducto(ProductoConProveedor producto) {
         Connection conect = null;
@@ -121,7 +122,7 @@ public class ProductoConProveedorDao {
             conect = con.abrirConexion();
             String query = "UPDATE producto SET nombre = ?, precio = ?, unidad_existente = ?, id_proveedor = ? WHERE id = ?";
             var ps = conect.prepareStatement(query);
-            ps.setString(1, producto.getNombre());
+            ps.setString(1, producto.getNombreProducto());
             ps.setDouble(2, producto.getPrecio());
             ps.setInt(3, producto.getUnidad_existente());
             ps.setInt(4, producto.getIdProveedor()); // Ajuste para almacenar el id_proveedor

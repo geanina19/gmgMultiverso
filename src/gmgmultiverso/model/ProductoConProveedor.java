@@ -12,7 +12,8 @@ public class ProductoConProveedor {
     
     private int id;
     private int idProveedor;
-    private String nombre;
+    private String nombreProveedor;
+    private String nombreProducto;
     private double precio;
     private int unidad_existente;
     
@@ -22,18 +23,20 @@ public class ProductoConProveedor {
     }
     
     //constructor con id
-    public ProductoConProveedor(int id, int idProveedor, String nombre, double precio, int unidad_existente){
+    public ProductoConProveedor(int id, int idProveedor, String nombreProveedor, String nombreProducto, double precio, int unidad_existente){
         this.id = id;
         this.idProveedor = idProveedor;
-        this.nombre = nombre;
+        this.nombreProveedor = nombreProveedor;
+        this.nombreProducto = nombreProducto;
         this.precio = precio;
         this.unidad_existente = unidad_existente;
     }
     
     //constructor sin id
-    public ProductoConProveedor(int idProveedor, String nombre, double precio, int unidad_existente){
+    public ProductoConProveedor(int idProveedor, String nombreProveedor, String nombreProducto, double precio, int unidad_existente){
         this.idProveedor = idProveedor;
-        this.nombre = nombre;
+        this.nombreProveedor = nombreProveedor;
+        this.nombreProducto = nombreProducto;
         this.precio = precio;
         this.unidad_existente = unidad_existente;
     }
@@ -56,12 +59,21 @@ public class ProductoConProveedor {
         this.idProveedor = idProveedor;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreProveedor() {
+        return nombreProveedor;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
+    }
+
+    
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public double getPrecio() {
@@ -79,7 +91,5 @@ public class ProductoConProveedor {
     public void setUnidad_existente(int unidad_existente) {
         this.unidad_existente = unidad_existente;
     }
-    
-    
     
 }

@@ -445,7 +445,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         botonReiniciar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         textFieldTelefono = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        labelTitulo = new javax.swing.JLabel();
         componenteNombreEmpresas = new propiedades.Componente4();
 
         setOpaque(false);
@@ -462,8 +462,8 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         jLabel2.setText("Telefono :");
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
-        jLabel1.setText("Buscar proveedor");
+        labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
+        labelTitulo.setText("Buscar proveedor");
 
         componenteNombreEmpresas.setEtiqueta("Nombre empresa  :");
         componenteNombreEmpresas.setMensaje("\"Elije una empresa\"");
@@ -486,7 +486,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
                                 .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(443, 443, 443)
-                                .addComponent(jLabel1))
+                                .addComponent(labelTitulo))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(409, 409, 409)
                                 .addComponent(botonReiniciar)))
@@ -497,7 +497,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -532,9 +532,9 @@ public class BuscarProveedor extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonReiniciar;
     private propiedades.Componente4 componenteNombreEmpresas;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JTable tablaBuscarProveedor;
     private javax.swing.JTextField textFieldTelefono;
     // End of variables declaration//GEN-END:variables

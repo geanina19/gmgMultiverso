@@ -11,7 +11,7 @@ package gmgmultiverso.model;
 public class ProductoConProveedor {
     
     private int id;
-    private String nombreProveedor;
+    private int idProveedor;
     private String nombre;
     private double precio;
     private int unidad_existente;
@@ -22,17 +22,17 @@ public class ProductoConProveedor {
     }
     
     //constructor con id
-    public ProductoConProveedor(int id, String nombreProveedor, String nombre, double precio, int unidad_existente){
+    public ProductoConProveedor(int id, int idProveedor, String nombre, double precio, int unidad_existente){
         this.id = id;
-        this.nombreProveedor = nombreProveedor;
+        this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.precio = precio;
         this.unidad_existente = unidad_existente;
     }
     
     //constructor sin id
-    public ProductoConProveedor(String nombreProveedor, String nombre, double precio, int unidad_existente){
-        this.nombreProveedor = nombreProveedor;
+    public ProductoConProveedor(int idProveedor, String nombre, double precio, int unidad_existente){
+        this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.precio = precio;
         this.unidad_existente = unidad_existente;
@@ -48,12 +48,12 @@ public class ProductoConProveedor {
         this.id = id;
     }
 
-    public String getNombreProveedor() {
-        return nombreProveedor;
+    public int getIdProveedor() {
+        return idProveedor;
     }
 
-    public void setNombreProveedor(String nombreProveedor) {
-        this.nombreProveedor = nombreProveedor;
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
     public String getNombre() {

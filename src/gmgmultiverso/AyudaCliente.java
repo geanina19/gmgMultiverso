@@ -74,6 +74,7 @@ public class AyudaCliente extends javax.swing.JFrame {
         textFieldWeb.setForeground(new java.awt.Color(51, 204, 255));
         textFieldWeb.setText("https://gmgmultiverso.wordpress.com/");
         textFieldWeb.setBorder(null);
+        textFieldWeb.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel1.add(textFieldWeb, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 390, 250, 20));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 48)); // NOI18N

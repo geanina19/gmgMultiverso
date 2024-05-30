@@ -168,7 +168,29 @@ public class ProveedorDao {
         }
     }
     
+    public List<Proveedor> buscarProveedoresPorTelefono(int telefono) {
+        List<Proveedor> proveedores = new ArrayList<>();
+        String consultaSQL = "SELECT nombre_empresa, telefono, email FROM proveedor WHERE telefono LIKE ?";
 
+        try (Connection conet = con.abrirConexion();
+             PreparedStatement pstmt = conet.prepareStatement(consultaSQL)) {
+            
+            pstmt.setString(1, "%" + telefono + "%");
+            ResultSet rs = pstmt.executeQuery();
 
+            while (rs.next()) {
+                Proveedor proveedor = new Proveedor();
+                proveedor.setNombre_empresa(rs.getString("nombre_empresa"));
+                proveedor.setTelefono(rs.getInt("telefono"));
+                proveedor.setEmail(rs.getString("email"));
+                proveedores.add(proveedor);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return proveedores;
+    }
 
 }

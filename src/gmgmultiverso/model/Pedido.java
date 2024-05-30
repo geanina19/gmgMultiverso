@@ -13,23 +13,31 @@ import java.util.List;
  */
 public class Pedido {
     private int id;
+    private int id_cliente;
     private Date fecha_pedido;
+    private int id_empleado;
     private int estado;
     private Date ultima_actualizacion;
+<<<<<<< HEAD
     
     //detalle pedido 
      private List<DetallePedido> detalles;
     private int idCliente;
     private int idEmpleado;
 
+=======
+>>>>>>> 5a1d99149b2a045e917906c50852b1bd88bbedc2
 
-    public Pedido(int id, Date fecha_pedido, int estado, Date ultima_actualizacion) {
+    public Pedido(int id, int id_cliente, Date fecha_pedido, int id_empleado, int estado, Date ultima_actualizacion) {
         this.id = id;
+        this.id_cliente = id_cliente;
         this.fecha_pedido = fecha_pedido;
+        this.id_empleado = id_empleado;
         this.estado = estado;
         this.ultima_actualizacion = ultima_actualizacion;
     }
     
+<<<<<<< HEAD
     // Nuevo constructor solo para detalles
   public Pedido(int id, Date fecha_pedido, int estado, Date ultima_actualizacion, List<DetallePedido> detalles) {
     this.id = id;
@@ -38,6 +46,8 @@ public class Pedido {
     this.ultima_actualizacion = ultima_actualizacion;
     this.detalles = detalles;
 }
+=======
+>>>>>>> 5a1d99149b2a045e917906c50852b1bd88bbedc2
 
     
     public Pedido() {
@@ -74,10 +84,32 @@ public class Pedido {
     public void setUltima_actualizacion(Date ultima_actualizacion) {
         this.ultima_actualizacion = ultima_actualizacion;
     }
+<<<<<<< HEAD
     
     public List<DetallePedido> getDetalles() {
         return detalles;
     }
+=======
+    //añadido id cliente y empleado
+
+    public int getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
+    }
+
+    public int getId_empleado() {
+        return id_empleado;
+    }
+
+    public void setId_empleado(int id_empleado) {
+        this.id_empleado = id_empleado;
+    }
+    
+    
+>>>>>>> 5a1d99149b2a045e917906c50852b1bd88bbedc2
 
     public void setDetalles(List<DetallePedido> detalles) {
         this.detalles = detalles;

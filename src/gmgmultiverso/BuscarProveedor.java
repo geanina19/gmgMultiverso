@@ -22,6 +22,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -29,6 +31,7 @@ import propiedades.EvObjOverComp4;
 import propiedades.LisOverComp4;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -36,11 +39,11 @@ import javax.swing.event.DocumentListener;
  */
 public class BuscarProveedor extends javax.swing.JPanel {
 
-    
+    private PrincipalAdministrador principalAdmin;
     private MouseListener mouseClickListener = null;
     private MouseListener mouseOrdenarTabla = null;
 
-    ManagerConexion con = new ManagerConexion();
+    ManagerConexion managerConexion = new ManagerConexion();
     Connection conet;
     
     Statement st;
@@ -52,16 +55,18 @@ public class BuscarProveedor extends javax.swing.JPanel {
     DefaultTableModel miModelo = new DefaultTableModel(null, cabecera);
     
     //PARA HACERLO CON EL DAO 
-    ProveedorDao prov = new ProveedorDao(con);
+    ProveedorDao prov = new ProveedorDao(managerConexion);
     
     /**
      * Creates new form PrincipalBuscarProveedor
      */
-    public BuscarProveedor() {
+    public BuscarProveedor(PrincipalAdministrador principalAdmin) {
         
         initComponents();
+        this.principalAdmin = principalAdmin;
         textFieldTelefono.setSize(64, 22);
         this.setSize(1091, 642);
+        this.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 30, 20, 30));
         inicializarTabla();
         
       
@@ -103,9 +108,13 @@ public class BuscarProveedor extends javax.swing.JPanel {
         
     }
     
-    
     //-------------Métodos-----------------
-
+    
+    public PrincipalAdministrador getPrincipalAdmin() {
+        return this.principalAdmin;
+    }
+    
+    
     public void quitarListener()
     {
         tablaBuscarProveedor.removeMouseListener(mouseClickListener);
@@ -130,54 +139,59 @@ public class BuscarProveedor extends javax.swing.JPanel {
         tablaBuscarProveedor.addMouseListener(mouseOrdenarTabla);
     }
     
-    public void mouseListenerAnadirColumnasExtra() 
-    {
+    public void mouseListenerAnadirColumnasExtra() {
         quitarListener();
-        
+
         mouseClickListener = new MouseAdapter() {
-            
-        @Override
-        public void mouseClicked(MouseEvent evt){
-            
-            int editarColumna = tablaBuscarProveedor.getColumnCount() - 2;
-            int eliminarColumna = tablaBuscarProveedor.getColumnCount() - 1;
 
-            int column = tablaBuscarProveedor.columnAtPoint(evt.getPoint());
-            int row = tablaBuscarProveedor.rowAtPoint(evt.getPoint());
+            @Override
+            public void mouseClicked(MouseEvent evt) {
 
-            if (row >= 0 && row < tablaBuscarProveedor.getRowCount()) {
+                int editarColumna = tablaBuscarProveedor.getColumnCount() - 2;
+                int eliminarColumna = tablaBuscarProveedor.getColumnCount() - 1;
 
-                String codigoProveedorSeleccionado = "SELECT id FROM proveedor WHERE nombre_empresa = '" +  tablaBuscarProveedor.getValueAt(row, 0) + "' "
-                            + "AND telefono = '" + tablaBuscarProveedor.getValueAt(row, 1) + "'";
-                int codigoProveedor = 0;
+                int column = tablaBuscarProveedor.columnAtPoint(evt.getPoint());
+                int row = tablaBuscarProveedor.rowAtPoint(evt.getPoint());
 
-                try {
-                    
-                    conet=con.abrirConexion();
-                    st=conet.createStatement();
-                    rs=st.executeQuery(codigoProveedorSeleccionado);
-                    
-                    if (rs.next()) {
-                        codigoProveedor = rs.getInt("id");
+                if (row >= 0 && row < tablaBuscarProveedor.getRowCount() && column >= 0 && column < miModelo.getColumnCount()) {
+                    String codigoProveedorSeleccionado = "SELECT id FROM proveedor WHERE nombre_empresa = '" +  tablaBuscarProveedor.getValueAt(row, 0) + "' "
+                                + "AND telefono = '" + tablaBuscarProveedor.getValueAt(row, 1) + "'";
+                    int codigoProveedor = 0;
+
+                    try {
+
+                        conet = managerConexion.abrirConexion();
+                        st = conet.createStatement();
+                        rs = st.executeQuery(codigoProveedorSeleccionado);
+
+                        if (rs.next()) {
+                            codigoProveedor = rs.getInt("id");
+                        }
+
+                        rs.close();
+                        st.close();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
                     }
 
-                    rs.close();
-                    st.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-
-                if (column == editarColumna) {
-                    //abrirFrameEditar(codigoProveedor);
-                } 
-                else if (column == eliminarColumna) {
-                    confirmarEliminarProveedor(codigoProveedor);
+                    if (column == editarColumna) {
+                        abrirEditarProveedor(codigoProveedor);
+                    } else if (column == eliminarColumna) {
+                        confirmarEliminarProveedor(codigoProveedor);
+                    }
                 }
             }
-        }
-    };
+        };
 
-    tablaBuscarProveedor.addMouseListener(mouseClickListener);
+        tablaBuscarProveedor.addMouseListener(mouseClickListener);
+    }
+
+    
+    //------------------------------Abrir Editar Proveedor------------------------------
+    
+    public void abrirEditarProveedor(int codigoProveedor) 
+    {
+        principalAdmin.mostrarEditarProveedor(codigoProveedor, this);
     }
     
     //------------Crear objetos imagen------------
@@ -215,6 +229,14 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         tablaBuscarProveedor.setModel(miModelo);
         tablaBuscarProveedor.setRowHeight(30);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < tablaBuscarProveedor.getColumnCount() - 2; i++) {
+            tablaBuscarProveedor.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
     }
     
     //-------------Actualizar tabla------------
@@ -254,7 +276,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         
         String slqPaises = "select nombre_empresa, id from proveedor";
         try{
-            conet = con.abrirConexion();
+            conet = managerConexion.abrirConexion();
             st = conet.createStatement();
             rs = st.executeQuery(slqPaises);
             
@@ -275,28 +297,45 @@ public class BuscarProveedor extends javax.swing.JPanel {
         // Obtener el número de teléfono ingresado en el textField
         String telefono = textFieldTelefono.getText().trim();
 
-        // Obtener la lista completa de proveedores
-        List<Proveedor> proveedores = prov.list();
-
-        // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
-        List<Proveedor> proveedoresFiltrados = new ArrayList<>();
-        for (Proveedor proveedor : proveedores) {
-            if (codProveedor != -1) {
-                if (proveedor.getId() == codProveedor) {
-                    proveedoresFiltrados.add(proveedor);
-                }
-            } else {
-                // Si el código de proveedor es -1, mostrar todos los proveedores
-                proveedoresFiltrados = proveedores;
-            }
+        // Verificar si el teléfono contiene solo números
+        if (!telefono.matches("\\d*")) {
+            JOptionPane.showMessageDialog(this, "El teléfono debe contener solo números", "Error", JOptionPane.ERROR_MESSAGE);
+            return; 
         }
 
-        // Filtrar la lista de proveedores por el número de teléfono ingresado
-        List<Proveedor> proveedoresFiltradosPorTelefono = new ArrayList<>();
-        for (Proveedor proveedor : proveedoresFiltrados) {
-            // Verificar si el número de teléfono del proveedor comienza con el número ingresado
-            if (Integer.toString(proveedor.getTelefono()).startsWith(telefono)) {
-                proveedoresFiltradosPorTelefono.add(proveedor);
+        // Lista para almacenar los proveedores filtrados
+        List<Proveedor> proveedoresFiltrados = new ArrayList<>();
+
+        // Si no se ingresa un número de teléfono, simplemente mostrar todos los proveedores con el codProveedor
+        if (telefono.isEmpty()) {
+            // Obtener la lista completa de proveedores
+            List<Proveedor> proveedores = prov.list();
+
+            // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
+            for (Proveedor proveedor : proveedores) {
+                if (codProveedor != -1) {
+                    if (proveedor.getId() == codProveedor) {
+                        proveedoresFiltrados.add(proveedor);
+                    }
+                } else {
+                    // Si el código de proveedor es -1, mostrar todos los proveedores
+                    proveedoresFiltrados = proveedores;
+                }
+            }
+        } else {
+            // Obtener la lista de proveedores filtrados por teléfono
+            List<Proveedor> proveedoresPorTelefono = prov.buscarProveedoresPorTelefono(Integer.parseInt(telefono));
+
+            // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
+            for (Proveedor proveedor : proveedoresPorTelefono) {
+                if (codProveedor != -1) {
+                    if (proveedor.getId() == codProveedor) {
+                        proveedoresFiltrados.add(proveedor);
+                    }
+                } else {
+                    // Si el código de proveedor es -1, mostrar todos los proveedores filtrados por teléfono
+                    proveedoresFiltrados = proveedoresPorTelefono;
+                }
             }
         }
 
@@ -307,10 +346,10 @@ public class BuscarProveedor extends javax.swing.JPanel {
         ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
         ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
 
-        boolean hayResultados = !proveedoresFiltradosPorTelefono.isEmpty();
+        boolean hayResultados = !proveedoresFiltrados.isEmpty();
 
         // Llenar el modelo con los resultados de la búsqueda
-        for (Proveedor proveedor : proveedoresFiltradosPorTelefono) {
+        for (Proveedor proveedor : proveedoresFiltrados) {
             Object[] rowData = new Object[]{
                 proveedor.getNombre_empresa(),
                 proveedor.getTelefono(),
@@ -406,7 +445,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         botonReiniciar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         textFieldTelefono = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        labelTitulo = new javax.swing.JLabel();
         componenteNombreEmpresas = new propiedades.Componente4();
 
         setOpaque(false);
@@ -423,8 +462,8 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         jLabel2.setText("Telefono :");
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
-        jLabel1.setText("Buscar proveedor");
+        labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
+        labelTitulo.setText("Buscar proveedor");
 
         componenteNombreEmpresas.setEtiqueta("Nombre empresa  :");
         componenteNombreEmpresas.setMensaje("\"Elije una empresa\"");
@@ -437,31 +476,28 @@ public class BuscarProveedor extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(96, 96, 96)
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 228, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(443, 443, 443)
-                                .addComponent(jLabel1))
+                                .addComponent(labelTitulo))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(409, 409, 409)
                                 .addComponent(botonReiniciar)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 229, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(labelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -471,11 +507,11 @@ public class BuscarProveedor extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
+                        .addGap(26, 26, 26)
                         .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(29, 29, 29)
                         .addComponent(botonReiniciar)))
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -496,9 +532,9 @@ public class BuscarProveedor extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonReiniciar;
     private propiedades.Componente4 componenteNombreEmpresas;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JTable tablaBuscarProveedor;
     private javax.swing.JTextField textFieldTelefono;
     // End of variables declaration//GEN-END:variables

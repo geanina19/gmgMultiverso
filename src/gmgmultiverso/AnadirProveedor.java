@@ -28,6 +28,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
         initComponents();
         this.setSize(1091, 642);
         botonAnadir.setEnabled(false);
+        visorErrores.setEditable(false);
         
         // Inicializar la lista con los nombres de los campos obligatorios
         listaCamposObligPorCompletar.add(componenteNombreEmpresa.getEtiqueta());
@@ -206,7 +207,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        labelTitulo = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         botonAnadir = new javax.swing.JButton();
         botonReiniciar = new javax.swing.JButton();
@@ -228,8 +229,8 @@ public class AnadirProveedor extends javax.swing.JPanel {
             e1.printStackTrace();
         }
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
-        jLabel1.setText("Añadir un proveedor");
+        labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
+        labelTitulo.setText("Añadir un proveedor");
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 5));
 
@@ -269,7 +270,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(496, 496, 496)
-                        .addComponent(jLabel1))
+                        .addComponent(labelTitulo))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -286,7 +287,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(labelTitulo)
                 .addGap(99, 99, 99)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -326,13 +327,6 @@ public class AnadirProveedor extends javax.swing.JPanel {
             panelPrincipal.repaint();
         }
         
-        /*
-        limpiarCampos();
-        
-        listaCamposObligPorCompletar.clear();
-        actualizarTextAreaVisorErrores();
-        actualizarEstadoBotonAnadir();
-        */
     }//GEN-LAST:event_botonReiniciarActionPerformed
 
     private void botonAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnadirActionPerformed
@@ -343,17 +337,22 @@ public class AnadirProveedor extends javax.swing.JPanel {
         String telefonoTexto = componenteTelefono.getEscritura();
         String email = componenteEmail.getEscritura();
 
-        // Validar y convertir el teléfono a un número entero
-        int telefono;
-        try {
-            telefono = Integer.parseInt(telefonoTexto);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El teléfono debe ser un número entero", "Error", JOptionPane.ERROR_MESSAGE);
+        
+        
+        if (!telefonoTexto.matches("\\d{9}") || !email.contains("@")) {
+            String mensajeError = "";
+            if (!telefonoTexto.matches("\\d{9}")) {
+                mensajeError += "- El teléfono debe contener 9 dígitos numéricos.\n";
+            }
+            if (!email.contains("@")) {
+                mensajeError += "- El email debe ser válido.\n";
+            }
+            JOptionPane.showMessageDialog(this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Crear un objeto Proveedor con los datos ingresados
-        Proveedor nuevoProveedor = new Proveedor(nombre, telefono, email);
+        Proveedor nuevoProveedor = new Proveedor(nombre, Integer.parseInt(telefonoTexto), email);
 
         // Instanciar ProveedorDao
         ManagerConexion managerConexion = new ManagerConexion();
@@ -373,11 +372,6 @@ public class AnadirProveedor extends javax.swing.JPanel {
         
     }//GEN-LAST:event_botonAnadirActionPerformed
 
-    public void limpiarCampos(){
-        componenteNombreEmpresa.setEscritura("");
-        componenteTelefono.setEscritura("");
-        componenteEmail.setEscritura("");
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAnadir;
@@ -385,9 +379,9 @@ public class AnadirProveedor extends javax.swing.JPanel {
     private propiedades.Componente2Anadir componenteEmail;
     private propiedades.Componente2Anadir componenteNombreEmpresa;
     private propiedades.Componente2Anadir componenteTelefono;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JTextArea visorErrores;
     // End of variables declaration//GEN-END:variables
 }

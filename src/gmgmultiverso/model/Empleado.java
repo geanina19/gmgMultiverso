@@ -32,6 +32,15 @@ public class Empleado {
         this.email = email;
     }
     
+    //-----------Constructor con parametros y sin id-----------
+    public Empleado(String nombre, String apellido, String contrasenia, int telefono, String email) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.contrasenia = contrasenia;
+        this.telefono = telefono;
+        this.email = email;
+    }
+    
     // Getters y setters
     
     //-----------id-----------

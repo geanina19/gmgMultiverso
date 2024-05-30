@@ -42,8 +42,8 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         initComponents();
         this.principal = principal;
         this.codigoPedido = codigoPedido;
-        cargarDatosCliente();
-        cargarEstadosEnComboBox();
+        //cargarDatosCliente();
+        //cargarEstadosEnComboBox();
         this.setIconImage(getIconImage());
         textNombreCliente.setEditable(false);
         
@@ -66,6 +66,7 @@ public class FrameEditarPedido extends javax.swing.JFrame {
             return  null;
         }
     }
+    /*
     private void cargarDatosCliente() {
         String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(codigoPedido);
         textNombreCliente.setText(nombreCliente);
@@ -103,6 +104,8 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         // Seleccionar el índice correspondiente en el combo box
         comboBoxEstado.setSelectedIndex(indiceEstadoActual);
     }
+    */
+    
     /**************** ACTUALIZAR TABLA *****************/
     private void actualizarTablaPedidos() {  
 //        principal.anadirDatosTabla();
@@ -196,7 +199,7 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         // Se suma 1 porque los índices en el combo box comienzan desde 0
         int nuevoEstado = comboBoxEstado.getSelectedIndex() + 1; 
         int idPedido = codigoPedido;
-        pedidoCompleto.actualizarEstadoPedido(idPedido, nuevoEstado);
+        //pedidoCompleto.actualizarEstadoPedido(idPedido, nuevoEstado);
         JOptionPane.showMessageDialog(null, "Se ha modificado el estado del pedido correctamente.");
         System.out.println("Esstado del pedido actualizado correctamente.");
         actualizarTablaPedidos();

@@ -3,39 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Empleado.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/DetallesPedidoDao.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PantallaCliente.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Pedido.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/infoProducto.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/DetallePedido.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Cliente.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Producto.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/PedidoDao.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/CarritoCliente.java</file>
-        </group>
-        <group>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Empleado.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/DetallesPedidoDao.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PantallaCliente.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Pedido.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/infoProducto.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/DetallePedido.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Cliente.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Producto.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/PedidoDao.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/CarritoCliente.java</file>
-=======
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/model/ProductoConProveedor.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/ProveedorDao.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/PrincipalAdministrador.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProveedor.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/ClienteDao.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/ProductoConProveedorDao.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProducto.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarEmpleado.java</file>
->>>>>>> 5a1d99149b2a045e917906c50852b1bd88bbedc2
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ProductoConProveedorDao.java</file>
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/BuscarProducto.java</file>
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalAdministrador.java</file>
         </group>
     </open-files>
 </project-private>

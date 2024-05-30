@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -79,7 +80,5 @@ public class ProductoConProveedor {
     public void setUnidad_existente(int unidad_existente) {
         this.unidad_existente = unidad_existente;
     }
-    
-    
     
 }

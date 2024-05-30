@@ -16,27 +16,25 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="456" max="-2" attributes="0"/>
-              <Component id="labelTitulo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="componenteApellido" alignment="1" min="-2" pref="226" max="-2" attributes="0"/>
-                  <Component id="componenteNombre" alignment="1" min="-2" pref="226" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="componenteContrasenia" alignment="1" max="32767" attributes="0"/>
-                      <Component id="componenteTelefono" pref="226" max="32767" attributes="0"/>
-                      <Component id="componenteEmail" max="32767" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="componenteApellido" alignment="1" pref="226" max="32767" attributes="0"/>
+                  <Component id="componenteNombre" alignment="1" pref="226" max="32767" attributes="0"/>
+                  <Component id="componenteTelefono" alignment="0" pref="226" max="32767" attributes="0"/>
+                  <Component id="componenteEmail" alignment="0" max="32767" attributes="0"/>
+                  <Component id="componenteContrasenia" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="126" pref="126" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="353" max="-2" attributes="0"/>
               <EmptySpace pref="76" max="32767" attributes="0"/>
               <Component id="jPanel1" min="-2" pref="241" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="-2" pref="456" max="-2" attributes="0"/>
+              <Component id="labelTitulo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -109,12 +107,6 @@
         <Property name="obligatorio" type="boolean" value="true"/>
       </Properties>
     </Component>
-    <Component class="propiedades.Componente2Anadir" name="componenteContrasenia">
-      <Properties>
-        <Property name="etiqueta" type="java.lang.String" value="Contrase&#xf1;a :"/>
-        <Property name="obligatorio" type="boolean" value="true"/>
-      </Properties>
-    </Component>
     <Component class="propiedades.Componente2Anadir" name="componenteTelefono">
       <Properties>
         <Property name="etiqueta" type="java.lang.String" value="Tel&#xe9;fono :"/>
@@ -148,6 +140,12 @@
     <Component class="propiedades.Componente2Anadir" name="componenteEmail">
       <Properties>
         <Property name="etiqueta" type="java.lang.String" value="Email :"/>
+        <Property name="obligatorio" type="boolean" value="true"/>
+      </Properties>
+    </Component>
+    <Component class="propiedades.Componente2Anadir" name="componenteContrasenia">
+      <Properties>
+        <Property name="etiqueta" type="java.lang.String" value="Clave :"/>
         <Property name="obligatorio" type="boolean" value="true"/>
       </Properties>
     </Component>

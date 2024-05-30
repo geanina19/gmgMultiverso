@@ -5,7 +5,6 @@
 package gmgmultiverso;
 
 import com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme;
-import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -25,7 +24,7 @@ public class EjecutaAdmin {
         pp.setVisible(true);
         */
         
-        UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
+        //UIManager.setLookAndFeel(new FlatCarbonIJTheme());
         UIManager.put("TextComponent.arc", 100);
         LoginAdmin la = new LoginAdmin();
         SwingUtilities.updateComponentTreeUI(la);

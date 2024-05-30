@@ -5,6 +5,7 @@
 package gmgmultiverso.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -16,7 +17,11 @@ public class Pedido {
     private int estado;
     private Date ultima_actualizacion;
     
-    
+    //detalle pedido 
+     private List<DetallePedido> detalles;
+    private int idCliente;
+    private int idEmpleado;
+
 
     public Pedido(int id, Date fecha_pedido, int estado, Date ultima_actualizacion) {
         this.id = id;
@@ -24,7 +29,17 @@ public class Pedido {
         this.estado = estado;
         this.ultima_actualizacion = ultima_actualizacion;
     }
+    
+    // Nuevo constructor solo para detalles
+  public Pedido(int id, Date fecha_pedido, int estado, Date ultima_actualizacion, List<DetallePedido> detalles) {
+    this.id = id;
+    this.fecha_pedido = fecha_pedido;
+    this.estado = estado;
+    this.ultima_actualizacion = ultima_actualizacion;
+    this.detalles = detalles;
+}
 
+    
     public Pedido() {
     }
 
@@ -59,9 +74,34 @@ public class Pedido {
     public void setUltima_actualizacion(Date ultima_actualizacion) {
         this.ultima_actualizacion = ultima_actualizacion;
     }
+    
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
 
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+   //
+      public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+    
+      public int getIdEmpleado() {
+        return idEmpleado;
+    }
+
+    public void setIdEmpleado(int idEmpleado) {
+        this.idEmpleado = idEmpleado;
+    }
+    
     @Override
     public String toString() {
-        return "Pedido{" + "id=" + id + ", fecha_pedido=" + fecha_pedido + ", estado=" + estado + ", ultima_actualizacion=" + ultima_actualizacion + '}';
+        return "Pedido{" + "id=" + id + ", fecha_pedido=" + fecha_pedido + ", estado=" + estado + ", ultima_actualizacion=" + ultima_actualizacion + ", detalles=" + detalles + '}';
     }    
 }

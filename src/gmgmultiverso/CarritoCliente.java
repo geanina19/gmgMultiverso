@@ -4,6 +4,11 @@
  */
 package gmgmultiverso;
 
+import gmgmultiverso.db.ManagerConexion;
+import gmgmultiverso.db.dao.DetallesPedidoDao;
+import gmgmultiverso.model.DetallePedido;
+import gmgmultiverso.model.Pedido;
+import gmgmultiverso.model.Producto;
 import static gmgmultiverso.model.Producto.getPrecioFromNombre;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -13,12 +18,14 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -121,7 +128,6 @@ public class CarritoCliente extends javax.swing.JFrame {
 
         precio.setText(String.valueOf(precioProducto));
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -232,7 +238,7 @@ public class CarritoCliente extends javax.swing.JFrame {
 
     //boton de confirmar
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+ 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

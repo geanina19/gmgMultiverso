@@ -6,8 +6,10 @@ package gmgmultiverso;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -64,7 +66,7 @@ public class infoProducto extends javax.swing.JDialog {
             jLabel1.setIcon(new ImageIcon(image));
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,7 +156,7 @@ public class infoProducto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        dispose();
+     dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

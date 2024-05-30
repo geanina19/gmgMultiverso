@@ -413,6 +413,14 @@ public class BuscarProveedor extends javax.swing.JPanel {
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1091, 642));
 
+        tablaBuscarProveedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         jScrollPane1.setViewportView(tablaBuscarProveedor);
 
         botonReiniciar.setText("Reiniciar");

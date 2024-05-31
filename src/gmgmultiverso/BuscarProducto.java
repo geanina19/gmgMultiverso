@@ -573,6 +573,7 @@ public class BuscarProducto extends javax.swing.JPanel {
     public void limpiarTodo() {
         quitarListener();
         codProducto = -1;
+        codProveedor = -1;
         componenteProveedores.eliminarSeleccion();
         tablaBuscarProducto.clearSelection();
         textFieldProducto.setText("");

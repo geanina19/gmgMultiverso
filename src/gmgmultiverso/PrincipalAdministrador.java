@@ -174,6 +174,31 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         panelPrincipal.repaint();
     }
     
+    /*
+    public void mostrarAnadirProductoConAnadirProveedor(AnadirProducto anadirProducto) {
+        
+        PrincipalAdministrador principalAdmin = new PrincipalAdministrador(); // Ejemplo de creación de objeto PrincipalAdministrador
+
+        // Luego, pasas ese objeto al constructor de AnadirProductoConAnadirProveedor
+        AnadirProductoConAnadirProveedor apcap = new AnadirProductoConAnadirProveedor(principalAdmin);
+
+        apcap.setSize(panelPrincipal.getSize());
+        
+        panelPrincipal.removeAll();
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+        panelPrincipal.add(apcap, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    */
     
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
@@ -325,6 +350,11 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         itemAnadirProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProducto.setText("Añadir");
+        itemAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAnadirProductoActionPerformed(evt);
+            }
+        });
         menuProductos.add(itemAnadirProducto);
 
         menuGestion.add(menuProductos);
@@ -823,6 +853,37 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         revalidate();
         repaint();
     }//GEN-LAST:event_itemBuscarProductoActionPerformed
+
+    private void itemAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnadirProductoActionPerformed
+        // TODO add your handling code here:
+        AnadirProducto anadirProducto = new AnadirProducto(this);
+        anadirProducto.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir ap ocupando todo el espacio disponible horizontalmente y verticalmente
+        panelPrincipal.removeAll();
+        panelPrincipal.setLayout(new GridBagLayout());
+
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints innerGbc = new GridBagConstraints();
+        innerGbc.gridx = 0;
+        innerGbc.gridy = 0;
+        innerGbc.anchor = GridBagConstraints.CENTER;
+        wrapperPanel.add(anadirProducto, innerGbc);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(wrapperPanel, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+        
+    }//GEN-LAST:event_itemAnadirProductoActionPerformed
 
     /**
      * @param args the command line arguments

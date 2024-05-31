@@ -13,24 +13,27 @@ public class Producto {
     private String nombre;
     private double precio;
     private int unidad_existente;
+    private int idProveedor;
     
     //-----------Constructor vacio-----------
     public Producto(){
        
     }
     //-----------Constructor-----------
-    public Producto(int id, String nombre, double precio, int unidad_existente) {
+    public Producto(int id, String nombre, double precio, int unidad_existente, int idProveedor) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.unidad_existente = unidad_existente;
+        this.idProveedor = idProveedor;
     }
     
     //-----------Constructor sin el parámetro de ID-----------
-    public Producto(String nombre, double precio, int unidad_existente) {
+    public Producto(String nombre, double precio, int unidad_existente, int idProveedor) {
         this.nombre = nombre;
         this.precio = precio;
         this.unidad_existente = unidad_existente;
+        this.idProveedor = idProveedor;
     }
     
     //-----------Getters y Setters-----------
@@ -65,6 +68,14 @@ public class Producto {
 
     public void setUnidad_existente(int unidad_existente) {
         this.unidad_existente = unidad_existente;
+    }
+
+    public int getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
     @Override

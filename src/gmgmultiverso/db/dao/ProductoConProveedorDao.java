@@ -87,6 +87,7 @@ public class ProductoConProveedorDao {
             }
         }
     }
+
     
     // Método para eliminar un producto por su ID
     public boolean eliminarProducto(int idProducto) {

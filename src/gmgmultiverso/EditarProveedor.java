@@ -215,7 +215,7 @@ public class EditarProveedor extends javax.swing.JPanel {
     }
     
     
-    public void momdificar(){
+    public void modificar(){
          
         String nuevoNombreEmpresa = componenteNombreEmpresa.getEscritura();
         String nuevoTelefono = componenteTelefono.getEscritura();
@@ -425,7 +425,7 @@ public class EditarProveedor extends javax.swing.JPanel {
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         // TODO add your handling code here:
-       momdificar();
+       modificar();
     }//GEN-LAST:event_botonModificarActionPerformed
 
 

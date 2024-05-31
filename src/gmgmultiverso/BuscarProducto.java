@@ -318,6 +318,49 @@ public class BuscarProducto extends javax.swing.JPanel {
         mouseListenerAnadirColumnasExtra();
     }
     
+    public void filtrarProductosRango0a5() {
+        quitarListener(); // Eliminar cualquier listener previo
+
+        double precioMinimo = 0.0;
+        double precioMaximo = 5.0;
+
+        // Filtrar los productos según el rango de precios seleccionado
+        List<ProductoConProveedor> productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
+
+        // Actualizar la tabla con los productos filtrados
+        actualizarTablaBuscarProductoRango(productosFiltrados);
+    }
+    
+    public void actualizarTablaBuscarProductoRango(List<ProductoConProveedor> productosFiltrados) {
+        quitarListener(); // Eliminar cualquier listener previo
+
+        // Limpiar el modelo antes de añadir filas
+        miModelo.setRowCount(0);
+
+        // Crear ImageIcons con las imágenes para los botones
+        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
+        ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
+
+        // Añadir las filas al modelo
+        for (ProductoConProveedor producto : productosFiltrados) {
+            Object[] rowData = {
+                producto.getNombreProveedor(),
+                producto.getNombreProducto(),
+                producto.getPrecio(),
+                producto.getUnidad_existente(),
+                editarIcon,
+                eliminarIcon
+            };
+            miModelo.addRow(rowData);
+        }
+
+        // Reactivar el ordenamiento de columnas y añadir el listener de mouse para los botones
+        activarOrdenarColumnas(miModelo);
+        mouseListenerAnadirColumnasExtra();
+    }
+
+
+    
     //-------------Cargar proveedores------------
     public void cargarProveedores() {
         
@@ -344,12 +387,15 @@ public class BuscarProducto extends javax.swing.JPanel {
         quitarListener(); // Eliminar cualquier listener previo
 
         String nombreProducto = textFieldProducto.getText().trim();
-        
-        
-        List<ProductoConProveedor> productosFiltrados = new ArrayList<>();
-        
+
+        if (nombreProducto.matches(".*\\d.*")) {
+            JOptionPane.showMessageDialog(null, "El nombre del producto no puede contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         double precioMinimo = 0.0;
         double precioMaximo = 0.0;
+        List<ProductoConProveedor> productosFiltrados = new ArrayList<>(); // Declaración aquí
 
         // Obtener el rango de precio seleccionado
         String rangoPrecioSeleccionado = (String) comboBoxPrecio.getSelectedItem();
@@ -362,24 +408,46 @@ public class BuscarProducto extends javax.swing.JPanel {
             double valorFinal = Double.parseDouble(partesRango[1].replace(" €", ""));
 
             // Establecer los límites del rango de precios según el rango seleccionado
-            if (valorInicial >= 0.0 && valorFinal <= 5.0) {
-                precioMinimo = 0.0;
-                precioMaximo = 5.0;
-            } else if (valorInicial > 5.0 && valorFinal <= 10.0) {
+            if (valorInicial == 0.0 && valorFinal == 5.0) {
+                filtrarProductosRango0a5();
+                return; // Salir del método después de filtrar
+            } else if (valorInicial == 5.0 && valorFinal == 10.0) {
                 precioMinimo = 5.1;
                 precioMaximo = 10.0;
-            } else if (valorInicial > 10.0 && valorFinal <= 15.0) {
+            } else if (valorInicial == 10.0 && valorFinal == 15.0) {
                 precioMinimo = 10.1;
                 precioMaximo = 15.0;
             }
 
+            System.out.println("Filtrando productos con precios entre " + precioMinimo + " y " + precioMaximo);
+
             // Filtrar los productos según el rango de precios seleccionado
             productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
-        }
 
-        
-        if (nombreProducto.matches(".*\\d.*")) {
-            JOptionPane.showMessageDialog(null, "El nombre del producto no puede contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Verificar si hay otros criterios de búsqueda y si se encontraron resultados en el rango de precios
+            if (!nombreProducto.isEmpty() || codProveedor != -1) {
+                // Filtrar por nombre de producto y/o proveedor si corresponde
+                if (!nombreProducto.isEmpty() && codProveedor != -1) {
+                    productosFiltrados = producdao.buscarProductoPorNombreProveedorYPrecio(nombreProducto, codProveedor, precioMinimo, precioMaximo);
+                } else if (!nombreProducto.isEmpty()) {
+                    productosFiltrados = producdao.buscarProductoPorNombre(nombreProducto);
+                } else if (codProveedor != -1) {
+                    productosFiltrados = producdao.listBuscarPorProveedor(codProveedor);
+                }
+
+                if (!productosFiltrados.isEmpty()) {
+                    // Se encontraron resultados, actualizar la tabla
+                    actualizarTablaBuscarProductoRango(productosFiltrados);
+                } else {
+                    // No se encontraron resultados
+                    JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                // No hay otros criterios de búsqueda, mostrar todos los productos en el rango de precios
+                actualizarTablaBuscarProductoRango(productosFiltrados);
+            }
+
+            return; // Salir del método después de filtrar por rango de precios
         }
 
         // Verificar los casos de búsqueda y aplicar los filtros adecuados
@@ -408,7 +476,6 @@ public class BuscarProducto extends javax.swing.JPanel {
             // Si no se proporcionan criterios de búsqueda, mostrar todos los productos
             productosFiltrados = producdao.list();
         }
-
 
         // Limpiar el modelo antes de añadir filas
         miModelo.setRowCount(0);
@@ -503,7 +570,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         tablaBuscarProducto.clearSelection();
     }
     
-    public void liampiarTodo() {
+    public void limpiarTodo() {
         quitarListener();
         codProducto = -1;
         componenteProveedores.eliminarSeleccion();
@@ -619,7 +686,7 @@ public class BuscarProducto extends javax.swing.JPanel {
 
     private void botonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReiniciarActionPerformed
         // TODO add your handling code here:
-        liampiarTodo();
+        limpiarTodo();
 
     }//GEN-LAST:event_botonReiniciarActionPerformed
 

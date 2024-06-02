@@ -179,7 +179,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="itemOscuro">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imagenes/corazonNegro.png"/>
+                  <Image iconType="3" name="/imagenes/luna.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Oscuro"/>
               </Properties>
@@ -190,7 +190,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="itemClaro">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imagenes/corazonBlanco.png"/>
+                  <Image iconType="3" name="/imagenes/sol.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Claro"/>
               </Properties>

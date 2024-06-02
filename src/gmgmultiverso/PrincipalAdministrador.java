@@ -389,7 +389,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuTema.setText("Tema");
 
-        itemOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonNegro.png"))); // NOI18N
+        itemOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/luna.png"))); // NOI18N
         itemOscuro.setText("Oscuro");
         itemOscuro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -398,7 +398,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         menuTema.add(itemOscuro);
 
-        itemClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonBlanco.png"))); // NOI18N
+        itemClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sol.png"))); // NOI18N
         itemClaro.setText("Claro");
         itemClaro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

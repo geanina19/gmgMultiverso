@@ -7,6 +7,8 @@ package gmgmultiverso;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ProductoConProveedorDao;
 import gmgmultiverso.model.ProductoConProveedor;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +50,7 @@ public class AnadirProducto extends javax.swing.JPanel {
         cargarProveedores();
         
         // Inicializar la lista con los nombres de los campos obligatorios
-        //listaCamposObligPorCompletar.add(componenteProveedores.getEtiqueta());
+        listaCamposObligPorCompletar.add(componenteProveedores.getEtiqueta());
         listaCamposObligPorCompletar.add(componenteNombre.getEtiqueta());
         listaCamposObligPorCompletar.add(componentePrecio.getEtiqueta());
         listaCamposObligPorCompletar.add(componenteUnidadExistente.getEtiqueta());
@@ -157,37 +159,35 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         };
         componenteUnidadExistente.addLisOverEtiquetav2(li3);
-
         
-        /*
+        
         // Agregar un listener al componente de proveedores
-        componenteProveedores.addListSelectionListener(new ListSelectionListener() {
+        componenteProveedores.getResultadosList().addFocusListener(new FocusAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                // Verificar si se ha seleccionado un proveedor
-                if (!e.getValueIsAdjusting()) { // Para evitar eventos duplicados
-                    int indiceSeleccionado = componenteProveedores.obtenerIndiceSeleccionado();
-                    boolean proveedorSeleccionado = indiceSeleccionado != -1;
+            public void focusLost(FocusEvent e) {
+                int indiceSeleccionado = componenteProveedores.obtenerIndiceSeleccionado();
+                boolean proveedorSeleccionado = indiceSeleccionado != -1;
 
-                    // Verificar si hay campos obligatorios vacíos
-                    if (camposObligPorCompletar.isEmpty()) {
-                        // Verificar si el proveedor está seleccionado
-                        if (proveedorSeleccionado) {
-                            visorErrores.setText("Todos los campos están completados.");
-                        } else {
-                            visorErrores.setText("Selecciona un proveedor.");
-                        }
-                    } else {
-                        visorErrores.setText("Los siguientes campos obligatorios están vacíos: \n" + camposObligPorCompletar);
-                    }
+                if (proveedorSeleccionado) {
+                        
+                    listaCamposObligPorCompletar.remove(componenteProveedores.getEtiqueta());
+                    System.out.println("No se ha producido ningún error, proveedor seleccionado con contenido");
+                        
+                } else {
+                    visorErrores.append(componenteProveedores.getEtiqueta());
+                    listaCamposObligPorCompletar.add(componenteProveedores.getEtiqueta());
+                    System.out.println("UnidadExistente sin completar");
                 }
+                    
+                // Llama al método para actualizar el visor de errores
+                actualizarTextAreaVisorErrores();
+                // Llama al método para actualizar el estado del botón
+                actualizarEstadoBotonAnadir();
             }
         });
-*/
     }
     
-    //------------------------------MÉTODOS-------------------------------
-    
+    //-
 //----------------para el textArea vosirErrores----------------
     
     // Método para actualizar el visor de errores

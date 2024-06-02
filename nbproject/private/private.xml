@@ -11,5 +11,13 @@
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProducto.java</file>
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/FrameEditarPedido.java</file>
         </group>
+        <group name="ProyectoEv2">
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/FrameEditarPedido.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/PedidoConNombreDao.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/EmpleadoDao.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/LoginAdmin.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalEmple.java</file>
+            <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/AyudaCliente.java</file>
+        </group>
     </open-files>
 </project-private>

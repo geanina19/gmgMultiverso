@@ -330,6 +330,38 @@ public class EmpleadoDao {
 
         return empleados;
     }
+    
+    /****************** PARA OBTENER ID EMPLE EN LOGIN ****************/
+    public int obtenerIdUsuario(String usuario, String contrasenia) {
+        Connection conect = null;
+        try {
+            conect = con.abrirConexion();
 
+            String query = "SELECT id FROM empleado WHERE email = ? AND contrasenia = ?";
+            var ps = conect.prepareStatement(query);
+            ps.setString(1, usuario);
+            ps.setString(2, contrasenia);
+
+            var rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                return -1; // Usuario no encontrado
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener el ID del usuario", e);
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }  
+    
+     
 
 }

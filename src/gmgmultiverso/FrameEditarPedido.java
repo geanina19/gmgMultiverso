@@ -42,7 +42,13 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         initComponents();
         this.principal = principal;
         this.codigoPedido = codigoPedido;
-        cargarDatosCliente();
+        // Depuración
+        System.out.println("Codigo del Pedido en el constructor:: " + codigoPedido);        
+        
+        cargarDatosCliente(codigoPedido);
+//        String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(codigoPedido);
+//        textNombreCliente.setText(nombreCliente);
+        
         cargarEstadosEnComboBox();
         this.setIconImage(getIconImage());
         textNombreCliente.setEditable(false);
@@ -66,23 +72,16 @@ public class FrameEditarPedido extends javax.swing.JFrame {
             return  null;
         }
     }
-    private void cargarDatosCliente() {
-        String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(codigoPedido);
+    private void cargarDatosCliente(int idPedido) {
+        String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(idPedido);
         textNombreCliente.setText(nombreCliente);
     }
     
         // Este método carga la lista de estados en un JComboBox
     public void cargarEstadosEnComboBox() {
-        // Limpia el combo box antes de cargar los nuevos estados
         comboBoxEstado.removeAllItems();
 
-        // Obtiene la lista de estados desde el DAO
         List<Integer> estados = pedidoCompleto.listarEstadosPedido();
-//
-//        // Agrega los estados al combo box
-//        for (Integer estado : estados) {
-//            comboBoxEstado.addItem(estado.toString());
-//        }
         // Mapea los valores numéricos de los estados a sus representaciones de cadena
         Map<Integer, String> estadoStrings = new HashMap<>();
         estadoStrings.put(1, "Aceptado");
@@ -104,8 +103,8 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         comboBoxEstado.setSelectedIndex(indiceEstadoActual);
     }
     /**************** ACTUALIZAR TABLA *****************/
-    private void actualizarTablaPedidos() {  
-//        principal.anadirDatosTabla();
+    private void actualizarTablaPedidos(int idPedido) {  
+        principal.anadirDatosTabla(idPedido);
     }
     
     /**
@@ -195,11 +194,11 @@ public class FrameEditarPedido extends javax.swing.JFrame {
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // Se suma 1 porque los índices en el combo box comienzan desde 0
         int nuevoEstado = comboBoxEstado.getSelectedIndex() + 1; 
-        int idPedido = codigoPedido;
-        pedidoCompleto.actualizarEstadoPedido(idPedido, nuevoEstado);
+
+        pedidoCompleto.actualizarEstadoPedido(codigoPedido, nuevoEstado);
         JOptionPane.showMessageDialog(null, "Se ha modificado el estado del pedido correctamente.");
-        System.out.println("Esstado del pedido actualizado correctamente.");
-        actualizarTablaPedidos();
+        System.out.println("Estado del pedido actualizado correctamente. ID del Pedido: " + codigoPedido);
+        actualizarTablaPedidos(codigoPedido);
         dispose();
     }//GEN-LAST:event_editButtonActionPerformed
 

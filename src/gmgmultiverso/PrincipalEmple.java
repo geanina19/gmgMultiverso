@@ -227,6 +227,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 //
 //    }
     public void anadirDatosTabla(int idEmpleado) {
+        System.out.println("Añadiendo datos para el empleado con ID: " + idEmpleado); // Mensaje de depuración
         // Obtener lista de pedidos
         List<PedidoConNombre> pedidos = pedidoCompleto.listarPedidosPorIdEmpleado(idEmpleado); // Filtrar por idEmpleado
 
@@ -283,12 +284,18 @@ public class PrincipalEmple extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 int columnaModificar = tablePedidos.getColumnModel().getColumnIndex("Editar");
                 int fila = tablePedidos.rowAtPoint(e.getPoint());
+
                 if (fila >= 0 && tablePedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-                    // Código para abrir el panel de edición
-                    abrirVentanaPedido(fila);
+                    // Obtén el valor de la columna "CódigoEmpleado"
+                    int columnaCodigoEmpleado = tablePedidos.getColumnModel().getColumnIndex("Numero de pedido");
+                    int codigoEmpleado = (int) tablePedidos.getValueAt(fila, columnaCodigoEmpleado);
+
+                    // Abre la ventana de edición con el código del empleado
+                    abrirVentanaPedido(codigoEmpleado);
                 }
             }
         });
+
     }
     
     

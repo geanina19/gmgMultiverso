@@ -1,0 +1,7 @@
+
+<?xml version='1.0' encoding='UTF-8' ?>
+<index version="1.0">
+    <indexitem text="Proveedor" target="codProveedor" />
+    <indexitem text="Empleado" target="codEmpleado" />
+    <!--<indexitem text="Acerca de este proyecto" target="acerca" />-->
+</index>

@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -78,6 +82,31 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         // Obtener el nombre del empleado usando el EmpleadoDao
         String nombreEmpleado = empleadoDao.obtenerNombreEmpleado(idEmpleado);
         itemCerrarSesion.setText("Cerrar sesión de " + nombreEmpleado);
+        
+        //----------------JAVAHELP----------------------------
+    
+        String AYUDA_HS = "ayuda/helpset.hs";
+        try 
+        {
+            ClassLoader cl = getClass().getClassLoader();
+            URL ayudaURL = cl.getResource(AYUDA_HS);
+            if (ayudaURL != null) 
+            {
+                HelpSet helpset = new HelpSet(null, ayudaURL);
+                HelpBroker hb = helpset.createHelpBroker();
+                JHelp jhelp = new JHelp(helpset);
+                //jhelp.setCurrentID("inicio");
+                hb.enableHelpOnButton(ayuda, "codProveedor", helpset);
+            } 
+            else 
+            {
+                System.err.println("No se pudo encontrar el archivo de ayuda: " + AYUDA_HS);
+            }
+        } 
+        catch (HelpSetException ex) 
+        {
+            System.err.println("Error al cargar la ayuda: " + ex);
+        }
         
     }
     
@@ -234,7 +263,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemVerPedido = new javax.swing.JMenuItem();
         menuInformes = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        ayuda = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
         itemOscuro = new javax.swing.JMenuItem();
         itemClaro = new javax.swing.JMenuItem();
@@ -381,9 +410,9 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuAyuda.setText("Ayuda");
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
-        jMenuItem1.setText("Ver ayuda");
-        menuAyuda.add(jMenuItem1);
+        ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
+        ayuda.setText("Ver ayuda");
+        menuAyuda.add(ayuda);
 
         jMenuBar1.add(menuAyuda);
 
@@ -954,6 +983,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ayuda;
     private javax.swing.JMenuItem itemAnadirEmpleado;
     private javax.swing.JMenuItem itemAnadirProducto;
     private javax.swing.JMenuItem itemAnadirProveedor;
@@ -966,7 +996,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemOscuro;
     private javax.swing.JMenuItem itemVerPedido;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;

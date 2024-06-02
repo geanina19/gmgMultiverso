@@ -207,7 +207,7 @@
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="1213" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="41" max="32767" attributes="0"/>
+              <EmptySpace pref="194" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -216,7 +216,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               <Component id="labelInicio" min="-2" pref="49" max="-2" attributes="0"/>
-              <EmptySpace pref="42" max="32767" attributes="0"/>
+              <EmptySpace pref="57" max="32767" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="288" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
@@ -253,20 +253,20 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jLabel2" pref="109" max="32767" attributes="0"/>
                       <Component id="jLabel1" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="textNombre" max="32767" attributes="0"/>
-                      <Component id="textFecha" pref="166" max="32767" attributes="0"/>
+                      <Component id="dateFiltro" pref="195" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
                   <Component id="buscarButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="665" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="370" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -279,12 +279,12 @@
                       <Component id="textNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="buscarButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="textFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="dateFiltro" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="158" max="32767" attributes="0"/>
+                  <EmptySpace pref="204" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -302,8 +302,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="textNombre">
         </Component>
-        <Component class="javax.swing.JTextField" name="textFecha">
-        </Component>
         <Component class="javax.swing.JButton" name="buscarButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
@@ -311,6 +309,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarButtonActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="dateFiltro">
         </Component>
       </SubComponents>
     </Container>

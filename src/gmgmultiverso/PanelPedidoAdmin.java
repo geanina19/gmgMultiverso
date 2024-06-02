@@ -71,17 +71,15 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
        // Obtener lista de pedidos
         List<PedidoConNombre> pedidos = pedidoCompleto.list();
         miModelo = new DefaultTableModel(new Object[]{
-                "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización", "Editar"}, 0) {
+                "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización"}, 0) {
             @Override
             public Class<?> getColumnClass(int column) {
-                if (column == 4 || column == 6) {
+                if (column == 4) {
                     return ImageIcon.class;
                 }
                 return Object.class;
             }
         };
-        // imágenes para los botones
-        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
         
         // imagenes para los diferentes estados
         ImageIcon estado1Icon = crearImageIcon("/imgEmple/recibidoIcono.png");
@@ -111,7 +109,6 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                 pedido.getNombreEmpleado(),
                 estadoIcon,
                 pedido.getUltimaActualizacion(),
-                editarIcon
             });
         }
         tableTodosPedidos.setModel(miModelo);
@@ -191,7 +188,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap(233, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

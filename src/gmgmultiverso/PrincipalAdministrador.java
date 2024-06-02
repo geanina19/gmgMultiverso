@@ -360,6 +360,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuGestion.add(menuProductos);
 
+        menuPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgEmple/pedido.png"))); // NOI18N
         menuPedidos.setText("Pedidos");
 
         itemVerPedido.setText("Ver Pedidos");
@@ -899,8 +900,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         // TODO add your handling code here:
         PanelPedidoAdmin p1Admin = new PanelPedidoAdmin(this);
         p1Admin.setSize(panelPrincipal.getSize());
-        
-                // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
         panelPrincipal.removeAll();
 
         GridBagConstraints gbc = new GridBagConstraints();

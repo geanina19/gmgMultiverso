@@ -203,10 +203,6 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         }
 
-        // Verificar si el proveedor está seleccionado
-        int indiceSeleccionado = componenteProveedores.obtenerIndiceSeleccionado();
-        boolean proveedorSeleccionado = indiceSeleccionado != -1;
-
         // Actualizar la lista original con la nueva lista
         listaCamposObligPorCompletar = nuevosCamposVacios;
 
@@ -215,12 +211,9 @@ public class AnadirProducto extends javax.swing.JPanel {
 
         // Verificar si hay campos obligatorios vacíos
         if (camposObligPorCompletar.isEmpty()) {
-            // Verificar si el proveedor está seleccionado
-            if (proveedorSeleccionado) {
-                visorErrores.setText("Todos los campos están completados.");
-            } else {
-                visorErrores.setText("Selecciona un proveedor.");
-            }
+            
+            visorErrores.setText("Todos los campos están completados.");
+            
         } else {
             visorErrores.setText("Los siguientes campos obligatorios están vacíos: \n" + camposObligPorCompletar);
         }

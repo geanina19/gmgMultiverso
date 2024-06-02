@@ -33,9 +33,11 @@ public class GmgMultiverso
         UIManager.setLookAndFeel(new FlatCarbonIJTheme());
         UIManager.put("TextComponent.arc", 100);
         */
-        PrincipalCliente pc = new PrincipalCliente();
-        //SwingUtilities.updateComponentTreeUI(pc);
-        pc.setVisible(true);
+//        PrincipalCliente pc = new PrincipalCliente();
+//        //SwingUtilities.updateComponentTreeUI(pc);
+//        pc.setVisible(true);
+        FramePrincipal frPrincip = new FramePrincipal();
+        frPrincip.setVisible(true);
     }
     
 }

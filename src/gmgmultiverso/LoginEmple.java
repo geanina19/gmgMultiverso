@@ -173,7 +173,7 @@ public class LoginEmple extends javax.swing.JFrame {
         buttonEntrar = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(153, 204, 255));
 
         panelPrincipal.setBackground(new java.awt.Color(204, 204, 204));

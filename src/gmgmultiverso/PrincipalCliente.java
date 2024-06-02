@@ -65,7 +65,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         boton6 = new javax.swing.JButton();
         boton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Iniciar Sesión Cliente");
         setResizable(false);
 

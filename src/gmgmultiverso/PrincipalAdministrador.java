@@ -231,6 +231,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemBuscarProducto = new javax.swing.JMenuItem();
         itemAnadirProducto = new javax.swing.JMenuItem();
         menuPedidos = new javax.swing.JMenu();
+        itemVerPedido = new javax.swing.JMenuItem();
         menuInformes = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -360,6 +361,15 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         menuGestion.add(menuProductos);
 
         menuPedidos.setText("Pedidos");
+
+        itemVerPedido.setText("Ver Pedidos");
+        itemVerPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemVerPedidoActionPerformed(evt);
+            }
+        });
+        menuPedidos.add(itemVerPedido);
+
         menuGestion.add(menuPedidos);
 
         menuInformes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/graficox20.png"))); // NOI18N
@@ -885,6 +895,27 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         
     }//GEN-LAST:event_itemAnadirProductoActionPerformed
 
+    private void itemVerPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemVerPedidoActionPerformed
+        // TODO add your handling code here:
+        PanelPedidoAdmin p1Admin = new PanelPedidoAdmin(this);
+        p1Admin.setSize(panelPrincipal.getSize());
+        
+                // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(p1Admin, gbc);
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_itemVerPedidoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -932,6 +963,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemClaro;
     private javax.swing.JMenu itemMas;
     private javax.swing.JMenuItem itemOscuro;
+    private javax.swing.JMenuItem itemVerPedido;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelLogo;

@@ -8,6 +8,8 @@ import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ProductoConProveedorDao;
 import gmgmultiverso.model.ProductoConProveedor;
 import gmgmultiverso.model.Proveedor;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -162,6 +164,7 @@ public class EditarProducto extends javax.swing.JPanel {
             }
         };
         componenteUnidadExistente.addLisOverEtiquetav2(li3);
+        
     }
     
     //------------------------------MÉTODOS-------------------------------

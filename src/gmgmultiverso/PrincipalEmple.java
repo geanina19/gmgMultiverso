@@ -227,6 +227,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 //
 //    }
     public void anadirDatosTabla(int idEmpleado) {
+        System.out.println("Añadiendo datos para el empleado con ID: " + idEmpleado); // Mensaje de depuración
         // Obtener lista de pedidos
         List<PedidoConNombre> pedidos = pedidoCompleto.listarPedidosPorIdEmpleado(idEmpleado); // Filtrar por idEmpleado
 
@@ -283,12 +284,18 @@ public class PrincipalEmple extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 int columnaModificar = tablePedidos.getColumnModel().getColumnIndex("Editar");
                 int fila = tablePedidos.rowAtPoint(e.getPoint());
+
                 if (fila >= 0 && tablePedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-                    // Código para abrir el panel de edición
-                    abrirVentanaPedido(fila);
+                    // Obtén el valor de la columna "CódigoEmpleado"
+                    int columnaCodigoEmpleado = tablePedidos.getColumnModel().getColumnIndex("Numero de pedido");
+                    int codigoEmpleado = (int) tablePedidos.getValueAt(fila, columnaCodigoEmpleado);
+
+                    // Abre la ventana de edición con el código del empleado
+                    abrirVentanaPedido(codigoEmpleado);
                 }
             }
         });
+
     }
     
     
@@ -341,8 +348,8 @@ public class PrincipalEmple extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         textNombre = new javax.swing.JTextField();
-        textFecha = new javax.swing.JTextField();
         buscarButton = new javax.swing.JButton();
+        dateFiltro = new com.toedter.calendar.JDateChooser();
         labelInicio = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -396,18 +403,18 @@ public class PrincipalEmple extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textNombre)
-                    .addComponent(textFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                .addGap(142, 142, 142)
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                .addGap(189, 189, 189)
                 .addComponent(buscarButton)
-                .addContainerGap(665, Short.MAX_VALUE))
+                .addGap(370, 370, 370))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -417,11 +424,11 @@ public class PrincipalEmple extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscarButton))
-                .addGap(85, 85, 85)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(textFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(158, Short.MAX_VALUE))
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Archivo");
@@ -575,14 +582,14 @@ public class PrincipalEmple extends javax.swing.JFrame {
                     .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -790,6 +797,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;
+    private com.toedter.calendar.JDateChooser dateFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
@@ -817,7 +825,6 @@ public class PrincipalEmple extends javax.swing.JFrame {
     private javax.swing.JMenuItem temaOp7;
     private javax.swing.JMenuItem temaOp8;
     private javax.swing.JMenuItem temaOp9;
-    private javax.swing.JTextField textFecha;
     private javax.swing.JTextField textNombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -62,6 +62,7 @@ public class PedidoConNombreDao {
     }
     
     /***************** LISTA TODOS LOS PEDIDOS POR ID EMPLEAOD ******************/
+    
     public List<PedidoConNombre> listarPedidosPorIdEmpleado(int idEmpleado) {
         Connection conect = null;
         try {
@@ -79,6 +80,14 @@ public class PedidoConNombreDao {
             var rs = ps.executeQuery();
             List<PedidoConNombre> pedidos = new ArrayList<>();
             while (rs.next()) {
+                // Imprimir los datos obtenidos del ResultSet
+                System.out.println("ID Pedido: " + rs.getInt("id"));
+                System.out.println("Nombre Cliente: " + rs.getString("nombre_cliente"));
+                System.out.println("Fecha Pedido: " + rs.getDate("fecha_pedido"));
+                System.out.println("Nombre Empleado: " + rs.getString("nombre_empleado"));
+                System.out.println("Estado: " + rs.getInt("estado"));
+                System.out.println("Última Actualización: " + rs.getDate("ultima_actualizacion"));
+
                 PedidoConNombre pedido = new PedidoConNombre(
                         rs.getInt("id"),
                         rs.getString("nombre_cliente"),
@@ -150,9 +159,16 @@ public class PedidoConNombreDao {
             ps.setInt(1, idPedido);
 
             var rs = ps.executeQuery();
+        // Depuración
+        System.out.println("ID del Pedido: " + idPedido);
+        System.out.println("Ejecutando consulta: " + query);           
+            
             if (rs.next()) {
-                return rs.getString("nombre");
+                String nombreCliente = rs.getString("nombre");
+                System.out.println("Nombre del Cliente: " + nombreCliente);
+                return nombreCliente;
             } else {
+                System.out.println("No se encontró el pedido con ID: " + idPedido);
                 return null; // No se encontró el pedido con ese id
             }
         } catch (SQLException e) {
@@ -252,7 +268,10 @@ public class PedidoConNombreDao {
             }
         }
     }
+
     
+    
+
     
     
 }

@@ -41,10 +41,7 @@ public class GmgMultiverso
         UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
         UIManager.put("TextComponent.arc", 100);
         FramePrincipal frPrincip = new FramePrincipal();
-        frPrincip.setTitle("GMG Multiverso");
         SwingUtilities.updateComponentTreeUI(frPrincip);
-        //La pantalla se abra en el centro
-        frPrincip.setLocationRelativeTo(null);
         frPrincip.setVisible(true);
     }
     

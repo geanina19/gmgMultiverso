@@ -15,6 +15,8 @@ public class FramePrincipal extends javax.swing.JFrame {
      */
     public FramePrincipal() {
         initComponents();
+        //La pantalla se abra en el centro
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -31,6 +33,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         buttonCliente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GMG Multiverso");
 
         buttonAdmin.setText("Administrador");
         buttonAdmin.addActionListener(new java.awt.event.ActionListener() {
@@ -72,9 +75,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGap(111, 111, 111)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(buttonCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(buttonEmple, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                        .addComponent(buttonAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(buttonEmple, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(buttonAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(154, Short.MAX_VALUE))
         );
 
@@ -85,18 +87,21 @@ public class FramePrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         LoginAdmin logAdmin = new LoginAdmin();
         logAdmin.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_buttonAdminActionPerformed
 
     private void buttonEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEmpleActionPerformed
         // TODO add your handling code here:
         LoginEmple logEmple = new LoginEmple();
         logEmple.setVisible(true);
+        //this.dispose();
     }//GEN-LAST:event_buttonEmpleActionPerformed
 
     private void buttonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClienteActionPerformed
         // TODO add your handling code here:
         PrincipalCliente princi = new PrincipalCliente();
         princi.setVisible(true);
+        //this.dispose();
     }//GEN-LAST:event_buttonClienteActionPerformed
 
     /**

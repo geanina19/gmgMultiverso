@@ -249,6 +249,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
+        itemCerrarAplicacion = new javax.swing.JMenuItem();
         menuGestion = new javax.swing.JMenu();
         menuProveedores = new javax.swing.JMenu();
         itemBuscarProveedor = new javax.swing.JMenuItem();
@@ -316,6 +317,16 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             }
         });
         menuArchivo.add(itemCerrarSesion);
+
+        itemCerrarAplicacion.setForeground(new java.awt.Color(255, 0, 0));
+        itemCerrarAplicacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cerrarApp.png"))); // NOI18N
+        itemCerrarAplicacion.setText("Cerrar aplicación");
+        itemCerrarAplicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCerrarAplicacionActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(itemCerrarAplicacion);
 
         jMenuBar1.add(menuArchivo);
 
@@ -966,6 +977,11 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         repaint();
     }//GEN-LAST:event_itemPerfilActionPerformed
 
+    private void itemCerrarAplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarAplicacionActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_itemCerrarAplicacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1010,6 +1026,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenuItem itemBuscarEmpleado;
     private javax.swing.JMenuItem itemBuscarProducto;
     private javax.swing.JMenuItem itemBuscarProveedor;
+    private javax.swing.JMenuItem itemCerrarAplicacion;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemClaro;
     private javax.swing.JMenu itemMas;

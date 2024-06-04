@@ -42,7 +42,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
         labelVolver.setVisible(false);
         
         // Convertir componenteContrasenia a campo de contraseña
-        //componenteContrasenia.convertirAContrasena();
+        componenteContrasenia.convertirAContrasena();
         
         visorErrores.setEditable(false);
         cargarInformacionEmpleado(codEmpleado);
@@ -293,7 +293,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
     }
     
     public void modificar(){
-         
+     
         String nuevoNombre = componenteNombre.getEscritura();
         String nuevoApellido = componenteApellido.getEscritura();
         String nuevaContrasenia = componenteContrasenia.getEscritura();
@@ -303,7 +303,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
         // Variables para verificar la validez del teléfono y el email
         boolean telefonoValido = true;
         boolean emailValido = true;
-        
+
         // Verificar si el teléfono es un número válido
         int telefono = 0;
         try {
@@ -324,10 +324,10 @@ public class EditarEmpleado extends javax.swing.JPanel {
         if (nuevoNombre.matches(".*\\d.*") || nuevoApellido.matches(".*\\d.*") || !telefonoValido || !emailValido) {
             String mensajeError = "";
             if (nuevoNombre.matches(".*\\d.*")) {
-                mensajeError += "- El nombre no pueden contener números.\n";
+                mensajeError += "- El nombre no puede contener números.\n";
             }
             if (nuevoApellido.matches(".*\\d.*")) {
-                mensajeError += "- El apellido no pueden contener números.\n";
+                mensajeError += "- El apellido no puede contener números.\n";
             }
             if (!telefonoValido) {
                 mensajeError += "- El teléfono debe ser un número válido.\n";
@@ -342,12 +342,18 @@ public class EditarEmpleado extends javax.swing.JPanel {
         // Obtener el ID del empleado
         int idEmpleado = codEmpleado;
 
-        // Crear una instancia de Empleado con los nuevos valores
-        Empleado empleadoModificado = new Empleado(idEmpleado, nuevoNombre,nuevoApellido, nuevaContrasenia, Integer.parseInt(nuevoTelefono), nuevoEmail);
-
         // Crear una instancia de EmpleadoDao
         ManagerConexion managerConexion = new ManagerConexion();
         EmpleadoDao empleadoDao = new EmpleadoDao(managerConexion);
+
+        // Verificar si el nuevo número de teléfono ya existe para otro empleado
+        if (empleadoDao.telefonoExisteParaOtrosEmpleados(Integer.parseInt(nuevoTelefono), idEmpleado)) {
+            JOptionPane.showMessageDialog(this, "No se puede modificar el empleado, el número de teléfono ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear una instancia de Empleado con los nuevos valores
+        Empleado empleadoModificado = new Empleado(idEmpleado, nuevoNombre, nuevoApellido, nuevaContrasenia, Integer.parseInt(nuevoTelefono), nuevoEmail);
 
         // Intentar actualizar el empleado en la base de datos
         boolean exito = empleadoDao.actualizarEmpleado(empleadoModificado);
@@ -361,6 +367,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error al modificar el empleado.");
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -460,21 +467,20 @@ public class EditarEmpleado extends javax.swing.JPanel {
                 .addComponent(labelVolver)
                 .addGap(392, 392, 392)
                 .addComponent(labelTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(418, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(componenteApellido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(componenteNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(componenteContrasenia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(componenteTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(componenteEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
+                .addGap(42, 42, 42)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(componenteNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                    .addComponent(componenteApellido, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(componenteContrasenia, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(componenteTelefono, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(componenteEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,7 +506,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
                                 .addGap(76, 76, 76)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(160, 160, 160)
+                                .addGap(155, 155, 155)
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(211, Short.MAX_VALUE))
         );

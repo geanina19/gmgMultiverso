@@ -17,7 +17,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class GmgMultiverso 
 {
-
+//
     /**
      * @param args the command line arguments
      */

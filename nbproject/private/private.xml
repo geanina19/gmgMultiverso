@@ -20,6 +20,7 @@
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalGmgMultiverso.java</file>
         </group>
         <group>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/FramePrincipal.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/DetallesPedidoDao.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/PedidoConNombreDao.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PantallaCliente.java</file>
@@ -30,6 +31,8 @@
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/AyudaCliente.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Empleado.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ClienteDao.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/EmpleadoDao.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/archivosGenerados/configPerfilAdmin.txt</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Pedido.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/infoProducto.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/GmgMultiverso.java</file>
@@ -42,6 +45,7 @@
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/CuentaCliente.java</file>
         </group>
         <group>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/FramePrincipal.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/DetallesPedidoDao.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/PedidoConNombreDao.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PantallaCliente.java</file>
@@ -52,6 +56,8 @@
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/AyudaCliente.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Empleado.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ClienteDao.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/EmpleadoDao.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/archivosGenerados/configPerfilAdmin.txt</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/model/Pedido.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/infoProducto.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/GmgMultiverso.java</file>

@@ -609,7 +609,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tablaBuscarProducto);
 
         componenteProveedores.setEtiqueta("Proveedores  :");
-        componenteProveedores.setMensaje("\"Elije una empresa\"");
+        componenteProveedores.setMensaje("\"Selecciona un proveedor\"");
         componenteProveedores.setPrimerElementoEsMensaje(true);
 
         jLabel2.setText("Producto :");

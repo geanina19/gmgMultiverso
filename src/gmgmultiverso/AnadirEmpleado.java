@@ -415,14 +415,14 @@ public class AnadirEmpleado extends javax.swing.JPanel {
         String telefonoTexto = componenteTelefono.getEscritura();
         String email = componenteEmail.getEscritura();
 
-        
+        // Verificar si los campos contienen caracteres no deseados o están en el formato incorrecto
         if (nombre.matches(".*\\d.*") || apellido.matches(".*\\d.*") || !telefonoTexto.matches("\\d{9}") || !email.contains("@")) {
             String mensajeError = "";
             if (nombre.matches(".*\\d.*")) {
-                mensajeError += "- El nombre no pueden contener números.\n";
+                mensajeError += "- El nombre no puede contener números.\n";
             }
             if (apellido.matches(".*\\d.*")) {
-                mensajeError += "- El apellido no pueden contener números.\n";
+                mensajeError += "- El apellido no puede contener números.\n";
             }
             if (!telefonoTexto.matches("\\d{9}")) {
                 mensajeError += "- El teléfono debe contener 9 dígitos numéricos.\n";
@@ -430,19 +430,25 @@ public class AnadirEmpleado extends javax.swing.JPanel {
             if (!email.contains("@")) {
                 mensajeError += "- El email debe ser válido.\n";
             }
-            
+
             JOptionPane.showMessageDialog(this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Crear un objeto Proveedor con los datos ingresados
+        // Crear un objeto Empleado con los datos ingresados
         Empleado nuevoEmpleado = new Empleado(nombre, apellido, contrasenia, Integer.parseInt(telefonoTexto), email);
 
-        // Instanciar ProveedorDao
+        // Instanciar EmpleadoDao
         ManagerConexion managerConexion = new ManagerConexion();
         EmpleadoDao empleadoDao = new EmpleadoDao(managerConexion);
 
-        // Añadir el proveedor
+        // Verificar si el empleado ya existe por número de teléfono
+        if (empleadoDao.empleadoExiste(Integer.parseInt(telefonoTexto))) {
+            JOptionPane.showMessageDialog(this, "No se puede añadir el empleado, el número de teléfono ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Añadir el empleado
         boolean resultado = empleadoDao.anadirEmpleado(nuevoEmpleado);
 
         // Mostrar mensaje de éxito o error

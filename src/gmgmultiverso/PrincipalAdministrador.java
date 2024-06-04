@@ -282,7 +282,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         menuPerfil = new javax.swing.JMenu();
         itemPerfil = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Principal GmgMultiverso");
         setBackground(new java.awt.Color(255, 255, 255));
 

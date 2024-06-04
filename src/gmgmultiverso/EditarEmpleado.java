@@ -293,7 +293,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
     }
     
     public void modificar(){
-         
+     
         String nuevoNombre = componenteNombre.getEscritura();
         String nuevoApellido = componenteApellido.getEscritura();
         String nuevaContrasenia = componenteContrasenia.getEscritura();
@@ -303,7 +303,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
         // Variables para verificar la validez del teléfono y el email
         boolean telefonoValido = true;
         boolean emailValido = true;
-        
+
         // Verificar si el teléfono es un número válido
         int telefono = 0;
         try {
@@ -324,10 +324,10 @@ public class EditarEmpleado extends javax.swing.JPanel {
         if (nuevoNombre.matches(".*\\d.*") || nuevoApellido.matches(".*\\d.*") || !telefonoValido || !emailValido) {
             String mensajeError = "";
             if (nuevoNombre.matches(".*\\d.*")) {
-                mensajeError += "- El nombre no pueden contener números.\n";
+                mensajeError += "- El nombre no puede contener números.\n";
             }
             if (nuevoApellido.matches(".*\\d.*")) {
-                mensajeError += "- El apellido no pueden contener números.\n";
+                mensajeError += "- El apellido no puede contener números.\n";
             }
             if (!telefonoValido) {
                 mensajeError += "- El teléfono debe ser un número válido.\n";
@@ -342,12 +342,18 @@ public class EditarEmpleado extends javax.swing.JPanel {
         // Obtener el ID del empleado
         int idEmpleado = codEmpleado;
 
-        // Crear una instancia de Empleado con los nuevos valores
-        Empleado empleadoModificado = new Empleado(idEmpleado, nuevoNombre,nuevoApellido, nuevaContrasenia, Integer.parseInt(nuevoTelefono), nuevoEmail);
-
         // Crear una instancia de EmpleadoDao
         ManagerConexion managerConexion = new ManagerConexion();
         EmpleadoDao empleadoDao = new EmpleadoDao(managerConexion);
+
+        // Verificar si el nuevo número de teléfono ya existe para otro empleado
+        if (empleadoDao.telefonoExisteParaOtrosEmpleados(Integer.parseInt(nuevoTelefono), idEmpleado)) {
+            JOptionPane.showMessageDialog(this, "No se puede modificar el empleado, el número de teléfono ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear una instancia de Empleado con los nuevos valores
+        Empleado empleadoModificado = new Empleado(idEmpleado, nuevoNombre, nuevoApellido, nuevaContrasenia, Integer.parseInt(nuevoTelefono), nuevoEmail);
 
         // Intentar actualizar el empleado en la base de datos
         boolean exito = empleadoDao.actualizarEmpleado(empleadoModificado);
@@ -361,6 +367,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error al modificar el empleado.");
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

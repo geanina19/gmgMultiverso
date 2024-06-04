@@ -117,7 +117,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         if (url != null) {
             return Toolkit.getDefaultToolkit().getImage(url);
         } else {
-            System.err.println("Resource not found: /imagenes/planeta.png");
+            System.err.println("No se encuentra la imagen : /imagenes/planeta.png");
             return null;
         }
     }

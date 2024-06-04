@@ -3,19 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/FramePrincipal.java</file>
             <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/ProveedorDao.java</file>
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/EditarEmpleado.java</file>
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/GmgMultiverso.java</file>
             <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PrincipalAdministrador.java</file>
-=======
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/AnadirProveedor.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/EmpleadoDao.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/ProveedorDao.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/EditarProveedor.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/PrincipalAdministrador.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProveedor.java</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/scriptYHsqlBBDD/gmgMultiverso2.sql</file>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProducto.java</file>
->>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
+            <file>file:/C:/Users/geany/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/db/dao/EmpleadoDao.java</file>
         </group>
     </open-files>
 </project-private>

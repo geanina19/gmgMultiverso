@@ -17,17 +17,17 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class GmgMultiverso 
 {
-
+//
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws UnsupportedLookAndFeelException 
     {
         // TODO code application logic here
-     /* PrincipalPrueba pp = new PrincipalPrueba();
-        pp.setVisible(true);
+     // PrincipalPrueba pp = new PrincipalPrueba();
+        //pp.setVisible(true);
         
-        LoginAdmin l = new LoginAdmin();
+        /*LoginAdmin l = new LoginAdmin();
         l.setVisible(true);*/
         
         /*

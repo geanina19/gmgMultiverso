@@ -337,8 +337,6 @@ public class AnadirProveedor extends javax.swing.JPanel {
         String telefonoTexto = componenteTelefono.getEscritura();
         String email = componenteEmail.getEscritura();
 
-        
-        
         if (!telefonoTexto.matches("\\d{9}") || !email.contains("@")) {
             String mensajeError = "";
             if (!telefonoTexto.matches("\\d{9}")) {
@@ -351,12 +349,21 @@ public class AnadirProveedor extends javax.swing.JPanel {
             return;
         }
 
-        // Crear un objeto Proveedor con los datos ingresados
-        Proveedor nuevoProveedor = new Proveedor(nombre, Integer.parseInt(telefonoTexto), email);
+        // Convertir el teléfono a int
+        int telefono = Integer.parseInt(telefonoTexto);
 
         // Instanciar ProveedorDao
         ManagerConexion managerConexion = new ManagerConexion();
         ProveedorDao proveedorDao = new ProveedorDao(managerConexion);
+
+        // Verificar si el proveedor ya existe
+        if (proveedorDao.proveedorExiste(telefono)) {
+            JOptionPane.showMessageDialog(this, "No se puede añadir, el proveedor con ese teléfono porque ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear un objeto Proveedor con los datos ingresados
+        Proveedor nuevoProveedor = new Proveedor(nombre, telefono, email);
 
         // Añadir el proveedor
         boolean resultado = proveedorDao.anadirProveedor(nuevoProveedor);
@@ -369,6 +376,7 @@ public class AnadirProveedor extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(this, "Error al añadir el proveedor", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
         
     }//GEN-LAST:event_botonAnadirActionPerformed
 

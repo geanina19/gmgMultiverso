@@ -25,8 +25,11 @@ public class infoProducto extends javax.swing.JDialog {
      * Creates new form infoProducto
      */
     public infoProducto(java.awt.Frame parent, boolean modal, int contadorCarrito) {
-        super(parent, modal);
+        super(parent, "Información del producto",modal);
         initComponents();
+        
+        this.setLocationRelativeTo(null);
+
     }
 
     public void setNombreProducto(String nombreProducto, double precioProducto) {
@@ -85,6 +88,8 @@ public class infoProducto extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         name.setText("Nombre del producto ");
 

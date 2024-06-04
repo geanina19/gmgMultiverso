@@ -18,12 +18,20 @@ public class Pedido {
     private int id_empleado;
     private int estado;
     private Date ultima_actualizacion;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
     
     //detalle pedido 
      private List<DetallePedido> detalles;
     private int idCliente;
     private int idEmpleado;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
 
     public Pedido(int id, int id_cliente, Date fecha_pedido, int id_empleado, int estado, Date ultima_actualizacion) {
         this.id = id;
@@ -34,6 +42,10 @@ public class Pedido {
         this.ultima_actualizacion = ultima_actualizacion;
     }
     
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
     // Nuevo constructor solo para detalles
   public Pedido(int id, Date fecha_pedido, int estado, Date ultima_actualizacion, List<DetallePedido> detalles) {
     this.id = id;
@@ -79,10 +91,18 @@ public class Pedido {
     public void setUltima_actualizacion(Date ultima_actualizacion) {
         this.ultima_actualizacion = ultima_actualizacion;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
     
     public List<DetallePedido> getDetalles() {
         return detalles;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
     //añadido id cliente y empleado
 
     public int getId_cliente() {
@@ -100,9 +120,13 @@ public class Pedido {
     public void setId_empleado(int id_empleado) {
         this.id_empleado = id_empleado;
     }
+<<<<<<< HEAD
     
     
 
+=======
+   
+>>>>>>> 3abc3326ddf69cd17a5ab97de23e6023c030acf2
     public void setDetalles(List<DetallePedido> detalles) {
         this.detalles = detalles;
     }

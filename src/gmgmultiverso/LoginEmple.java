@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 public class LoginEmple extends javax.swing.JFrame {
 
     private EmpleadoDao empleadoDao;
+
     
     public LoginEmple() {
         initComponents();
@@ -106,36 +107,51 @@ public class LoginEmple extends javax.swing.JFrame {
         });                   
     }
 
-        public int obtenerIdUsuario(String usuario, String contrasenia) {      
-
-        // Obtener la lista de empleados con el EmpleadoDao
-        List<Empleado> empleados = empleadoDao.list();
-
-        // Iterar sobre la lista de empleados para buscar el usuario y la contraseña
-        for (Empleado empleado : empleados) {
-            // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
-            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
-                // Si coinciden, devolver el ID del empleado
-                return empleado.getId();
-            }
-        }
-
-        // Si no se encuentra el usuario o la contraseña no coincide, devolver -1
-        return -1;
-    }
+//    public int obtenerIdUsuario(String usuario, String contrasenia) {      
+//
+//        // Obtener la lista de empleados con el EmpleadoDao
+//        List<Empleado> empleados = empleadoDao.list();
+//
+//        // Iterar sobre la lista de empleados para buscar el usuario y la contraseña
+//        for (Empleado empleado : empleados) {
+//            // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
+//            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
+//                // Si coinciden, devolver el ID del empleado
+//                return empleado.getId();
+//            }
+//        }
+//
+//        // Si no se encuentra el usuario o la contraseña no coincide, devolver -1
+//        return -1;
+//    }
     
+//    private void iniciarSesion() {
+//        String usuario = textFieldUser.getText();
+//        String contrasenia = new String(textFieldPassword.getPassword());
+//
+//        if (empleadoDao.verificarCredenciales(usuario, contrasenia)) {
+//            obtenerIdUsuario(usuario, contrasenia);
+//            PrincipalEmple pEmple = new PrincipalEmple();
+//            pEmple.setVisible(true);
+//            this.dispose();
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
     private void iniciarSesion() {
         String usuario = textFieldUser.getText();
-        String contraseña = new String(textFieldPassword.getPassword());
+        String contrasenia = new String(textFieldPassword.getPassword());
 
-        if (empleadoDao.verificarCredenciales(usuario, contraseña)) {
-            PrincipalEmple pEmple = new PrincipalEmple();
+        if (empleadoDao.verificarCredenciales(usuario, contrasenia)) {
+            int idEmpleado = empleadoDao.obtenerIdUsuario(usuario, contrasenia);
+            PrincipalEmple pEmple = new PrincipalEmple(this, true, idEmpleado);
             pEmple.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }    
+   
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,7 +173,7 @@ public class LoginEmple extends javax.swing.JFrame {
         buttonEntrar = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(153, 204, 255));
 
         panelPrincipal.setBackground(new java.awt.Color(204, 204, 204));

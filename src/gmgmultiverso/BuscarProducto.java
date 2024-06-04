@@ -9,6 +9,8 @@ import gmgmultiverso.db.dao.ProductoConProveedorDao;
 import gmgmultiverso.db.dao.ProveedorDao;
 import gmgmultiverso.model.Producto;
 import gmgmultiverso.model.ProductoConProveedor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -30,6 +32,8 @@ import javax.swing.table.TableRowSorter;
 import propiedades.EvObjOverComp4;
 import propiedades.LisOverComp4;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 
 /*
 en mi codigo quiero tengo un jcombobox y quiero que en el se carguen por ejemplo en el item 1 tengo rango de 0 a 10 euros que es el precio incluyendo ambos numeros , 
@@ -77,6 +81,14 @@ public class BuscarProducto extends javax.swing.JPanel {
         actualizarTablaBuscarProducto();
         cargarProveedores();
         
+        // Agregar ítems al JComboBox comboBoxPrecios
+        DefaultComboBoxModel<String> modeloCombo = new DefaultComboBoxModel<>();
+        modeloCombo.addElement("Elegir rango");
+        modeloCombo.addElement("0 - 5 €");
+        modeloCombo.addElement("5 - 10 €");
+        modeloCombo.addElement("10 - 15 €");
+        comboBoxPrecio.setModel(modeloCombo);
+        
         //NO TOCAR (FUNCIONA)
         //cuaundo pulse una empresa, en la tabla se mostrará los proveedores
         componenteProveedores.addLisOverComp4(new LisOverComp4() 
@@ -103,6 +115,14 @@ public class BuscarProducto extends javax.swing.JPanel {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                buscarProducto(codProducto);
+            }
+        });
+        
+        // Agregar ActionListener al JComboBox comboBoxPrecio
+        comboBoxPrecio.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 buscarProducto(codProducto);
             }
         });
@@ -298,6 +318,49 @@ public class BuscarProducto extends javax.swing.JPanel {
         mouseListenerAnadirColumnasExtra();
     }
     
+    public void filtrarProductosRango0a5() {
+        quitarListener(); // Eliminar cualquier listener previo
+
+        double precioMinimo = 0.0;
+        double precioMaximo = 5.0;
+
+        // Filtrar los productos según el rango de precios seleccionado
+        List<ProductoConProveedor> productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
+
+        // Actualizar la tabla con los productos filtrados
+        actualizarTablaBuscarProductoRango(productosFiltrados);
+    }
+    
+    public void actualizarTablaBuscarProductoRango(List<ProductoConProveedor> productosFiltrados) {
+        quitarListener(); // Eliminar cualquier listener previo
+
+        // Limpiar el modelo antes de añadir filas
+        miModelo.setRowCount(0);
+
+        // Crear ImageIcons con las imágenes para los botones
+        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
+        ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
+
+        // Añadir las filas al modelo
+        for (ProductoConProveedor producto : productosFiltrados) {
+            Object[] rowData = {
+                producto.getNombreProveedor(),
+                producto.getNombreProducto(),
+                producto.getPrecio(),
+                producto.getUnidad_existente(),
+                editarIcon,
+                eliminarIcon
+            };
+            miModelo.addRow(rowData);
+        }
+
+        // Reactivar el ordenamiento de columnas y añadir el listener de mouse para los botones
+        activarOrdenarColumnas(miModelo);
+        mouseListenerAnadirColumnasExtra();
+    }
+
+
+    
     //-------------Cargar proveedores------------
     public void cargarProveedores() {
         
@@ -321,22 +384,135 @@ public class BuscarProducto extends javax.swing.JPanel {
     //-------------Buscar producto------------
     
     public void buscarProducto(int codProducto) {
-        
-        List<ProductoConProveedor> productos = producdao.list();
+        quitarListener(); // Eliminar cualquier listener previo
 
-            // Filtrar la lista de proveedores según el código de proveedor si es diferente de -1
-            for (ProductoConProveedor producto : productos) {
-                if (codProveedor != -1) {
-                    if (producto.getId() == codProveedor) {
-                        //proveedoresFiltrados.add(producto);
-                    }
-                } else {
-                    // Si el código de proveedor es -1, mostrar todos los proveedores
-                    //proveedoresFiltrados = proveedores;
-                }
+        String nombreProducto = textFieldProducto.getText().trim();
+
+        if (nombreProducto.matches(".*\\d.*")) {
+            JOptionPane.showMessageDialog(null, "El nombre del producto no puede contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double precioMinimo = 0.0;
+        double precioMaximo = 0.0;
+        List<ProductoConProveedor> productosFiltrados = new ArrayList<>(); // Declaración aquí
+
+        // Obtener el rango de precio seleccionado
+        String rangoPrecioSeleccionado = (String) comboBoxPrecio.getSelectedItem();
+
+        // Verificar si se ha seleccionado un rango de precios válido
+        if (rangoPrecioSeleccionado != null && !"Elegir rango".equals(rangoPrecioSeleccionado)) {
+            // Obtener el valor inicial y final del rango de precios seleccionado
+            String[] partesRango = rangoPrecioSeleccionado.split(" - ");
+            double valorInicial = Double.parseDouble(partesRango[0].replace(" €", ""));
+            double valorFinal = Double.parseDouble(partesRango[1].replace(" €", ""));
+
+            // Establecer los límites del rango de precios según el rango seleccionado
+            if (valorInicial == 0.0 && valorFinal == 5.0) {
+                filtrarProductosRango0a5();
+                return; // Salir del método después de filtrar
+            } else if (valorInicial == 5.0 && valorFinal == 10.0) {
+                precioMinimo = 5.1;
+                precioMaximo = 10.0;
+            } else if (valorInicial == 10.0 && valorFinal == 15.0) {
+                precioMinimo = 10.1;
+                precioMaximo = 15.0;
             }
-        
+
+            System.out.println("Filtrando productos con precios entre " + precioMinimo + " y " + precioMaximo);
+
+            // Filtrar los productos según el rango de precios seleccionado
+            productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
+
+            // Verificar si hay otros criterios de búsqueda y si se encontraron resultados en el rango de precios
+            if (!nombreProducto.isEmpty() || codProveedor != -1) {
+                // Filtrar por nombre de producto y/o proveedor si corresponde
+                if (!nombreProducto.isEmpty() && codProveedor != -1) {
+                    productosFiltrados = producdao.buscarProductoPorNombreProveedorYPrecio(nombreProducto, codProveedor, precioMinimo, precioMaximo);
+                } else if (!nombreProducto.isEmpty()) {
+                    productosFiltrados = producdao.buscarProductoPorNombre(nombreProducto);
+                } else if (codProveedor != -1) {
+                    productosFiltrados = producdao.listBuscarPorProveedor(codProveedor);
+                }
+
+                if (!productosFiltrados.isEmpty()) {
+                    // Se encontraron resultados, actualizar la tabla
+                    actualizarTablaBuscarProductoRango(productosFiltrados);
+                } else {
+                    // No se encontraron resultados
+                    JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                // No hay otros criterios de búsqueda, mostrar todos los productos en el rango de precios
+                actualizarTablaBuscarProductoRango(productosFiltrados);
+            }
+
+            return; // Salir del método después de filtrar por rango de precios
+        }
+
+        // Verificar los casos de búsqueda y aplicar los filtros adecuados
+        if (!nombreProducto.isEmpty() && codProveedor != -1 && precioMinimo > 0 && precioMaximo > 0) {
+            // Si hay nombre de producto, proveedor seleccionado y rango de precios, filtrar por todos los criterios
+            productosFiltrados = producdao.buscarProductoPorNombreProveedorYPrecio(nombreProducto, codProveedor, precioMinimo, precioMaximo);
+        } else if (!nombreProducto.isEmpty() && codProveedor != -1) {
+            // Si hay nombre de producto y proveedor seleccionado, filtrar por nombre de producto y proveedor
+            productosFiltrados = producdao.buscarProductoPorNombreYProveedor(nombreProducto, codProveedor);
+        } else if (!nombreProducto.isEmpty() && precioMinimo > 0 && precioMaximo > 0) {
+            // Si hay nombre de producto y rango de precios, filtrar por nombre de producto y rango de precios
+            productosFiltrados = producdao.buscarProductoPorNombreYPrecio(nombreProducto, precioMinimo, precioMaximo);
+        } else if (codProveedor != -1 && precioMinimo > 0 && precioMaximo > 0) {
+            // Si hay proveedor seleccionado y rango de precios, filtrar por proveedor y rango de precios
+            productosFiltrados = producdao.buscarProductoPorProveedorYPrecio(codProveedor, precioMinimo, precioMaximo);
+        } else if (!nombreProducto.isEmpty()) {
+            // Si solo hay nombre de producto, filtrar solo por nombre de producto
+            productosFiltrados = producdao.buscarProductoPorNombre(nombreProducto);
+        } else if (codProveedor != -1) {
+            // Si solo hay un proveedor seleccionado, filtrar solo por proveedor
+            productosFiltrados = producdao.listBuscarPorProveedor(codProveedor);
+        } else if (precioMinimo > 0 && precioMaximo > 0) {
+            // Si solo hay un rango de precios seleccionado, filtrar solo por rango de precios
+            productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
+        } else {
+            // Si no se proporcionan criterios de búsqueda, mostrar todos los productos
+            productosFiltrados = producdao.list();
+        }
+
+        // Limpiar el modelo antes de añadir filas
+        miModelo.setRowCount(0);
+
+        // Crear ImageIcons con las imágenes para los botones
+        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
+        ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
+
+        // Añadir las filas al modelo
+        boolean hayResultados = !productosFiltrados.isEmpty();
+
+        for (ProductoConProveedor producto : productosFiltrados) {
+            Object[] rowData = {
+                producto.getNombreProveedor(),
+                producto.getNombreProducto(),
+                producto.getPrecio(),
+                producto.getUnidad_existente(),
+                editarIcon,
+                eliminarIcon
+            };
+            miModelo.addRow(rowData);
+        }
+
+        // Reactivar el ordenamiento de columnas y añadir el listener de mouse para los botones
+        activarOrdenarColumnas(miModelo);
+        tablaBuscarProducto.setModel(miModelo);
+        mouseListenerAnadirColumnasExtra();
+
+        // Mostrar mensaje si no hay resultados
+        if (!hayResultados) {
+            JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+            actualizarTablaBuscarProducto();
+        }
     }
+
+    
+    
     
     
     //------------Metodos para eliminar un proveedor------------
@@ -393,6 +569,20 @@ public class BuscarProducto extends javax.swing.JPanel {
         int rowCount = tablaBuscarProducto.getRowCount();
         tablaBuscarProducto.clearSelection();
     }
+    
+    public void limpiarTodo() {
+        quitarListener();
+        codProducto = -1;
+        codProveedor = -1;
+        componenteProveedores.eliminarSeleccion();
+        tablaBuscarProducto.clearSelection();
+        textFieldProducto.setText("");
+        
+        comboBoxPrecio.setSelectedIndex(0);
+        
+        actualizarTablaBuscarProducto();
+        deseleccionarTodasFilas();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -409,7 +599,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         componenteProveedores = new propiedades.Componente4();
         jLabel2 = new javax.swing.JLabel();
         textFieldProducto = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboBoxPrecio = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         botonReiniciar = new javax.swing.JButton();
 
@@ -419,7 +609,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tablaBuscarProducto);
 
         componenteProveedores.setEtiqueta("Proveedores  :");
-        componenteProveedores.setMensaje("\"Elije una empresa\"");
+        componenteProveedores.setMensaje("\"Selecciona un proveedor\"");
         componenteProveedores.setPrimerElementoEsMensaje(true);
 
         jLabel2.setText("Producto :");
@@ -437,10 +627,6 @@ public class BuscarProducto extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(474, Short.MAX_VALUE)
-                .addComponent(latelTitulo)
-                .addGap(453, 453, 453))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -457,14 +643,18 @@ public class BuscarProducto extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(comboBoxPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(textFieldProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                                 .addComponent(botonReiniciar)
                                 .addGap(105, 105, 105)))))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(426, 426, 426)
+                .addComponent(latelTitulo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -489,7 +679,7 @@ public class BuscarProducto extends javax.swing.JPanel {
                                 .addComponent(botonReiniciar)))
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))))
                 .addContainerGap(106, Short.MAX_VALUE))
         );
@@ -497,22 +687,15 @@ public class BuscarProducto extends javax.swing.JPanel {
 
     private void botonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReiniciarActionPerformed
         // TODO add your handling code here:
-        quitarListener();
-        codProducto = -1;
-        componenteProveedores.eliminarSeleccion();
-        tablaBuscarProducto.clearSelection();
-        textFieldProducto.setText("");
-
-        actualizarTablaBuscarProducto();
-        deseleccionarTodasFilas();
+        limpiarTodo();
 
     }//GEN-LAST:event_botonReiniciarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonReiniciar;
+    private javax.swing.JComboBox<String> comboBoxPrecio;
     private propiedades.Componente4 componenteProveedores;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

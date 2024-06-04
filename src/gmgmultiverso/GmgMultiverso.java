@@ -5,6 +5,7 @@
 package gmgmultiverso;
 
 import com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -33,9 +34,15 @@ public class GmgMultiverso
         UIManager.setLookAndFeel(new FlatCarbonIJTheme());
         UIManager.put("TextComponent.arc", 100);
         */
-        PrincipalCliente pc = new PrincipalCliente();
-        //SwingUtilities.updateComponentTreeUI(pc);
-        pc.setVisible(true);
+//        PrincipalCliente pc = new PrincipalCliente();
+//        //SwingUtilities.updateComponentTreeUI(pc);
+//        pc.setVisible(true);
+        
+        UIManager.setLookAndFeel(new FlatCyanLightIJTheme());
+        UIManager.put("TextComponent.arc", 100);
+        FramePrincipal frPrincip = new FramePrincipal();
+        SwingUtilities.updateComponentTreeUI(frPrincip);
+        frPrincip.setVisible(true);
     }
     
 }

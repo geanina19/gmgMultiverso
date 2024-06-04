@@ -215,8 +215,7 @@ public class EditarProveedor extends javax.swing.JPanel {
     }
     
     
-    public void momdificar(){
-         
+    public void modificar() {
         String nuevoNombreEmpresa = componenteNombreEmpresa.getEscritura();
         String nuevoTelefono = componenteTelefono.getEscritura();
         String nuevoEmail = componenteEmail.getEscritura();
@@ -224,7 +223,7 @@ public class EditarProveedor extends javax.swing.JPanel {
         // Variables para verificar la validez del teléfono y el email
         boolean telefonoValido = true;
         boolean emailValido = true;
-        
+
         // Verificar si el teléfono es un número válido
         int telefono = 0;
         try {
@@ -254,16 +253,21 @@ public class EditarProveedor extends javax.swing.JPanel {
             return;
         }
 
-
         // Obtener el ID del proveedor
         int idProveedor = codProveedor;
-
-        // Crear una instancia de Proveedor con los nuevos valores
-        Proveedor proveedorModificado = new Proveedor(idProveedor, nuevoNombreEmpresa, Integer.parseInt(nuevoTelefono), nuevoEmail);
 
         // Crear una instancia de ProveedorDao
         ManagerConexion managerConexion = new ManagerConexion();
         ProveedorDao proveedorDao = new ProveedorDao(managerConexion);
+
+        // Verificar si el proveedor con el nuevo teléfono ya existe
+        if (proveedorDao.proveedorExiste(telefono, idProveedor)) {
+            JOptionPane.showMessageDialog(this, "No se puede modificar, el proveedor con ese teléfono ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Crear una instancia de Proveedor con los nuevos valores
+        Proveedor proveedorModificado = new Proveedor(idProveedor, nuevoNombreEmpresa, telefono, nuevoEmail);
 
         // Intentar actualizar el proveedor en la base de datos
         boolean exito = proveedorDao.actualizarProveedor(proveedorModificado);
@@ -277,6 +281,7 @@ public class EditarProveedor extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error al modificar el proveedor.");
         }
     }
+
         
 
     /**
@@ -425,7 +430,7 @@ public class EditarProveedor extends javax.swing.JPanel {
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
         // TODO add your handling code here:
-       momdificar();
+       modificar();
     }//GEN-LAST:event_botonModificarActionPerformed
 
 

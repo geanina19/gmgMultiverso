@@ -37,7 +37,8 @@ public class ProductoDao {
                         rs.getInt("id"),
                         rs.getString("nombre"),
                         rs.getDouble("precio"),
-                        rs.getInt("unidad_existente")
+                        rs.getInt("unidad_existente"),
+                        rs.getInt("idProveedor")
                 );
                 productos.add(producto);
             }
@@ -55,7 +56,7 @@ public class ProductoDao {
         }
     }
 
-    public boolean save(Producto producto) {
+    public boolean anadirProducto(Producto producto) {
         Connection conect = null;
         try {
             conect = con.abrirConexion();

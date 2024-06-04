@@ -23,6 +23,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -79,6 +83,31 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         String nombreEmpleado = empleadoDao.obtenerNombreEmpleado(idEmpleado);
         itemCerrarSesion.setText("Cerrar sesión de " + nombreEmpleado);
         
+        //----------------JAVAHELP----------------------------
+    
+        String AYUDA_HS = "ayuda/helpset.hs";
+        try 
+        {
+            ClassLoader cl = getClass().getClassLoader();
+            URL ayudaURL = cl.getResource(AYUDA_HS);
+            if (ayudaURL != null) 
+            {
+                HelpSet helpset = new HelpSet(null, ayudaURL);
+                HelpBroker hb = helpset.createHelpBroker();
+                JHelp jhelp = new JHelp(helpset);
+                //jhelp.setCurrentID("inicio");
+                hb.enableHelpOnButton(ayuda, "codProveedor", helpset);
+            } 
+            else 
+            {
+                System.err.println("No se pudo encontrar el archivo de ayuda: " + AYUDA_HS);
+            }
+        } 
+        catch (HelpSetException ex) 
+        {
+            System.err.println("Error al cargar la ayuda: " + ex);
+        }
+        
     }
     
     //para poner el logo del planeta en el frame
@@ -88,7 +117,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         if (url != null) {
             return Toolkit.getDefaultToolkit().getImage(url);
         } else {
-            System.err.println("Resource not found: /imagenes/planeta.png");
+            System.err.println("No se encuentra la imagen : /imagenes/planeta.png");
             return null;
         }
     }
@@ -174,6 +203,31 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         panelPrincipal.repaint();
     }
     
+    /*
+    public void mostrarAnadirProductoConAnadirProveedor(AnadirProducto anadirProducto) {
+        
+        PrincipalAdministrador principalAdmin = new PrincipalAdministrador(); // Ejemplo de creación de objeto PrincipalAdministrador
+
+        // Luego, pasas ese objeto al constructor de AnadirProductoConAnadirProveedor
+        AnadirProductoConAnadirProveedor apcap = new AnadirProductoConAnadirProveedor(principalAdmin);
+
+        apcap.setSize(panelPrincipal.getSize());
+        
+        panelPrincipal.removeAll();
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+        panelPrincipal.add(apcap, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    */
     
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
@@ -195,6 +249,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArchivo = new javax.swing.JMenu();
         itemCerrarSesion = new javax.swing.JMenuItem();
+        itemCerrarAplicacion = new javax.swing.JMenuItem();
         menuGestion = new javax.swing.JMenu();
         menuProveedores = new javax.swing.JMenu();
         itemBuscarProveedor = new javax.swing.JMenuItem();
@@ -206,9 +261,10 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemBuscarProducto = new javax.swing.JMenuItem();
         itemAnadirProducto = new javax.swing.JMenuItem();
         menuPedidos = new javax.swing.JMenu();
+        itemVerPedido = new javax.swing.JMenuItem();
         menuInformes = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        ayuda = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
         itemOscuro = new javax.swing.JMenuItem();
         itemClaro = new javax.swing.JMenuItem();
@@ -224,8 +280,9 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         temaOp9 = new javax.swing.JMenuItem();
         temaOp10 = new javax.swing.JMenuItem();
         menuPerfil = new javax.swing.JMenu();
+        itemPerfil = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Principal GmgMultiverso");
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -260,6 +317,16 @@ public class PrincipalAdministrador extends javax.swing.JFrame
             }
         });
         menuArchivo.add(itemCerrarSesion);
+
+        itemCerrarAplicacion.setForeground(new java.awt.Color(255, 0, 0));
+        itemCerrarAplicacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cerrarApp.png"))); // NOI18N
+        itemCerrarAplicacion.setText("Cerrar aplicación");
+        itemCerrarAplicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCerrarAplicacionActionPerformed(evt);
+            }
+        });
+        menuArchivo.add(itemCerrarAplicacion);
 
         jMenuBar1.add(menuArchivo);
 
@@ -325,11 +392,26 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         itemAnadirProducto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/signoMas.png"))); // NOI18N
         itemAnadirProducto.setText("Añadir");
+        itemAnadirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAnadirProductoActionPerformed(evt);
+            }
+        });
         menuProductos.add(itemAnadirProducto);
 
         menuGestion.add(menuProductos);
 
+        menuPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgEmple/pedido.png"))); // NOI18N
         menuPedidos.setText("Pedidos");
+
+        itemVerPedido.setText("Ver Pedidos");
+        itemVerPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemVerPedidoActionPerformed(evt);
+            }
+        });
+        menuPedidos.add(itemVerPedido);
+
         menuGestion.add(menuPedidos);
 
         menuInformes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/graficox20.png"))); // NOI18N
@@ -340,15 +422,17 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
         menuAyuda.setText("Ayuda");
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
-        jMenuItem1.setText("Ver ayuda");
-        menuAyuda.add(jMenuItem1);
+        ayuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
+        ayuda.setText("Ver ayuda");
+        menuAyuda.add(ayuda);
 
         jMenuBar1.add(menuAyuda);
 
         menuTema.setText("Tema");
 
-        itemOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonNegro.png"))); // NOI18N
+        itemOscuro.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itemOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/luna.png"))); // NOI18N
         itemOscuro.setText("Oscuro");
         itemOscuro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,7 +441,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         });
         menuTema.add(itemOscuro);
 
-        itemClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonBlanco.png"))); // NOI18N
+        itemClaro.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itemClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sol.png"))); // NOI18N
         itemClaro.setText("Claro");
         itemClaro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -469,6 +554,17 @@ public class PrincipalAdministrador extends javax.swing.JFrame
                 menuPerfilMouseClicked(evt);
             }
         });
+
+        itemPerfil.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        itemPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/usuario.png"))); // NOI18N
+        itemPerfil.setText("Ver perfil");
+        itemPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemPerfilActionPerformed(evt);
+            }
+        });
+        menuPerfil.add(itemPerfil);
+
         jMenuBar1.add(menuPerfil);
 
         setJMenuBar(jMenuBar1);
@@ -698,23 +794,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
 
     private void menuPerfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPerfilMouseClicked
         // TODO add your handling code here:
-        PerfilAdministrador pa = new PerfilAdministrador(idEmpleado);
-        pa.setSize(panelPrincipal.getSize());
-
-        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
-        panelPrincipal.removeAll();
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
-        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
-        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
-        gbc.anchor = GridBagConstraints.CENTER;
-
-        panelPrincipal.add(pa, gbc);
-        revalidate();
-        repaint();
+        
     }//GEN-LAST:event_menuPerfilMouseClicked
 
     private void itemAnadirProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnadirProveedorActionPerformed
@@ -824,6 +904,84 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         repaint();
     }//GEN-LAST:event_itemBuscarProductoActionPerformed
 
+    private void itemAnadirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAnadirProductoActionPerformed
+        // TODO add your handling code here:
+        AnadirProducto anadirProducto = new AnadirProducto(this);
+        anadirProducto.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir ap ocupando todo el espacio disponible horizontalmente y verticalmente
+        panelPrincipal.removeAll();
+        panelPrincipal.setLayout(new GridBagLayout());
+
+        JPanel wrapperPanel = new JPanel();
+        wrapperPanel.setLayout(new GridBagLayout());
+        GridBagConstraints innerGbc = new GridBagConstraints();
+        innerGbc.gridx = 0;
+        innerGbc.gridy = 0;
+        innerGbc.anchor = GridBagConstraints.CENTER;
+        wrapperPanel.add(anadirProducto, innerGbc);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(wrapperPanel, gbc);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+        
+    }//GEN-LAST:event_itemAnadirProductoActionPerformed
+
+    private void itemVerPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemVerPedidoActionPerformed
+        // TODO add your handling code here:
+        PanelPedidoAdmin p1Admin = new PanelPedidoAdmin(this);
+        p1Admin.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(p1Admin, gbc);
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_itemVerPedidoActionPerformed
+
+    private void itemPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPerfilActionPerformed
+        // TODO add your handling code here:
+        PerfilAdministrador pa = new PerfilAdministrador(idEmpleado);
+        pa.setSize(panelPrincipal.getSize());
+
+        // Remover todos los componentes y añadir pbp ocupando todo el espacio disponible horizontalmente
+        panelPrincipal.removeAll();
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0; // Establecer el peso en x para ocupar todo el espacio disponible horizontalmente
+        gbc.weighty = 1.0; // Dejar el peso en y como 0 para que no ocupe espacio vertical adicional
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Permitir que el componente ocupe todo el ancho disponible pero no el alto
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        panelPrincipal.add(pa, gbc);
+        revalidate();
+        repaint();
+    }//GEN-LAST:event_itemPerfilActionPerformed
+
+    private void itemCerrarAplicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarAplicacionActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_itemCerrarAplicacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -861,18 +1019,21 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ayuda;
     private javax.swing.JMenuItem itemAnadirEmpleado;
     private javax.swing.JMenuItem itemAnadirProducto;
     private javax.swing.JMenuItem itemAnadirProveedor;
     private javax.swing.JMenuItem itemBuscarEmpleado;
     private javax.swing.JMenuItem itemBuscarProducto;
     private javax.swing.JMenuItem itemBuscarProveedor;
+    private javax.swing.JMenuItem itemCerrarAplicacion;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemClaro;
     private javax.swing.JMenu itemMas;
     private javax.swing.JMenuItem itemOscuro;
+    private javax.swing.JMenuItem itemPerfil;
+    private javax.swing.JMenuItem itemVerPedido;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelLogo;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuAyuda;

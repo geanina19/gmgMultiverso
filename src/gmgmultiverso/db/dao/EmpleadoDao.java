@@ -66,6 +66,41 @@ public class EmpleadoDao {
         }
     }
     
+    // Método para verificar si un teléfono ya existe para otros empleados (excluyendo al empleado actual)
+    public boolean telefonoExisteParaOtrosEmpleados(int telefono, int idEmpleadoActual) {
+        String query = "SELECT COUNT(*) FROM empleado WHERE telefono = ? AND id != ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, telefono);
+            stmt.setInt(2, idEmpleadoActual);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay otros empleados con ese teléfono
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // Método para verificar si un empleado ya existe por número de teléfono
+    public boolean empleadoExiste(int telefono) {
+        String query = "SELECT COUNT(*) FROM empleado WHERE telefono = ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, telefono);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay al menos un empleado con ese teléfono
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+        return false;
+    }
+    
     public boolean anadirEmpleado(Empleado empleado) {
         Connection conect = null;
     
@@ -92,7 +127,7 @@ public class EmpleadoDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -122,7 +157,7 @@ public class EmpleadoDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -158,7 +193,7 @@ public class EmpleadoDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -330,6 +365,38 @@ public class EmpleadoDao {
 
         return empleados;
     }
+    
+    /****************** PARA OBTENER ID EMPLE EN LOGIN ****************/
+    public int obtenerIdUsuario(String usuario, String contrasenia) {
+        Connection conect = null;
+        try {
+            conect = con.abrirConexion();
 
+            String query = "SELECT id FROM empleado WHERE email = ? AND contrasenia = ?";
+            var ps = conect.prepareStatement(query);
+            ps.setString(1, usuario);
+            ps.setString(2, contrasenia);
+
+            var rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            } else {
+                return -1; // Usuario no encontrado
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener el ID del usuario", e);
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }  
+    
+     
 
 }

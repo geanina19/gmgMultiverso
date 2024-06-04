@@ -68,7 +68,44 @@ public class ProveedorDao {
         }
     }
     
-            
+    
+    // Método para verificar si un proveedor ya existe por número de teléfono excluyendo el proveedor actual
+    public boolean proveedorExiste(int telefono, int idProveedorExcluido) {
+        String query = "SELECT COUNT(*) FROM proveedor WHERE telefono = ? AND id != ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, telefono);
+            stmt.setInt(2, idProveedorExcluido);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay al menos un proveedor con ese teléfono excluyendo el actual
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+        return false;
+    }
+
+    
+    // Método para verificar si un proveedor ya existe por número de teléfono
+    public boolean proveedorExiste(int telefono) {
+        String query = "SELECT COUNT(*) FROM PROVEEDOR WHERE telefono = ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, telefono);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay al menos un proveedor con ese teléfono
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+        return false;
+    }
+    
+    
     public boolean anadirProveedor(Proveedor proveedor) {
         Connection conect = null;
     
@@ -93,7 +130,7 @@ public class ProveedorDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -127,7 +164,7 @@ public class ProveedorDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -162,7 +199,7 @@ public class ProveedorDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -192,5 +229,9 @@ public class ProveedorDao {
 
         return proveedores;
     }
+    
+    
+    
+    
 
 }

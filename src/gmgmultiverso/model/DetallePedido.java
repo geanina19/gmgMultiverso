@@ -6,7 +6,7 @@ package gmgmultiverso.model;
 
 /**
  *
- * @author david
+ * @author gema
  */
 
 public class DetallePedido {

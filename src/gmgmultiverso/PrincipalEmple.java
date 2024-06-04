@@ -65,6 +65,8 @@ public class PrincipalEmple extends javax.swing.JFrame {
         this.codigoEmpleado = codigoEmpleado;
         anadirDatosTabla(codigoEmpleado);
         this.setIconImage(getIconImage());
+        //color
+        this.getContentPane().setBackground(new java.awt.Color(179,242,255));
         
         sorter = new TableRowSorter<>(miModelo);
         tablePedidos.setRowSorter(sorter);
@@ -371,7 +373,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         temaOp5 = new javax.swing.JMenuItem();
         temaOp4 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuItemPerfil = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gestión de Pedidos");
@@ -433,6 +435,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
+        menuCerrarSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/x(roja).png"))); // NOI18N
         menuCerrarSesion.setText("Cerrar sesión");
         menuCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -441,6 +444,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu1.add(menuCerrarSesion);
 
+        menuCerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cerrarApp.png"))); // NOI18N
         menuCerrar.setText("Cerrar aplicación");
         menuCerrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -456,7 +460,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
         jMenu3.setText("Tema");
 
-        menuOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonNegro.png"))); // NOI18N
+        menuOscuro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/luna.png"))); // NOI18N
         menuOscuro.setText("Oscuro");
         menuOscuro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -465,7 +469,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu3.add(menuOscuro);
 
-        menuClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/corazonBlanco.png"))); // NOI18N
+        menuClaro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sol.png"))); // NOI18N
         menuClaro.setText("Claro");
         menuClaro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -565,8 +569,14 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
         jMenu4.setText("Perfil");
 
-        jMenuItem1.setText("Ver perfil");
-        jMenu4.add(jMenuItem1);
+        menuItemPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/usuario.png"))); // NOI18N
+        menuItemPerfil.setText("Ver perfil");
+        menuItemPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemPerfilActionPerformed(evt);
+            }
+        });
+        jMenu4.add(menuItemPerfil);
 
         jMenuBar1.add(jMenu4);
 
@@ -589,11 +599,11 @@ public class PrincipalEmple extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         pack();
@@ -757,6 +767,14 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
     }//GEN-LAST:event_buscarButtonActionPerformed
 
+    private void menuItemPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPerfilActionPerformed
+        FramePerfilEmple frPerfil = new FramePerfilEmple(this, true, codigoEmpleado,this);
+        frPerfil.setVisible(true);
+        this.setEnabled(true);
+//        frPerfilsetAlwaysOnTop(true);
+//        this.dispose();
+    }//GEN-LAST:event_menuItemPerfilActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -806,13 +824,13 @@ public class PrincipalEmple extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelInicio;
     private javax.swing.JMenuItem menuCerrar;
     private javax.swing.JMenuItem menuCerrarSesion;
     private javax.swing.JMenuItem menuClaro;
+    private javax.swing.JMenuItem menuItemPerfil;
     private javax.swing.JMenuItem menuOscuro;
     private javax.swing.JTable tablePedidos;
     private javax.swing.JMenuItem temaOp1;

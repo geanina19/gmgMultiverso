@@ -362,6 +362,41 @@ public class EmpleadoDao {
         }
     }  
     
-     
+    /**************DATOS EMPLE*********************/
+    public String[] obtenerDatosCliente(int codEmpleado) {
+        String[] datosEmple = new String[4];
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = con.abrirConexion();
+            String query = "SELECT nombre, apellido, telefono, email FROM empleado WHERE id = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, codEmpleado);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Obtener los datos del cliente de la consulta
+                datosEmple[0] = rs.getString("nombre");
+                datosEmple[1] = rs.getString("apellido");
+                datosEmple[2] = rs.getString("telefono");
+                datosEmple[3] = rs.getString("email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                if (conn != null) con.cerrarConexion(conn);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return datosEmple;
+    }
+    
 
 }

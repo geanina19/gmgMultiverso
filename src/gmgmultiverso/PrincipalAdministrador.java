@@ -381,6 +381,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         menuPedidos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imgEmple/pedido.png"))); // NOI18N
         menuPedidos.setText("Pedidos");
 
+        itemVerPedido.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/comida.png"))); // NOI18N
         itemVerPedido.setText("Ver Pedidos");
         itemVerPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

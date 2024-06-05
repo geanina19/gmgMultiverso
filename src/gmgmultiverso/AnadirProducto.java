@@ -7,13 +7,23 @@ package gmgmultiverso;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ProductoConProveedorDao;
 import gmgmultiverso.model.ProductoConProveedor;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
@@ -35,6 +45,7 @@ public class AnadirProducto extends javax.swing.JPanel {
     ResultSet rs;
     PrincipalAdministrador principalAdmin;
     
+    private File imagenSeleccionada;
 
     private int codProveedor = -1;
     
@@ -56,6 +67,17 @@ public class AnadirProducto extends javax.swing.JPanel {
         listaCamposObligPorCompletar.add(componenteUnidadExistente.getEtiqueta());
         
         actualizarTextAreaVisorErrores();
+        
+        // Inicializar componentes adicionales
+        botonImagen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarImagen();
+            }
+        });
+
+        // Agregar componentes de imagen al layout
+        this.add(botonImagen);
         
         //-------------visor errores--------------------------
         //--------componenteNombre--------
@@ -274,6 +296,32 @@ public class AnadirProducto extends javax.swing.JPanel {
      public PrincipalAdministrador getPrincipalAdmin() {
         return this.principalAdmin;
     }
+     
+    public void seleccionarImagen() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            imagenSeleccionada = fileChooser.getSelectedFile();
+            if (imagenSeleccionada != null) {
+                botonImagen.setText("");
+                botonImagen.setIcon(new ImageIcon(new ImageIcon(imagenSeleccionada.getPath()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+            }
+        }
+    }
+
+    public void guardarImagen(String nombreProducto) {
+        try {
+            if (imagenSeleccionada != null) {
+                String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
+                File destino = new File("src/imagenesProductos/" + nombreProducto + extension);
+                Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -308,6 +356,7 @@ public class AnadirProducto extends javax.swing.JPanel {
         botonReiniciar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         botonAnadirProveedor = new javax.swing.JButton();
+        botonImagen = new javax.swing.JButton();
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Añadir un producto");
@@ -356,12 +405,14 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         });
 
+        botonImagen.setText("Elige imagen");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(444, 444, 444)
                         .addComponent(labelTitulo))
@@ -378,13 +429,18 @@ public class AnadirProducto extends javax.swing.JPanel {
                         .addGap(53, 53, 53)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(131, 131, 131)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonAnadirProveedor))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(232, 232, 232)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(botonAnadirProveedor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(79, 79, 79)
+                        .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)))
                 .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -405,17 +461,22 @@ public class AnadirProducto extends javax.swing.JPanel {
                         .addComponent(componentePrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(194, 194, 194))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(botonAnadirProveedor))
                         .addGap(30, 30, 30)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(153, 153, 153))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(91, 91, 91))))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -487,10 +548,10 @@ public class AnadirProducto extends javax.swing.JPanel {
 
         // Crear un objeto ProductoConProveedor con los datos ingresados
         ProductoConProveedor nuevoProducto = new ProductoConProveedor(
-            nuevoCodigoProveedor, 
+            nuevoCodigoProveedor,
             null, // El nombre del proveedor no es necesario aquí
-            nombre, 
-            Double.parseDouble(precioTexto), 
+            nombre,
+            Double.parseDouble(precioTexto),
             Integer.parseInt(unidadExistenteTexto)
         );
 
@@ -500,11 +561,16 @@ public class AnadirProducto extends javax.swing.JPanel {
         // Mostrar mensaje de éxito o error
         if (resultado) {
             JOptionPane.showMessageDialog(this, "Producto añadido exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Guardar la imagen vinculada al ID del pedido
+            guardarImagen(nuevoProducto.getNombreProducto());
+
             // Reiniciar el formulario
             botonReiniciarActionPerformed(evt);
         } else {
             JOptionPane.showMessageDialog(this, "Error al añadir el producto", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_botonAnadirActionPerformed
 
     private void botonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReiniciarActionPerformed
@@ -549,6 +615,7 @@ public class AnadirProducto extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAnadir;
     private javax.swing.JButton botonAnadirProveedor;
+    private javax.swing.JButton botonImagen;
     private javax.swing.JButton botonReiniciar;
     private propiedades.Componente2Anadir componenteNombre;
     private propiedades.Componente2Anadir componentePrecio;

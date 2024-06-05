@@ -11,6 +11,7 @@ import java.util.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 
 /**
@@ -108,7 +109,8 @@ public class ProductoConProveedorDao {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return false; // Retorna false si ocurre un error
         } finally {
             if (conect != null) {
                 try {
@@ -119,6 +121,8 @@ public class ProductoConProveedorDao {
             }
         }
     }
+
+
 
     
     // Método para eliminar un producto por su ID

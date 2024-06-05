@@ -19,6 +19,9 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedDarkC
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.PedidoConNombreDao;
 import gmgmultiverso.model.PedidoConNombre;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -31,11 +34,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -66,10 +75,11 @@ public class PrincipalEmple extends javax.swing.JFrame {
         anadirDatosTabla(codigoEmpleado);
         this.setIconImage(getIconImage());
         //color
-        this.getContentPane().setBackground(new java.awt.Color(179,242,255));
+        this.getContentPane().setBackground(new java.awt.Color(250, 240, 230));
         
         sorter = new TableRowSorter<>(miModelo);
         tablePedidos.setRowSorter(sorter);
+        tablePedidos.setBackground(new java.awt.Color(255, 218, 185));
         
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
@@ -139,95 +149,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
             return null;
         }
     }
-    
-/*--------------------- METODO PARA AÑADIR LOS DATOS A LA TABLA ------------------*/
-//    public void anadirDatosTabla(){
-//        
-//    
-//       // Obtener lista de pedidos
-//        List<PedidoConNombre> pedidos = pedidoCompleto.list();
-//        miModelo = new DefaultTableModel(new Object[]{
-//                "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización", "Editar"}, 0) {
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                if (column == 4 || column == 6) {
-//                    return ImageIcon.class;
-//                }
-//                return Object.class;
-//            }
-//        };
-//        // imágenes para los botones
-//        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
-//        
-//        // imagenes para los diferentes estados
-//        ImageIcon estado1Icon = crearImageIcon("/imgEmple/recibidoIcono.png");
-//        ImageIcon estado2Icon = crearImageIcon("/imgEmple/preparacionIcono.png");
-//        ImageIcon estado3Icon = crearImageIcon("/imgEmple/enviadoIcono.png");
-//        
-//        for (PedidoConNombre pedido : pedidos) {
-//            ImageIcon estadoIcon;
-//            switch (pedido.getEstado()) {
-//                case 1:
-//                    estadoIcon = estado1Icon;
-//                    break;
-//                case 2:
-//                    estadoIcon = estado2Icon;
-//                    break;
-//                case 3:
-//                    estadoIcon = estado3Icon;
-//                    break;
-//                default:
-//                    estadoIcon = null; 
-//                    break;
-//            }
-//            miModelo.addRow(new Object[]{
-//                pedido.getId(),
-//                pedido.getNombreCliente(),
-//                pedido.getFechaPedido(),
-//                pedido.getNombreEmpleado(),
-//                estadoIcon,
-//                pedido.getUltimaActualizacion(),
-//                editarIcon
-//            });
-//        }
-//        tablePedidos.setModel(miModelo);
-//        
-////        // Crear y aplicar el renderizador de celda centrado
-////        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-////        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-////        // Aplicar el renderizador a cada columna excepto la de imagen
-////        TableColumnModel columnModel = tablePedidos.getColumnModel();
-////        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-////            if (i != 4 && i != 6) { 
-////                columnModel.getColumn(i).setCellRenderer(centerRenderer);
-////            }
-////        }
-////
-////        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-////        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-////        // cambia el color de fondo de los encabezados
-////        headerRenderer.setBackground(Color.LIGHT_GRAY); 
-////        // poner el texto en negrita
-////        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
-////        // Aplicar el renderizador de encabezado a cada columna
-////        JTableHeader tableHeader = tablePedidos.getTableHeader();
-////        tableHeader.setDefaultRenderer(headerRenderer);
-//
-//        // Añadir el MouseListener para el evento de clic
-//        tablePedidos.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                int columnaModificar = tablePedidos.getColumnModel().getColumnIndex("Editar");
-//                int fila = tablePedidos.rowAtPoint(e.getPoint());
-//                if (fila >= 0 && tablePedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-//                    // Código para abrir el panel de edición
-//                    abrirVentanaPedido(fila);
-//                }
-//            }
-//        });
-//        
-//
-//    }
+
     public void anadirDatosTabla(int idEmpleado) {
         System.out.println("Añadiendo datos para el empleado con ID: " + idEmpleado); // Mensaje de depuración
         // Obtener lista de pedidos
@@ -279,6 +201,29 @@ public class PrincipalEmple extends javax.swing.JFrame {
             });
         }
         tablePedidos.setModel(miModelo);
+        
+        /*****/
+        // Crear y aplicar el renderizador de celda centrado
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // Aplicar el renderizador a cada columna excepto la de imagen
+        TableColumnModel columnModel = tablePedidos.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            if (i != 4 && i != 6) { 
+                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
+        // PARA ENCABEZADOS
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // cambia el color de fondo de los encabezados
+        headerRenderer.setBackground(new java.awt.Color(255, 160, 122)); 
+        // poner el texto en negrita
+        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
+        // Aplicar el renderizador de encabezado a cada columna
+        JTableHeader tableHeader = tablePedidos.getTableHeader();
+        tableHeader.setDefaultRenderer(headerRenderer);
+       
 
         // Añadir el MouseListener para el evento de clic
         tablePedidos.addMouseListener(new MouseAdapter() {
@@ -293,7 +238,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
                     int codigoEmpleado = (int) tablePedidos.getValueAt(fila, columnaCodigoEmpleado);
 
                     // Abre la ventana de edición con el código del empleado
-                    abrirVentanaPedido(codigoEmpleado);
+                    abrirVentanaPedido(codigoEmpleado, idEmpleado);
                 }
             }
         });
@@ -327,13 +272,17 @@ public class PrincipalEmple extends javax.swing.JFrame {
     
         /*-------------- MODIFICAR PEDIDO --------------*/
 
-    private void abrirVentanaPedido(int codigoPedido) {
+    private void abrirVentanaPedido(int codigoPedido, int codigoEmpleado) {
         
-        FrameEditarPedido panelEditar = new FrameEditarPedido(this, true, codigoPedido,this);
-        panelEditar.setVisible(true);
-        
-        
+        FrameEditarPedido panelEditar = new FrameEditarPedido(this, true, codigoPedido, codigoEmpleado,this);
+        panelEditar.setVisible(true);               
     }
+    
+    /***********ACTUALIZAR TABLA***********/
+    public void actualizarTabla() {
+    anadirDatosTabla(codigoEmpleado);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -390,6 +339,8 @@ public class PrincipalEmple extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablePedidos);
 
+        jPanel1.setBackground(new java.awt.Color(255, 245, 238));
+
         jLabel2.setText("Nombre cliente");
 
         jLabel1.setText("Fecha del pedido");
@@ -401,6 +352,8 @@ public class PrincipalEmple extends javax.swing.JFrame {
             }
         });
 
+        dateFiltro.setBackground(new java.awt.Color(255, 245, 238));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -408,12 +361,12 @@ public class PrincipalEmple extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textNombre)
-                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(189, 189, 189)
                 .addComponent(buscarButton)
                 .addGap(370, 370, 370))
@@ -588,11 +541,11 @@ public class PrincipalEmple extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(194, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1213, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -773,6 +726,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         this.setEnabled(true);
 //        frPerfilsetAlwaysOnTop(true);
 //        this.dispose();
+        actualizarTabla();
     }//GEN-LAST:event_menuItemPerfilActionPerformed
 
     /**

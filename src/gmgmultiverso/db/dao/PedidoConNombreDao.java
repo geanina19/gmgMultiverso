@@ -69,10 +69,10 @@ public class PedidoConNombreDao {
             conect = con.abrirConexion();
 
             String query = "SELECT p.id, c.nombre AS nombre_cliente, p.fecha_pedido, e.nombre AS nombre_empleado, p.estado, p.ultima_actualizacion " +
-                           "FROM pedido p " +
-                           "JOIN cliente c ON p.id_cliente = c.id " +
-                           "JOIN empleado e ON p.id_empleado = e.id " +
-                           "WHERE e.id = ?";
+                       "FROM pedido p " +
+                       "JOIN cliente c ON p.id_cliente = c.id " +
+                       "LEFT JOIN empleado e ON p.id_empleado = e.id " +
+                       "WHERE e.id = ? OR p.id_empleado IS NULL";
 
             var ps = conect.prepareStatement(query);
             ps.setInt(1, idEmpleado);
@@ -240,6 +240,34 @@ public class PedidoConNombreDao {
             }
         }
     }     
+    
+    public void actualizarEstadoPedidoyEmple(int idPedido, int nuevoEstadoPedido, int codEmple) {
+        Connection conect = null;
+        try { 
+            conect = con.abrirConexion();
+
+            String query = "UPDATE pedido SET estado = ?, id_empleado = ? WHERE id = ?";
+            var ps = conect.prepareStatement(query);
+            ps.setInt(1, nuevoEstadoPedido);
+            ps.setInt(2, codEmple);
+            ps.setInt(3, idPedido);
+
+            int filasActualizadas = ps.executeUpdate();
+            if (filasActualizadas == 0) {
+                throw new SQLException("No se pudo actualizar el pedido con ID: " + idPedido);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }    
     
     public int obtenerEstadoPedido(int idPedido) {
         Connection conect = null;

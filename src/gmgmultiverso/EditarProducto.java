@@ -117,6 +117,13 @@ public class EditarProducto extends javax.swing.JPanel {
                     // Verificar si el precio contiene caracteres no permitidos
                     if (!textoAnadir.matches("[0-9.,]+")) {
                         JOptionPane.showMessageDialog(null, "El precio solo puede contener números, punto (.) y coma (,).", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // Convertir el texto del precio a un número
+                        double precio = Double.parseDouble(textoAnadir);
+                        // Verificar si el precio es mayor a 100
+                        if (precio > 100) {
+                            JOptionPane.showMessageDialog(null, "El precio no puede ser mayor a 100.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
 
                     System.out.println("No se ha producido ningún error, textField Precio con contenido");
@@ -130,6 +137,7 @@ public class EditarProducto extends javax.swing.JPanel {
             }
         };
         componentePrecio.addLisOverEtiquetav2(li2);
+
 
         
         //--------componenteUnidadExistente--------

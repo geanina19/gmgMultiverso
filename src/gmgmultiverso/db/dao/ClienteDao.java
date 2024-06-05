@@ -79,6 +79,7 @@ public class ClienteDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }

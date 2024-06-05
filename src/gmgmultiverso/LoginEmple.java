@@ -8,11 +8,13 @@ import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.EmpleadoDao;
 import gmgmultiverso.model.Empleado;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -29,6 +31,9 @@ public class LoginEmple extends javax.swing.JFrame {
         initComponents();
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
+        
+        //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
         
         empleadoDao = new EmpleadoDao(new ManagerConexion());
         /*-----------------------COLOR JPANEL-------------------------------------------*/
@@ -104,6 +109,18 @@ public class LoginEmple extends javax.swing.JFrame {
                 }
             }
         });                   
+    }
+    
+    //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("No se encuentra la imagen : /imagenes/planeta.png");
+            return null;
+        }
     }
 
     private void iniciarSesion() {

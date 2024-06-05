@@ -56,6 +56,7 @@ public class PedidoConNombreDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -107,6 +108,7 @@ public class PedidoConNombreDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         } 
@@ -141,6 +143,7 @@ public class PedidoConNombreDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }

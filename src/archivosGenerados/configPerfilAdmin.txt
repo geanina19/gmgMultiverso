@@ -250,3 +250,25 @@ instagram =   @gmg_multiverso
 
 ------------------
 
+Fecha y hora del cambio: 2024/06/05 10:47:11
+Usuario que hizo el cambio: Geanina
+nombreEmpresa = Gmg Multiverso2
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695363919
+direccion = C/ Secoya, 22, Madrid 
+instagram =   @gmg_multiverso
+
+------------------
+
+Fecha y hora del cambio: 2024/06/05 10:47:34
+Usuario que hizo el cambio: Geanina
+nombreEmpresa = Gmg Multiverso
+correo = gmgmultiverso@gmail.com
+web = https://gmgmultiverso.wordpress.com/
+telefono = 695363919
+direccion = C/ Secoya, 22, Madrid 
+instagram =   @gmg_multiverso
+
+------------------
+

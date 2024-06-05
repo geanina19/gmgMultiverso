@@ -33,12 +33,10 @@ import propiedades.EvObjOverComp4;
 import propiedades.LisOverComp4;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 
-/*
-en mi codigo quiero tengo un jcombobox y quiero que en el se carguen por ejemplo en el item 1 tengo rango de 0 a 10 euros que es el precio incluyendo ambos numeros , 
-de 11 a 20 incluyendo ambos numeros, de 21 a 30 ambos numerose incluidos, necesitare algun metodo que me agrupe los precios de los productos para luego cuando pulse alguna opcion del 
-*/
+
 
 /**
  *
@@ -87,6 +85,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         modeloCombo.addElement("0 - 5 €");
         modeloCombo.addElement("5 - 10 €");
         modeloCombo.addElement("10 - 15 €");
+        modeloCombo.addElement("15 - 100 €");
         comboBoxPrecio.setModel(modeloCombo);
         
         //NO TOCAR (FUNCIONA)
@@ -382,7 +381,7 @@ public class BuscarProducto extends javax.swing.JPanel {
     }
     
     //-------------Buscar producto------------
-    
+
     public void buscarProducto(int codProducto) {
         quitarListener(); // Eliminar cualquier listener previo
 
@@ -394,122 +393,93 @@ public class BuscarProducto extends javax.swing.JPanel {
         }
 
         double precioMinimo = 0.0;
-        double precioMaximo = 0.0;
-        List<ProductoConProveedor> productosFiltrados = new ArrayList<>(); // Declaración aquí
+        double precioMaximo = 100.0;
+        List<ProductoConProveedor> productosFiltrados = new ArrayList<>();
 
-        // Obtener el rango de precio seleccionado
         String rangoPrecioSeleccionado = (String) comboBoxPrecio.getSelectedItem();
 
-        // Verificar si se ha seleccionado un rango de precios válido
         if (rangoPrecioSeleccionado != null && !"Elegir rango".equals(rangoPrecioSeleccionado)) {
-            // Obtener el valor inicial y final del rango de precios seleccionado
             String[] partesRango = rangoPrecioSeleccionado.split(" - ");
             double valorInicial = Double.parseDouble(partesRango[0].replace(" €", ""));
             double valorFinal = Double.parseDouble(partesRango[1].replace(" €", ""));
 
-            // Establecer los límites del rango de precios según el rango seleccionado
-            if (valorInicial == 0.0 && valorFinal == 5.0) {
-                filtrarProductosRango0a5();
-                return; // Salir del método después de filtrar
-            } else if (valorInicial == 5.0 && valorFinal == 10.0) {
-                precioMinimo = 5.1;
-                precioMaximo = 10.0;
-            } else if (valorInicial == 10.0 && valorFinal == 15.0) {
-                precioMinimo = 10.1;
-                precioMaximo = 15.0;
+            if (valorInicial > 0 || valorFinal < 100) {
+                precioMinimo = valorInicial;
+                precioMaximo = valorFinal;
             }
-
-            System.out.println("Filtrando productos con precios entre " + precioMinimo + " y " + precioMaximo);
-
-            // Filtrar los productos según el rango de precios seleccionado
-            productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
-
-            // Verificar si hay otros criterios de búsqueda y si se encontraron resultados en el rango de precios
-            if (!nombreProducto.isEmpty() || codProveedor != -1) {
-                // Filtrar por nombre de producto y/o proveedor si corresponde
-                if (!nombreProducto.isEmpty() && codProveedor != -1) {
-                    productosFiltrados = producdao.buscarProductoPorNombreProveedorYPrecio(nombreProducto, codProveedor, precioMinimo, precioMaximo);
-                } else if (!nombreProducto.isEmpty()) {
-                    productosFiltrados = producdao.buscarProductoPorNombre(nombreProducto);
-                } else if (codProveedor != -1) {
-                    productosFiltrados = producdao.listBuscarPorProveedor(codProveedor);
-                }
-
-                if (!productosFiltrados.isEmpty()) {
-                    // Se encontraron resultados, actualizar la tabla
-                    actualizarTablaBuscarProductoRango(productosFiltrados);
-                } else {
-                    // No se encontraron resultados
-                    JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } else {
-                // No hay otros criterios de búsqueda, mostrar todos los productos en el rango de precios
-                actualizarTablaBuscarProductoRango(productosFiltrados);
-            }
-
-            return; // Salir del método después de filtrar por rango de precios
         }
 
-        // Verificar los casos de búsqueda y aplicar los filtros adecuados
-        if (!nombreProducto.isEmpty() && codProveedor != -1 && precioMinimo > 0 && precioMaximo > 0) {
-            // Si hay nombre de producto, proveedor seleccionado y rango de precios, filtrar por todos los criterios
+        final double precioMinimoFinal = precioMinimo;
+        final double precioMaximoFinal = precioMaximo;
+
+        // Filtrar por proveedor y producto juntos
+        if (codProveedor != -1 && !nombreProducto.isEmpty() && (precioMinimo <= 0 || precioMaximo >= 100)) {
             productosFiltrados = producdao.buscarProductoPorNombreProveedorYPrecio(nombreProducto, codProveedor, precioMinimo, precioMaximo);
-        } else if (!nombreProducto.isEmpty() && codProveedor != -1) {
-            // Si hay nombre de producto y proveedor seleccionado, filtrar por nombre de producto y proveedor
-            productosFiltrados = producdao.buscarProductoPorNombreYProveedor(nombreProducto, codProveedor);
-        } else if (!nombreProducto.isEmpty() && precioMinimo > 0 && precioMaximo > 0) {
-            // Si hay nombre de producto y rango de precios, filtrar por nombre de producto y rango de precios
-            productosFiltrados = producdao.buscarProductoPorNombreYPrecio(nombreProducto, precioMinimo, precioMaximo);
-        } else if (codProveedor != -1 && precioMinimo > 0 && precioMaximo > 0) {
-            // Si hay proveedor seleccionado y rango de precios, filtrar por proveedor y rango de precios
-            productosFiltrados = producdao.buscarProductoPorProveedorYPrecio(codProveedor, precioMinimo, precioMaximo);
-        } else if (!nombreProducto.isEmpty()) {
-            // Si solo hay nombre de producto, filtrar solo por nombre de producto
-            productosFiltrados = producdao.buscarProductoPorNombre(nombreProducto);
-        } else if (codProveedor != -1) {
-            // Si solo hay un proveedor seleccionado, filtrar solo por proveedor
+        }
+        // Filtrar por proveedor solamente
+        else if (codProveedor != -1 && (precioMinimo <= 0 || precioMaximo >= 100)) {
             productosFiltrados = producdao.listBuscarPorProveedor(codProveedor);
-        } else if (precioMinimo > 0 && precioMaximo > 0) {
-            // Si solo hay un rango de precios seleccionado, filtrar solo por rango de precios
+        }
+        // Filtrar por rango de precios solamente
+        else if ((codProveedor == -1) && (precioMinimo > 0 || precioMaximo < 100)) {
             productosFiltrados = producdao.buscarProductoPorRangoPrecio(precioMinimo, precioMaximo);
-        } else {
-            // Si no se proporcionan criterios de búsqueda, mostrar todos los productos
-            productosFiltrados = producdao.list();
+        }
+        // Filtrar por proveedor y rango de precios juntos
+        else if (codProveedor != -1 && (precioMinimo > 0 || precioMaximo < 100)) {
+            productosFiltrados = producdao.buscarProductoPorProveedorYPrecio(codProveedor, precioMinimo, precioMaximo);
+        }
+        // No se seleccionó ni proveedor ni rango de precios
+        else {
+            if (!nombreProducto.isEmpty()) {
+                productosFiltrados = producdao.buscarProductoPorNombre(nombreProducto);
+            } else {
+                productosFiltrados = producdao.list();
+            }
         }
 
-        // Limpiar el modelo antes de añadir filas
+        if (productosFiltrados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+            actualizarTablaBuscarProducto();
+        }
+
         miModelo.setRowCount(0);
 
-        // Crear ImageIcons con las imágenes para los botones
         ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
         ImageIcon eliminarIcon = crearImageIcon("/imagenes/eliminar.png");
 
-        // Añadir las filas al modelo
         boolean hayResultados = !productosFiltrados.isEmpty();
 
         for (ProductoConProveedor producto : productosFiltrados) {
-            Object[] rowData = {
-                producto.getNombreProveedor(),
-                producto.getNombreProducto(),
-                producto.getPrecio(),
-                producto.getUnidad_existente(),
-                editarIcon,
-                eliminarIcon
-            };
-            miModelo.addRow(rowData);
+            // Verificación del precio
+            if (producto.getPrecio() >= precioMinimoFinal && producto.getPrecio() <= precioMaximoFinal) {
+                Object[] rowData = {
+                    producto.getNombreProveedor(),
+                    producto.getNombreProducto(),
+                    producto.getPrecio(),
+                    producto.getUnidad_existente(),
+                    editarIcon,
+                    eliminarIcon
+                };
+                miModelo.addRow(rowData);
+            }
         }
 
-        // Reactivar el ordenamiento de columnas y añadir el listener de mouse para los botones
         activarOrdenarColumnas(miModelo);
         tablaBuscarProducto.setModel(miModelo);
         mouseListenerAnadirColumnasExtra();
-
-        // Mostrar mensaje si no hay resultados
+/*
         if (!hayResultados) {
             JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaBuscarProducto();
         }
+        */
     }
+
+
+
+
+
+
 
     
     

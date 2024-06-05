@@ -60,6 +60,7 @@ public class EmpleadoDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     
                 }
             }

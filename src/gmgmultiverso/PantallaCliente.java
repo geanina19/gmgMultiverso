@@ -25,6 +25,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.net.URL;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -69,6 +71,9 @@ public class PantallaCliente extends javax.swing.JFrame {
         jButton1.setOpaque(false);
         jButton1.setContentAreaFilled(false);
         jButton1.setBorderPainted(false);
+        
+        //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
 
         ImageIcon iconoCarrito = new ImageIcon(getClass().getResource("/img/carrito.png"));
         Image imagenEscaladaCarrito = iconoCarrito.getImage().getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
@@ -124,6 +129,7 @@ public class PantallaCliente extends javax.swing.JFrame {
             });
             nombresLabels[i].setText(nombresProductos[i]);
         }
+        
     }
 
     // Método para buscar y mostrar el producto correspondiente
@@ -167,11 +173,29 @@ public class PantallaCliente extends javax.swing.JFrame {
             }
         }
     }
+     //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
+    }
 
-    private void abrirCarritoCliente() {
+  private void abrirCarritoCliente() {
+    System.out.println("nombreProductoSeleccionado: " + nombreProductoSeleccionado);
+    if (nombreProductoSeleccionado != null) {
         carritoCliente.agregarProductoAlCarrito(nombreProductoSeleccionado, imagenProductoSeleccionado);
         carritoCliente.setVisible(true);
+    } else {
+        JOptionPane.showMessageDialog(this, "Seleccione un producto antes de abrir el carrito.", "Error", JOptionPane.ERROR_MESSAGE);
     }
+}
+
+
 
     private void imgMouseClicked(java.awt.event.MouseEvent evt, String nombreProducto) {
         // Crear una instancia de la ventana infoProducto
@@ -186,7 +210,7 @@ public class PantallaCliente extends javax.swing.JFrame {
         nombreProductoSeleccionado = nombreProducto;
         imagenProductoSeleccionado = imagenes[getIndexFromNombre(nombreProducto)];
         cantidadProductoSeleccionado = 1;
-        precioProductoSeleccionado = getPrecioFromNombre(nombreProducto);
+        precioProductoSeleccionado = precioProducto;
 
     }
 
@@ -281,6 +305,8 @@ public class PantallaCliente extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 221, 129));
         setResizable(false);
 
+        panel.setBackground(new java.awt.Color(255, 255, 255));
+        panel.setOpaque(false);
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         panel.add(buscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 58, 428, 46));
 
@@ -293,6 +319,9 @@ public class PantallaCliente extends javax.swing.JFrame {
             }
         });
         panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 40, 90, 90));
+
+        panelProductos.setBackground(new java.awt.Color(255, 255, 255));
+        panelProductos.setOpaque(false);
 
         hamburgesa.setText("jLabel1");
 

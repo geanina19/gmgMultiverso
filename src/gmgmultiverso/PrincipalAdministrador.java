@@ -110,6 +110,8 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         
     }
     
+    //----------------MÉTODOS---------------------------
+    
     //para poner el logo del planeta en el frame
     @Override
     public Image getIconImage() {
@@ -163,6 +165,7 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         panelPrincipal.add(ep, gbc);
         panelPrincipal.revalidate();
         panelPrincipal.repaint();
+        
     }
     
     public void mostrarEditarEmpleado(int codigoEmpleado, BuscarEmpleado buscarEmpleado) {
@@ -203,31 +206,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         panelPrincipal.repaint();
     }
     
-    /*
-    public void mostrarAnadirProductoConAnadirProveedor(AnadirProducto anadirProducto) {
-        
-        PrincipalAdministrador principalAdmin = new PrincipalAdministrador(); // Ejemplo de creación de objeto PrincipalAdministrador
-
-        // Luego, pasas ese objeto al constructor de AnadirProductoConAnadirProveedor
-        AnadirProductoConAnadirProveedor apcap = new AnadirProductoConAnadirProveedor(principalAdmin);
-
-        apcap.setSize(panelPrincipal.getSize());
-        
-        panelPrincipal.removeAll();
-        
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.CENTER;
-        
-        panelPrincipal.add(apcap, gbc);
-        panelPrincipal.revalidate();
-        panelPrincipal.repaint();
-    }
-    */
     
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
@@ -262,7 +240,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         itemAnadirProducto = new javax.swing.JMenuItem();
         menuPedidos = new javax.swing.JMenu();
         itemVerPedido = new javax.swing.JMenuItem();
-        menuInformes = new javax.swing.JMenu();
         menuAyuda = new javax.swing.JMenu();
         ayuda = new javax.swing.JMenuItem();
         menuTema = new javax.swing.JMenu();
@@ -413,10 +390,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         menuPedidos.add(itemVerPedido);
 
         menuGestion.add(menuPedidos);
-
-        menuInformes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/graficox20.png"))); // NOI18N
-        menuInformes.setText("Informes");
-        menuGestion.add(menuInformes);
 
         jMenuBar1.add(menuGestion);
 
@@ -1039,7 +1012,6 @@ public class PrincipalAdministrador extends javax.swing.JFrame
     private javax.swing.JMenu menuAyuda;
     private javax.swing.JMenu menuEmpleados;
     private javax.swing.JMenu menuGestion;
-    private javax.swing.JMenu menuInformes;
     private javax.swing.JMenu menuPedidos;
     private javax.swing.JMenu menuPerfil;
     private javax.swing.JMenu menuProductos;

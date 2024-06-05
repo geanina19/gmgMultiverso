@@ -62,7 +62,7 @@ public class ProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }

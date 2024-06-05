@@ -11,8 +11,11 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -32,6 +35,9 @@ public class CuentaCliente extends javax.swing.JFrame {
         clienteDao = new ClienteDao(new ManagerConexion());
         this.setLocationRelativeTo(null);
 
+         //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
+        
         //boton
         pass2.addKeyListener(new KeyAdapter() {
             @Override
@@ -43,6 +49,17 @@ public class CuentaCliente extends javax.swing.JFrame {
         });
     }
 
+        //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

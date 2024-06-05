@@ -36,6 +36,17 @@ public class Producto {
         this.idProveedor = idProveedor;
     }
     
+    // Constructor que acepta un int para el ID y un String para el nombre
+public Producto(int id, String nombre) {
+    this.id = id;
+    this.nombre = nombre;
+    // Asigna valores predeterminados para los otros campos o realiza cualquier otra lógica necesaria
+    this.precio = 0.0;  // Precio predeterminado
+    this.unidad_existente = 0;  // Unidades predeterminadas
+}
+
+    
+    
     //-----------Getters y Setters-----------
 
     public int getId() {

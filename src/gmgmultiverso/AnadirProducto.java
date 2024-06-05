@@ -109,9 +109,19 @@ public class AnadirProducto extends javax.swing.JPanel {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componentePrecio.getEtiqueta());
 
+                    // Reemplazar cualquier coma por un punto en el texto del precio
+                    textoAnadir = textoAnadir.replace(',', '.');
+
                     // Verificar si el precio contiene caracteres no permitidos
-                    if (!textoAnadir.matches("[0-9.,]+")) {
-                        JOptionPane.showMessageDialog(null, "El precio solo puede contener números, punto (.) y coma (,).", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (!textoAnadir.matches("[0-9.]+")) {
+                        JOptionPane.showMessageDialog(null, "El precio solo puede contener números y punto (.)", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // Convertir el texto del precio a un número
+                        double precio = Double.parseDouble(textoAnadir);
+                        // Verificar que el precio no sea mayor a 100
+                        if (precio > 100) {
+                            JOptionPane.showMessageDialog(null, "El precio no puede ser mayor a 100.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
 
                     System.out.println("No se ha producido ningún error, textField Precio con contenido");
@@ -125,6 +135,8 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         };
         componentePrecio.addLisOverEtiquetav2(li2);
+
+
 
         
         //--------componenteUnidadExistente--------
@@ -433,14 +445,28 @@ public class AnadirProducto extends javax.swing.JPanel {
             errores.append("- El nombre del producto solo puede contener letras.\n");
         }
 
-        // Validar que el precio sea un número válido
+        // Validar que el precio sea un número válido y no sea negativo
         if (!precioTexto.matches("\\d*\\.?\\d+")) {
             errores.append("- El precio del producto debe ser un número válido.\n");
+        } else {
+            // Convertir el precio a un número
+            double precio = Double.parseDouble(precioTexto);
+            // Verificar que el precio no sea negativo
+            if (precio < 0) {
+                errores.append("- El precio del producto no puede ser negativo.\n");
+            }
         }
 
-        // Validar que la cantidad existente sea un número entero
+        // Validar que la cantidad existente sea un número entero y no sea negativa
         if (!unidadExistenteTexto.matches("\\d+")) {
-            errores.append("- La cantidad existente debe ser un número entero.\n");
+            errores.append("- La cantidad existente debe ser un número entero y no puede ser negativa.\n");
+        } else {
+            // Convertir la cantidad existente a un número
+            int unidadExistente = Integer.parseInt(unidadExistenteTexto);
+            // Verificar que la cantidad existente no sea negativa
+            if (unidadExistente < 0) {
+                errores.append("- La cantidad existente no puede ser negativa.\n");
+            }
         }
 
         // Si hay errores, mostrarlos en un mensaje
@@ -449,22 +475,24 @@ public class AnadirProducto extends javax.swing.JPanel {
             return; // Salir del método si hay errores
         }
 
-        // Convertir los datos validados
-        double precio = Double.parseDouble(precioTexto);
-        int unidadExistente = Integer.parseInt(unidadExistenteTexto);
+        // Instanciar ProductoConProveedorDao
+        ManagerConexion managerConexion = new ManagerConexion();
+        ProductoConProveedorDao productoDao = new ProductoConProveedorDao(managerConexion);
+
+        // Verificar si ya existe un producto con el mismo nombre y proveedor
+        if (productoDao.existeProductoConNombreYProveedor(nombre, nuevoCodigoProveedor)) {
+            JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo nombre y proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si ya existe un producto con el mismo nombre y proveedor
+        }
 
         // Crear un objeto ProductoConProveedor con los datos ingresados
         ProductoConProveedor nuevoProducto = new ProductoConProveedor(
             nuevoCodigoProveedor, 
             null, // El nombre del proveedor no es necesario aquí
             nombre, 
-            precio, 
-            unidadExistente
+            Double.parseDouble(precioTexto), 
+            Integer.parseInt(unidadExistenteTexto)
         );
-
-        // Instanciar ProductoConProveedorDao
-        ManagerConexion managerConexion = new ManagerConexion();
-        ProductoConProveedorDao productoDao = new ProductoConProveedorDao(managerConexion);
 
         // Añadir el producto
         boolean resultado = productoDao.añadirProducto(nuevoProducto);

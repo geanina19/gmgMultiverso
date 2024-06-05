@@ -7,8 +7,10 @@ package gmgmultiverso;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ClienteDao;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -39,9 +41,22 @@ public class PerfilCliente extends javax.swing.JFrame {
         clienteDao = new ClienteDao(con);
         mostrarDatosCliente(correoElectronico);
         this.setLocationRelativeTo(null);
+        
+         //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
     }
 
-
+    //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
+    }
      private void mostrarDatosCliente(String correoElectronico) {
         String[] datosCliente = clienteDao.obtenerDatosCliente(correoElectronico);
 
@@ -86,6 +101,7 @@ public class PerfilCliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Perfil del Cliente");
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setText("Nombre");

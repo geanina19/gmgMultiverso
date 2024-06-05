@@ -11,8 +11,10 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,6 +31,9 @@ public class PrincipalCliente extends javax.swing.JFrame {
         initComponents();
         clienteDao = new ClienteDao(new ManagerConexion());
         this.setLocationRelativeTo(null);
+        
+         //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
 
         //boton
         pass.addKeyListener(new KeyAdapter() {
@@ -41,7 +46,17 @@ public class PrincipalCliente extends javax.swing.JFrame {
         });
     }
 
-    
+        //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -78,10 +93,10 @@ public class PrincipalCliente extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
         jLabel2.setText("GMGMULTIVERSO");
-        background.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 290, 240, -1));
+        background.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 300, 240, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo.jpeg"))); // NOI18N
-        background.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 0, 430, 550));
+        background.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 0, 410, 550));
 
         panelinicio3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -151,7 +166,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

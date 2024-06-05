@@ -35,7 +35,6 @@ public class Pedido {
         this.estado = estado;
         this.ultima_actualizacion = ultima_actualizacion;
     }
-    
 
     // Nuevo constructor solo para detalles
   public Pedido(int id, Date fecha_pedido, int estado, Date ultima_actualizacion, List<DetallePedido> detalles) {
@@ -105,7 +104,7 @@ public class Pedido {
     public void setId_empleado(int id_empleado) {
         this.id_empleado = id_empleado;
     }
-   
+
     public void setDetalles(List<DetallePedido> detalles) {
         this.detalles = detalles;
     }

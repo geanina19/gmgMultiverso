@@ -5,9 +5,12 @@
 package gmgmultiverso;
 
 import java.awt.Desktop;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
+import java.net.URL;
 
 /**
  *
@@ -22,6 +25,9 @@ public class AyudaCliente extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         
+         //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
+        
          textFieldWeb.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -30,6 +36,18 @@ public class AyudaCliente extends javax.swing.JFrame {
         });
     }
 
+        //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("Resource not found: /imagenes/planeta.png");
+            return null;
+        }
+    }
+    
      public void abrirPagina(String url) {
         try {
             Desktop.getDesktop().browse(new URI(url));
@@ -67,6 +85,7 @@ public class AyudaCliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Ayuda Cliente");
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         textFieldWeb.setEditable(false);

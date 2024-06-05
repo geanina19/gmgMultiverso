@@ -58,9 +58,40 @@ public class ProductoConProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                    
                 }
             }
         }
+    }
+    
+    public boolean existeProductoConNombreYProveedor(String nombreProducto, int codigoProveedor) {
+        Connection conect = null;
+
+        try {
+            conect = con.abrirConexion();
+            String sql = "SELECT COUNT(*) FROM producto WHERE nombre = ? AND id_proveedor = ?";
+            var ps = conect.prepareStatement(sql);
+            ps.setString(1, nombreProducto);
+            ps.setInt(2, codigoProveedor);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; 
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
     }
 
     // Método para añadir un nuevo producto
@@ -83,6 +114,7 @@ public class ProductoConProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -110,7 +142,7 @@ public class ProductoConProveedorDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -138,6 +170,7 @@ public class ProductoConProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }

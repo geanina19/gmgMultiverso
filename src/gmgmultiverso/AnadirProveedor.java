@@ -75,38 +75,41 @@ public class AnadirProveedor extends javax.swing.JPanel {
         componenteNombreEmpresa.addLisOverEtiquetav2(li);
         
         //--------componenteTelefono--------
-        LisOverEtiquetav2 li2 = new LisOverEtiquetav2() 
-        {
+        LisOverEtiquetav2 li2 = new LisOverEtiquetav2() {
             @Override
-            public void accionPerdidaFoco(EvObjOverEtiquetav2 ev, String textoAnadir, boolean error) 
-            {
-                if(error)
-                {
+            public void accionPerdidaFoco(EvObjOverEtiquetav2 ev, String textoAnadir, boolean error) {
+                if (error) {
                     visorErrores.append(componenteTelefono.getEtiqueta());
                     // Si el campo está vacío, agrega el nombre del campo a listaCamposVacios
-                    if (textoAnadir.isEmpty()) 
-                    {
+                    if (textoAnadir.isEmpty()) {
                         listaCamposObligPorCompletar.add(componenteTelefono.getEtiqueta());
                     }
 
                     System.out.println("Contacto sin completar");
-                }
-                else
-                {
-                    // Si el campo se ha completado, quítalo de la listaCamposVacios
+                } else {
+                    // Realiza la validación del número de teléfono
+                    if (!textoAnadir.matches("\\d{9}")) {
+                        visorErrores.append("- El teléfono debe contener 9 dígitos numéricos.\n");
+                        listaCamposObligPorCompletar.add(componenteTelefono.getEtiqueta());
+                        System.out.println("Número de teléfono incorrecto");
+                        // Llama al método para actualizar el visor de errores
+                        actualizarTextAreaVisorErrores();
+                        return; // Sale del método si la validación falla
+                    }
+
+                    // Si el campo se ha completado correctamente, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componenteTelefono.getEtiqueta());
-                    
-                    System.out.println("No se ha producido ningun error, textField contacto con contenido");
+
+                    System.out.println("No se ha producido ningún error, textField contacto con contenido");
                     System.out.println("Contacto introducido : " + textoAnadir);
                 }
-                
-                // Llama al método para actualizar el visor de errores
-                actualizarTextAreaVisorErrores();
+
                 // Llama al método para actualizar el estado del botón
                 actualizarEstadoBotonAnadir();
             }
         };
         componenteTelefono.addLisOverEtiquetav2(li2);
+
         
         //--------componenteEmail--------
         LisOverEtiquetav2 li3 = new LisOverEtiquetav2() 
@@ -337,12 +340,12 @@ public class AnadirProveedor extends javax.swing.JPanel {
         String telefonoTexto = componenteTelefono.getEscritura();
         String email = componenteEmail.getEscritura();
 
-        if (!telefonoTexto.matches("\\d{9}") || !email.contains("@")) {
+        if (!telefonoTexto.matches("\\d{9}") || !email.matches("[^@]+@[^@]+\\.[^.]+")) {
             String mensajeError = "";
             if (!telefonoTexto.matches("\\d{9}")) {
                 mensajeError += "- El teléfono debe contener 9 dígitos numéricos.\n";
             }
-            if (!email.contains("@")) {
+            if (!email.matches("[^@]+@[^@]+\\.[^.]+")) {
                 mensajeError += "- El email debe ser válido.\n";
             }
             JOptionPane.showMessageDialog(this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);

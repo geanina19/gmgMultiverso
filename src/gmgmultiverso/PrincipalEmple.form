@@ -283,7 +283,9 @@
                   </Group>
                   <EmptySpace min="-2" pref="189" max="-2" attributes="0"/>
                   <Component id="buscarButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="370" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="buttonReiniciar" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="245" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -295,6 +297,7 @@
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="textNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="buscarButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="buttonReiniciar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
@@ -309,11 +312,17 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Nombre cliente"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI" size="12" style="1"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Fecha del pedido"/>
           </Properties>
         </Component>
@@ -334,9 +343,25 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="javax.swing.JButton" name="buttonReiniciar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reiniciar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonReiniciarActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="labelInicio">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Segoe UI" size="24" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="7a" green="a0" red="ff" type="rgb"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

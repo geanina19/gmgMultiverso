@@ -105,6 +105,7 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         // Seleccionar el índice correspondiente en el combo box
         comboBoxEstado.setSelectedIndex(indiceEstadoActual);
     }
+    
     /**************** ACTUALIZAR TABLA *****************/
     private void actualizarTablaPedidos() {  
         principal.actualizarTabla();

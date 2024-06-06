@@ -8,8 +8,17 @@ import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ProductoConProveedorDao;
 import gmgmultiverso.model.ProductoConProveedor;
 import gmgmultiverso.model.Proveedor;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +26,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import propiedades.EvObjOverEtiquetav2;
 import propiedades.LisOverEtiquetav2;
@@ -38,6 +50,8 @@ public class EditarProducto extends javax.swing.JPanel {
     
     Statement st;
     ResultSet rs;
+    
+    private File imagenSeleccionada;
     
     private ArrayList<String> listaCamposObligPorCompletar = new ArrayList<>();
     private String camposObligPorCompletar;
@@ -173,6 +187,64 @@ public class EditarProducto extends javax.swing.JPanel {
         };
         componenteUnidadExistente.addLisOverEtiquetav2(li3);
         
+        // Agregar un listener al componente de proveedores
+        componenteProveedores.getResultadosList().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                int indiceSeleccionado = componenteProveedores.obtenerIndiceSeleccionado();
+                boolean proveedorSeleccionado = indiceSeleccionado != -1;
+
+                if (proveedorSeleccionado) {
+                        
+                    listaCamposObligPorCompletar.remove(componenteProveedores.getEtiqueta());
+                    System.out.println("No se ha producido ningún error, proveedor seleccionado con contenido");
+                        
+                } else {
+                    visorErrores.append(componenteProveedores.getEtiqueta());
+                    listaCamposObligPorCompletar.add(componenteProveedores.getEtiqueta());
+                    System.out.println("UnidadExistente sin completar");
+                }
+                    
+                // Llama al método para actualizar el visor de errores
+                actualizarTextAreaVisorErrores();
+                // Llama al método para actualizar el estado del botón
+                actualizarEstadoBotonModificar();
+            }
+        });
+        
+        botonImagen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarImagen();
+            }
+        });
+        
+        /*
+        // Añadir un FocusListener al botón de la imagen
+        botonImagen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Verifica si se ha seleccionado una imagen
+                if (imagenSeleccionada != null) {
+                    
+                    listaCamposObligPorCompletar.remove(botonImagen.getText());
+                    System.out.println("No se ha producido ningún error, imagen seleccionada");
+                    
+                } else {
+                    visorErrores.append(botonImagen.getText());
+                    listaCamposObligPorCompletar.add(botonImagen.getText());
+                    System.out.println("Imagen sin completar");
+                }
+                
+                // Llama al método para actualizar el visor de errores
+                actualizarTextAreaVisorErrores();
+                // Llama al método para actualizar el estado del botón
+                actualizarEstadoBotonModificar();
+            }
+        });
+        */
+
+        
     }
     
     //------------------------------MÉTODOS-------------------------------
@@ -267,25 +339,110 @@ public class EditarProducto extends javax.swing.JPanel {
             if (selectedIndexProveedores != -1) {
                 componenteProveedores.ensureIndexIsVisible(selectedIndexProveedores);
             }
+            
+            // Cargar la imagen del producto si existe
+            String nombreImagen = productoSeleccionado.getNombreProducto() + ".png";
+            File imagenFile = new File("src/imagenesProductos/" + nombreImagen);
+            if (imagenFile.exists()) {
+                try {
+                    Image imagen = ImageIO.read(imagenFile);
+                    // Escalar la imagen
+                    ImageIcon icono = new ImageIcon(imagen.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
+                    // Establecer el ícono en el botón
+                    botonImagen.setIcon(icono);
+                    // Establecer el tamaño preferido del botón
+                    botonImagen.setPreferredSize(new Dimension(200, 200));
+                    // Asignar la imagen cargada a la variable imagenSeleccionada
+                    imagenSeleccionada = imagenFile;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         } else {
             JOptionPane.showMessageDialog(this, "El producto con el ID " + codProducto + " no existe.");
         }
     }
     
+    public void seleccionarImagen() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            imagenSeleccionada = fileChooser.getSelectedFile();
+            if (imagenSeleccionada != null) {
+                botonImagen.setText("");
+                botonImagen.setIcon(new ImageIcon(new ImageIcon(imagenSeleccionada.getPath()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+            }
+        }
+    }
     
-    public void modificar(){
-         
+    public void guardarImagen(String nombreProducto) {
+        try {
+            if (imagenSeleccionada != null) {
+                String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
+                File destino = new File("src/imagenesProductos/" + nombreProducto + extension);
+
+                // Leer la imagen para obtener sus dimensiones
+                BufferedImage imagen = ImageIO.read(imagenSeleccionada);
+                int ancho = imagen.getWidth();
+                int alto = imagen.getHeight();
+
+                // Verificar si las dimensiones son 150x150
+                if (ancho <= 150 && alto <= 150) {
+                    // Si las dimensiones son correctas, guardar la imagen
+                    Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } else {
+                    // Si las dimensiones no son correctas, mostrar un mensaje de error
+                    JOptionPane.showMessageDialog(this, "La imagen debe tener dimensiones de 150x150.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; // Salir del método si las dimensiones no son correctas
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Método para verificar las dimensiones de la imagen
+    private boolean verificarDimensionesImagen(File imagenSeleccionada) {
+        try {
+            // Leer la imagen para obtener sus dimensiones
+            BufferedImage imagen = ImageIO.read(imagenSeleccionada);
+            int ancho = imagen.getWidth();
+            int alto = imagen.getHeight();
+
+            // Verificar si las dimensiones son 150x150
+            return (ancho <= 150 && alto <= 150);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public void modificar() {
+        // Obtener los valores ingresados por el usuario
         String nuevoNombre = componenteNombre.getEscritura();
         String nuevoPrecio = componentePrecio.getEscritura();
         String nuevaUnidadExistente = componenteUnidadExistente.getEscritura();
-        
         int nuevoCodigoProveedor = componenteProveedores.obtenerCodigoSeleccionado(componenteProveedores.obtenerIndiceSeleccionado());
-        
+
+        // Verificar si se ha seleccionado una imagen
+        if (imagenSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una imagen para añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si no hay imagen seleccionada
+        }
+
+        // Verificar las dimensiones de la imagen
+        if (!verificarDimensionesImagen(imagenSeleccionada)) {
+            JOptionPane.showMessageDialog(this, "La imagen debe tener dimensiones de 150x150.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // Variables para almacenar los errores
         StringBuilder errores = new StringBuilder();
-        
-                // Validar que el nombre solo contenga caracteres
-        if (!nuevoNombre.matches("[a-zA-Z]+")) {
+
+        // Validar que el nombre solo contenga caracteres
+        if (!nuevoNombre.matches("[a-zA-Z\\s]+")) {
             errores.append("- El nombre del producto solo puede contener letras.\n");
         }
 
@@ -304,7 +461,7 @@ public class EditarProducto extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Se encontraron los siguientes errores:\n" + errores.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             return; // Salir del método si hay errores
         }
-        
+
         // Convertir los datos validados
         double precio = Double.parseDouble(nuevoPrecio);
         int unidadExistente = Integer.parseInt(nuevaUnidadExistente);
@@ -319,18 +476,22 @@ public class EditarProducto extends javax.swing.JPanel {
         ManagerConexion managerConexion = new ManagerConexion();
         ProductoConProveedorDao productoDao = new ProductoConProveedorDao(managerConexion);
 
-        // Intentar actualizar el empleado en la base de datos
+        // Intentar actualizar el producto en la base de datos
         boolean exito = productoDao.actualizarProducto(productoModificado);
 
         // Verificar si la actualización fue exitosa
         if (exito) {
-            JOptionPane.showMessageDialog(this, "Empleado modificado correctamente.");
+            guardarImagen(productoModificado.getNombreProducto()); // Aquí se guarda la imagen
+
+            JOptionPane.showMessageDialog(this, "Producto modificado correctamente.");
+
             BuscarProducto bp = new BuscarProducto(principalAdmin);
             principalAdmin.mostrarPanel(bp);
         } else {
-            JOptionPane.showMessageDialog(this, "Error al modificar el empleado.");
+            JOptionPane.showMessageDialog(this, "Error al modificar el producto.");
         }
     }
+
         
     /**
      * This method is called from within the constructor to initialize the form.
@@ -363,6 +524,7 @@ public class EditarProducto extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         botonModificar = new javax.swing.JButton();
         botonCancelar = new javax.swing.JButton();
+        botonImagen = new javax.swing.JButton();
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Editar un producto");
@@ -402,6 +564,8 @@ public class EditarProducto extends javax.swing.JPanel {
         });
         jPanel1.add(botonCancelar);
 
+        botonImagen.setText("Elige imagen");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -421,13 +585,17 @@ public class EditarProducto extends javax.swing.JPanel {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(componenteNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
                                     .addComponent(componentePrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(45, 45, 45)
-                                .addComponent(componenteUnidadExistente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(componenteUnidadExistente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(72, 72, 72)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -436,7 +604,14 @@ public class EditarProducto extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(73, 73, 73)
-                        .addComponent(componenteProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(componenteProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(labelTitulo)
@@ -445,15 +620,10 @@ public class EditarProducto extends javax.swing.JPanel {
                             .addComponent(componenteNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(componenteUnidadExistente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(36, 36, 36)
-                        .addComponent(componentePrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(127, Short.MAX_VALUE))
+                        .addComponent(componentePrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -479,6 +649,7 @@ public class EditarProducto extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCancelar;
+    private javax.swing.JButton botonImagen;
     private javax.swing.JButton botonModificar;
     private propiedades.EtiquetaVertHorizv2 componenteNombre;
     private propiedades.EtiquetaVertHorizv2 componentePrecio;

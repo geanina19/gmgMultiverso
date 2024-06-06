@@ -4,6 +4,10 @@
  */
 package gmgmultiverso;
 
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+
 /**
  *
  * @author monic
@@ -17,6 +21,21 @@ public class FramePrincipal extends javax.swing.JFrame {
         initComponents();
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
+        
+        //para poner el logo del planeta en el frame
+        this.setIconImage(getIconImage());
+    }
+    
+    //para poner el logo del planeta en el frame
+    @Override
+    public Image getIconImage() {
+        URL url = getClass().getResource("/imagenes/planeta.png");
+        if (url != null) {
+            return Toolkit.getDefaultToolkit().getImage(url);
+        } else {
+            System.err.println("No se encuentra la imagen : /imagenes/planeta.png");
+            return null;
+        }
     }
 
     /**
@@ -87,7 +106,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         LoginAdmin logAdmin = new LoginAdmin();
         logAdmin.setVisible(true);
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_buttonAdminActionPerformed
 
     private void buttonEmpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEmpleActionPerformed

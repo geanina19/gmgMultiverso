@@ -416,7 +416,7 @@ public class AnadirEmpleado extends javax.swing.JPanel {
         String email = componenteEmail.getEscritura();
 
         // Verificar si los campos contienen caracteres no deseados o están en el formato incorrecto
-        if (nombre.matches(".*\\d.*") || apellido.matches(".*\\d.*") || !telefonoTexto.matches("\\d{9}") || !email.contains("@")) {
+        if (nombre.matches(".*\\d.*") || apellido.matches(".*\\d.*") || !telefonoTexto.matches("\\d{9}") || !email.matches("[^@]+@[^@]+\\.[^.]+")) {
             String mensajeError = "";
             if (nombre.matches(".*\\d.*")) {
                 mensajeError += "- El nombre no puede contener números.\n";
@@ -427,7 +427,7 @@ public class AnadirEmpleado extends javax.swing.JPanel {
             if (!telefonoTexto.matches("\\d{9}")) {
                 mensajeError += "- El teléfono debe contener 9 dígitos numéricos.\n";
             }
-            if (!email.contains("@")) {
+            if (!email.matches("[^@]+@[^@]+\\.[^.]+")) {
                 mensajeError += "- El email debe ser válido.\n";
             }
 

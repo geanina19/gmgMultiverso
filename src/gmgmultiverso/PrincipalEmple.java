@@ -19,6 +19,7 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatSolarizedDarkC
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.PedidoConNombreDao;
 import gmgmultiverso.model.PedidoConNombre;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -29,13 +30,20 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -65,11 +73,19 @@ public class PrincipalEmple extends javax.swing.JFrame {
         this.codigoEmpleado = codigoEmpleado;
         anadirDatosTabla(codigoEmpleado);
         this.setIconImage(getIconImage());
-        //color
-        this.getContentPane().setBackground(new java.awt.Color(179,242,255));
+        this.getContentPane().setBackground(new java.awt.Color(250, 240, 230));
+        
+                // Obtener y mostrar el nombre del empleado logueado
+        String nombreEmpleado = pedidoCompleto.obtenerNombreEmpleado(codigoEmpleado);
+        if (nombreEmpleado != null) {
+            labelInicio.setText("¡Hola " + nombreEmpleado + "!");
+        } else {
+            labelInicio.setText("Bienvenido");
+        }
         
         sorter = new TableRowSorter<>(miModelo);
         tablePedidos.setRowSorter(sorter);
+        tablePedidos.setBackground(new java.awt.Color(255, 218, 185));
         
         //La pantalla se abra en el centro
         this.setLocationRelativeTo(null);
@@ -83,36 +99,11 @@ public class PrincipalEmple extends javax.swing.JFrame {
 //        tablePedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION); 
 
         // Agregar ordenación alfabética al hacer clic en los encabezados de las columnas
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
-        tablePedidos.setRowSorter(sorter);        
+//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
+//        tablePedidos.setRowSorter(sorter);   
+        
         
     }
-    
-//    public PrincipalEmple() {
-//        initComponents();
-//        anadirDatosTabla();
-//        this.setIconImage(getIconImage());
-//        
-//        sorter = new TableRowSorter<>(miModelo);
-//        tablePedidos.setRowSorter(sorter);
-//        
-//        //La pantalla se abra en el centro
-//        this.setLocationRelativeTo(null);
-//        tablePedidos.setRowHeight(50); // Ajusta la altura de las filas
-//        tablePedidos.getColumnModel().getColumn(0).setPreferredWidth(25); // Ajusta el ancho de la primera columna
-//     //   tabla.setEnabled(false);
-//        tablePedidos.setModel(miModelo);
-//        // Esto hace que la tabla no sea editable
-//        tablePedidos.setDefaultEditor(Object.class, null); 
-//        // Esto permite la selección de una sola fila
-////        tablePedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION); 
-//
-//        // Agregar ordenación alfabética al hacer clic en los encabezados de las columnas
-//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
-//        tablePedidos.setRowSorter(sorter);
-//    }
-//    
-
     
     @Override
     public Image getIconImage() {
@@ -139,95 +130,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
             return null;
         }
     }
-    
-/*--------------------- METODO PARA AÑADIR LOS DATOS A LA TABLA ------------------*/
-//    public void anadirDatosTabla(){
-//        
-//    
-//       // Obtener lista de pedidos
-//        List<PedidoConNombre> pedidos = pedidoCompleto.list();
-//        miModelo = new DefaultTableModel(new Object[]{
-//                "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización", "Editar"}, 0) {
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                if (column == 4 || column == 6) {
-//                    return ImageIcon.class;
-//                }
-//                return Object.class;
-//            }
-//        };
-//        // imágenes para los botones
-//        ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
-//        
-//        // imagenes para los diferentes estados
-//        ImageIcon estado1Icon = crearImageIcon("/imgEmple/recibidoIcono.png");
-//        ImageIcon estado2Icon = crearImageIcon("/imgEmple/preparacionIcono.png");
-//        ImageIcon estado3Icon = crearImageIcon("/imgEmple/enviadoIcono.png");
-//        
-//        for (PedidoConNombre pedido : pedidos) {
-//            ImageIcon estadoIcon;
-//            switch (pedido.getEstado()) {
-//                case 1:
-//                    estadoIcon = estado1Icon;
-//                    break;
-//                case 2:
-//                    estadoIcon = estado2Icon;
-//                    break;
-//                case 3:
-//                    estadoIcon = estado3Icon;
-//                    break;
-//                default:
-//                    estadoIcon = null; 
-//                    break;
-//            }
-//            miModelo.addRow(new Object[]{
-//                pedido.getId(),
-//                pedido.getNombreCliente(),
-//                pedido.getFechaPedido(),
-//                pedido.getNombreEmpleado(),
-//                estadoIcon,
-//                pedido.getUltimaActualizacion(),
-//                editarIcon
-//            });
-//        }
-//        tablePedidos.setModel(miModelo);
-//        
-////        // Crear y aplicar el renderizador de celda centrado
-////        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-////        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-////        // Aplicar el renderizador a cada columna excepto la de imagen
-////        TableColumnModel columnModel = tablePedidos.getColumnModel();
-////        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-////            if (i != 4 && i != 6) { 
-////                columnModel.getColumn(i).setCellRenderer(centerRenderer);
-////            }
-////        }
-////
-////        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-////        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-////        // cambia el color de fondo de los encabezados
-////        headerRenderer.setBackground(Color.LIGHT_GRAY); 
-////        // poner el texto en negrita
-////        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
-////        // Aplicar el renderizador de encabezado a cada columna
-////        JTableHeader tableHeader = tablePedidos.getTableHeader();
-////        tableHeader.setDefaultRenderer(headerRenderer);
-//
-//        // Añadir el MouseListener para el evento de clic
-//        tablePedidos.addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                int columnaModificar = tablePedidos.getColumnModel().getColumnIndex("Editar");
-//                int fila = tablePedidos.rowAtPoint(e.getPoint());
-//                if (fila >= 0 && tablePedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-//                    // Código para abrir el panel de edición
-//                    abrirVentanaPedido(fila);
-//                }
-//            }
-//        });
-//        
-//
-//    }
+
     public void anadirDatosTabla(int idEmpleado) {
         System.out.println("Añadiendo datos para el empleado con ID: " + idEmpleado); // Mensaje de depuración
         // Obtener lista de pedidos
@@ -279,6 +182,29 @@ public class PrincipalEmple extends javax.swing.JFrame {
             });
         }
         tablePedidos.setModel(miModelo);
+        
+        /*****/
+        // Crear y aplicar el renderizador de celda centrado
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // Aplicar el renderizador a cada columna excepto la de imagen
+        TableColumnModel columnModel = tablePedidos.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            if (i != 4 && i != 6) { 
+                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+            }
+        }
+        // PARA ENCABEZADOS
+        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        // cambia el color de fondo de los encabezados
+        headerRenderer.setBackground(new java.awt.Color(255, 160, 122)); 
+        // poner el texto en negrita
+        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
+        // Aplicar el renderizador de encabezado a cada columna
+        JTableHeader tableHeader = tablePedidos.getTableHeader();
+        tableHeader.setDefaultRenderer(headerRenderer);
+       
 
         // Añadir el MouseListener para el evento de clic
         tablePedidos.addMouseListener(new MouseAdapter() {
@@ -293,7 +219,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
                     int codigoEmpleado = (int) tablePedidos.getValueAt(fila, columnaCodigoEmpleado);
 
                     // Abre la ventana de edición con el código del empleado
-                    abrirVentanaPedido(codigoEmpleado);
+                    abrirVentanaPedido(codigoEmpleado, idEmpleado);
                 }
             }
         });
@@ -303,7 +229,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
     
     
     
-    /******************* Obtener id de la fila seleccionada *************/
+    /******************* Obtener id de la fila seleccionada ()*************/
     private int obtenerCodigoPedido(int fila) {
         int codigoPedido = -1;
         try {
@@ -327,13 +253,19 @@ public class PrincipalEmple extends javax.swing.JFrame {
     
         /*-------------- MODIFICAR PEDIDO --------------*/
 
-    private void abrirVentanaPedido(int codigoPedido) {
+    private void abrirVentanaPedido(int codigoPedido, int codigoEmpleado) {
         
-        FrameEditarPedido panelEditar = new FrameEditarPedido(this, true, codigoPedido,this);
-        panelEditar.setVisible(true);
-        
-        
+        FrameEditarPedido panelEditar = new FrameEditarPedido(this, true, codigoPedido, codigoEmpleado,this);
+        panelEditar.setVisible(true);               
     }
+    
+    /***********ACTUALIZAR TABLA***********/
+    public void actualizarTabla() {
+        anadirDatosTabla(codigoEmpleado);
+    }
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -352,6 +284,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         textNombre = new javax.swing.JTextField();
         buscarButton = new javax.swing.JButton();
         dateFiltro = new com.toedter.calendar.JDateChooser();
+        buttonReiniciar = new javax.swing.JButton();
         labelInicio = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -390,14 +323,27 @@ public class PrincipalEmple extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablePedidos);
 
+        jPanel1.setBackground(new java.awt.Color(255, 245, 238));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Nombre cliente");
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel1.setText("Fecha del pedido");
 
         buscarButton.setText("Buscar");
         buscarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarButtonActionPerformed(evt);
+            }
+        });
+
+        dateFiltro.setBackground(new java.awt.Color(255, 245, 238));
+
+        buttonReiniciar.setText("Reiniciar");
+        buttonReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonReiniciarActionPerformed(evt);
             }
         });
 
@@ -408,15 +354,17 @@ public class PrincipalEmple extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textNombre)
-                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE))
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(189, 189, 189)
                 .addComponent(buscarButton)
-                .addGap(370, 370, 370))
+                .addGap(50, 50, 50)
+                .addComponent(buttonReiniciar)
+                .addGap(245, 245, 245))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -425,13 +373,17 @@ public class PrincipalEmple extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buscarButton))
+                    .addComponent(buscarButton)
+                    .addComponent(buttonReiniciar))
                 .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(204, Short.MAX_VALUE))
         );
+
+        labelInicio.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        labelInicio.setForeground(new java.awt.Color(255, 160, 122));
 
         jMenu1.setText("Archivo");
 
@@ -588,11 +540,11 @@ public class PrincipalEmple extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(194, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1213, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -764,7 +716,23 @@ public class PrincipalEmple extends javax.swing.JFrame {
     }//GEN-LAST:event_menuCerrarSesionActionPerformed
 
     private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+        String nombre = textNombre.getText();
+        java.util.Date date = dateFiltro.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = (date != null) ? sdf.format(date) : "";
 
+        if (nombre.isEmpty() && date == null) {
+            sorter.setRowFilter(null);
+        } else if (nombre.isEmpty()) {
+            sorter.setRowFilter(RowFilter.regexFilter(dateStr, 2));
+        } else if (date == null) {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + nombre, 1));
+        } else {
+            sorter.setRowFilter(RowFilter.andFilter(
+                List.of(RowFilter.regexFilter("(?i)" + nombre, 1),
+                        RowFilter.regexFilter(dateStr, 2))
+            ));
+        }
     }//GEN-LAST:event_buscarButtonActionPerformed
 
     private void menuItemPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPerfilActionPerformed
@@ -773,7 +741,15 @@ public class PrincipalEmple extends javax.swing.JFrame {
         this.setEnabled(true);
 //        frPerfilsetAlwaysOnTop(true);
 //        this.dispose();
+        actualizarTabla();
     }//GEN-LAST:event_menuItemPerfilActionPerformed
+
+    private void buttonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReiniciarActionPerformed
+        textNombre.setText("");
+        dateFiltro.setDate(null);
+        sorter.setRowFilter(null);
+        actualizarTabla();
+    }//GEN-LAST:event_buttonReiniciarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -815,6 +791,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;
+    private javax.swing.JButton buttonReiniciar;
     private com.toedter.calendar.JDateChooser dateFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

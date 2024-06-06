@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
@@ -20,6 +22,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -65,6 +68,7 @@ public class AnadirProducto extends javax.swing.JPanel {
         listaCamposObligPorCompletar.add(componenteNombre.getEtiqueta());
         listaCamposObligPorCompletar.add(componentePrecio.getEtiqueta());
         listaCamposObligPorCompletar.add(componenteUnidadExistente.getEtiqueta());
+        //listaCamposObligPorCompletar.add(botonImagen.getText());
         
         actualizarTextAreaVisorErrores();
         
@@ -96,10 +100,15 @@ public class AnadirProducto extends javax.swing.JPanel {
                 } else {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componenteNombre.getEtiqueta());
-
+/*
                     // Verificar si el nombre contiene números
                     if (textoAnadir.matches(".*\\d.*")) {
                         JOptionPane.showMessageDialog(null, "El nombre del producto no puede contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+*/
+                    // Verificar si el nombre contiene caracteres no permitidos (excepto el espacio)
+                    if (!textoAnadir.matches("[a-zA-Z\\s]+")) {
+                        JOptionPane.showMessageDialog(null, "El nombre del producto solo puede contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                     System.out.println("No se ha producido ningún error, textField nombre con contenido");
@@ -113,6 +122,8 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         };
         componenteNombre.addLisOverEtiquetav2(li);
+
+
 
         
         //--------componentePrecio--------
@@ -219,9 +230,34 @@ public class AnadirProducto extends javax.swing.JPanel {
                 actualizarEstadoBotonAnadir();
             }
         });
+        
+        /*
+        // Añadir un FocusListener al botón de la imagen
+        botonImagen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Verifica si se ha seleccionado una imagen
+                if (imagenSeleccionada != null) {
+                    // Si se ha seleccionado una imagen, elimina el nombre del botón de la lista
+                    listaCamposObligPorCompletar.remove(botonImagen.getText());
+                    System.out.println("No se ha producido ningún error, imagen seleccionada");
+                } else {
+                    // Si no se ha seleccionado ninguna imagen, agrega el nombre del botón a la lista
+                    visorErrores.append(botonImagen.getText());
+                    listaCamposObligPorCompletar.add(botonImagen.getText());
+                    System.out.println("Imagen sin completar");
+                }
+
+                // Llama al método para actualizar el visor de errores
+                actualizarTextAreaVisorErrores();
+                // Llama al método para actualizar el estado del botón
+                actualizarEstadoBotonAnadir();
+            }
+        });
+        */
     }
     
-    //-
+    //--------------------MÉTODOS-------------------------
 //----------------para el textArea vosirErrores----------------
     
     // Método para actualizar el visor de errores
@@ -315,12 +351,36 @@ public class AnadirProducto extends javax.swing.JPanel {
             if (imagenSeleccionada != null) {
                 String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
                 File destino = new File("src/imagenesProductos/" + nombreProducto + extension);
+
+                // Leer la imagen para obtener sus dimensiones
+                BufferedImage imagen = ImageIO.read(imagenSeleccionada);
+                int ancho = imagen.getWidth();
+                int alto = imagen.getHeight();
+
                 Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    
+    // Método para verificar las dimensiones de la imagen
+    private boolean verificarDimensionesImagen(File imagenSeleccionada) {
+        try {
+            // Leer la imagen para obtener sus dimensiones
+            BufferedImage imagen = ImageIO.read(imagenSeleccionada);
+            int ancho = imagen.getWidth();
+            int alto = imagen.getHeight();
+
+            // Verificar si las dimensiones son 150x150
+            return (ancho <= 150 && alto <= 150);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 
     /**
@@ -491,6 +551,18 @@ public class AnadirProducto extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos para añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
             return; // Salir del método si algún campo no está seleccionado
         }
+        
+        // Verificar si se ha seleccionado una imagen
+        if (imagenSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una imagen para añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; 
+        }
+
+        // Verificar las dimensiones de la imagen
+        if (!verificarDimensionesImagen(imagenSeleccionada)) {
+            JOptionPane.showMessageDialog(this, "La imagen debe tener dimensiones de 150x150.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // Variables para almacenar los errores
         StringBuilder errores = new StringBuilder();
@@ -502,7 +574,7 @@ public class AnadirProducto extends javax.swing.JPanel {
         String unidadExistenteTexto = componenteUnidadExistente.getEscritura();
 
         // Validar que el nombre solo contenga caracteres
-        if (!nombre.matches("[a-zA-Z]+")) {
+        if (!nombre.matches("[a-zA-Z\\s]+")) {
             errores.append("- El nombre del producto solo puede contener letras.\n");
         }
 

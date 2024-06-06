@@ -130,6 +130,7 @@ public class LoginEmple extends javax.swing.JFrame {
         if (empleadoDao.verificarCredenciales(usuario, contrasenia)) {
             int idEmpleado = empleadoDao.obtenerIdUsuario(usuario, contrasenia);
             PrincipalEmple pEmple = new PrincipalEmple(this, true, idEmpleado);
+            System.out.println("num emple" + idEmpleado);
             pEmple.setVisible(true);
             this.dispose();
         } else {

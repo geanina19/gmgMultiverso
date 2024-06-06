@@ -35,15 +35,18 @@ public class FrameEditarPedido extends javax.swing.JFrame {
     int codigoPedido;
     PedidoConNombreDao pedidoCompleto = new PedidoConNombreDao(con);
     
+    int codEmple;
+    
     public FrameEditarPedido() {
         initComponents();
     }
-    public FrameEditarPedido(java.awt.Frame parent, boolean modal,int codigoPedido, PrincipalEmple principal) {
+    public FrameEditarPedido(java.awt.Frame parent, boolean modal,int codigoPedido, int codEmple, PrincipalEmple principal) {
         initComponents();
         this.principal = principal;
         this.codigoPedido = codigoPedido;
+        this.codEmple = codEmple;
         // Depuración
-        System.out.println("Codigo del Pedido en el constructor:: " + codigoPedido);        
+        System.out.println("Codigo del Pedido en el constructor::ç " + codigoPedido + "codigo emple: " +codEmple);        
         
         cargarDatosCliente(codigoPedido);
 //        String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(codigoPedido);
@@ -102,9 +105,10 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         // Seleccionar el índice correspondiente en el combo box
         comboBoxEstado.setSelectedIndex(indiceEstadoActual);
     }
+    
     /**************** ACTUALIZAR TABLA *****************/
-    private void actualizarTablaPedidos(int idPedido) {  
-        principal.anadirDatosTabla(idPedido);
+    private void actualizarTablaPedidos() {  
+        principal.actualizarTabla();
     }
     
     /**
@@ -195,10 +199,10 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         // Se suma 1 porque los índices en el combo box comienzan desde 0
         int nuevoEstado = comboBoxEstado.getSelectedIndex() + 1; 
 
-        pedidoCompleto.actualizarEstadoPedido(codigoPedido, nuevoEstado);
+        pedidoCompleto.actualizarEstadoPedidoyEmple(codigoPedido, nuevoEstado, codEmple);
         JOptionPane.showMessageDialog(null, "Se ha modificado el estado del pedido correctamente.");
         System.out.println("Estado del pedido actualizado correctamente. ID del Pedido: " + codigoPedido);
-        actualizarTablaPedidos(codigoPedido);
+        actualizarTablaPedidos();
         dispose();
     }//GEN-LAST:event_editButtonActionPerformed
 

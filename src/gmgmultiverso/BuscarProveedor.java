@@ -442,23 +442,18 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaBuscarProveedor = new javax.swing.JTable();
-        botonReiniciar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         textFieldTelefono = new javax.swing.JTextField();
         labelTitulo = new javax.swing.JLabel();
         componenteNombreEmpresas = new propiedades.Componente4();
+        panelBotones = new javax.swing.JPanel();
+        botonInforme = new javax.swing.JButton();
+        botonReiniciar = new javax.swing.JButton();
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1091, 642));
 
         jScrollPane1.setViewportView(tablaBuscarProveedor);
-
-        botonReiniciar.setText("Reiniciar");
-        botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonReiniciarActionPerformed(evt);
-            }
-        });
 
         jLabel2.setText("Telefono :");
 
@@ -469,12 +464,31 @@ public class BuscarProveedor extends javax.swing.JPanel {
         componenteNombreEmpresas.setMensaje("\"Elije una empresa\"");
         componenteNombreEmpresas.setPrimerElementoEsMensaje(true);
 
+        panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
+
+        botonInforme.setText("Generar informe");
+        botonInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInformeActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonInforme);
+
+        botonReiniciar.setText("Reiniciar");
+        botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonReiniciarActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonReiniciar);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -487,11 +501,11 @@ public class BuscarProveedor extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(443, 443, 443)
                                 .addComponent(labelTitulo))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(409, 409, 409)
-                                .addComponent(botonReiniciar)))
-                        .addGap(0, 229, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(119, 119, 119)))
+                        .addGap(0, 229, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -508,10 +522,10 @@ public class BuscarProveedor extends javax.swing.JPanel {
                             .addComponent(textFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(botonReiniciar)))
-                .addContainerGap(72, Short.MAX_VALUE))
+                        .addComponent(componenteNombreEmpresas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -528,13 +542,22 @@ public class BuscarProveedor extends javax.swing.JPanel {
         
     }//GEN-LAST:event_botonReiniciarActionPerformed
 
+    private void botonInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInformeActionPerformed
+        // TODO add your handling code here:
+        codProveedor = componenteNombreEmpresas.obtenerCodigoSeleccionado(componenteNombreEmpresas.obtenerIndiceSeleccionado());
+        String telefono = textFieldTelefono.getText().trim();
+        
+    }//GEN-LAST:event_botonInformeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonInforme;
     private javax.swing.JButton botonReiniciar;
     private propiedades.Componente4 componenteNombreEmpresas;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JPanel panelBotones;
     private javax.swing.JTable tablaBuscarProveedor;
     private javax.swing.JTextField textFieldTelefono;
     // End of variables declaration//GEN-END:variables

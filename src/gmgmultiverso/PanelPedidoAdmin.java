@@ -163,6 +163,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tableTodosPedidos = new javax.swing.JTable();
+        labelTitulo = new javax.swing.JLabel();
 
         tableTodosPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -174,24 +175,34 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tableTodosPedidos);
 
+        labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
+        labelTitulo.setText("Ver pedidos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(425, 425, 425)
+                .addComponent(labelTitulo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(20, 20, 20)
+                .addComponent(labelTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTitulo;
     private javax.swing.JTable tableTodosPedidos;
     // End of variables declaration//GEN-END:variables
 }

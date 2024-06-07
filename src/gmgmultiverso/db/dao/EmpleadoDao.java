@@ -434,5 +434,80 @@ public class EmpleadoDao {
         return datosEmple;
     }
     
+    
+    //-----------------sacar el id del empleado con el nombre filtrado----------------
+    public int obtenerIdEmpleadoPorNombre(String nombre) {
+        int idEmpleado = -1;
+        try {
+            Connection conexion = con.abrirConexion();
+            String consultaSQL = "SELECT id FROM empleado WHERE nombre LIKE ?";
+            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
+            pstmt.setString(1, "%" + nombre + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                idEmpleado = rs.getInt("id");
+            }
+
+            rs.close();
+            pstmt.close();
+            con.cerrarConexion(conexion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idEmpleado;
+    }
+
+    //-----------------sacar el id del empleado con el apellido filtrado----------------
+    public int obtenerIdEmpleadoPorApellido(String apellido) {
+        int idEmpleado = -1;
+        try {
+            Connection conexion = con.abrirConexion();
+            String consultaSQL = "SELECT id FROM empleado WHERE apellido LIKE ?";
+            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
+            pstmt.setString(1, "%" + apellido + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                idEmpleado = rs.getInt("id");
+            }
+
+            rs.close();
+            pstmt.close();
+            con.cerrarConexion(conexion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idEmpleado;
+    }
+
+    //-----------------sacar el id del empleado filtrando por ambos filtrado----------------
+    public int obtenerIdEmpleadoPorNombreYApellido(String nombre, String apellido) {
+        int idEmpleado = -1;
+        try {
+            Connection conexion = con.abrirConexion();
+            String consultaSQL = "SELECT id FROM empleado WHERE nombre LIKE ? AND apellido LIKE ?";
+            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
+            pstmt.setString(1, "%" + nombre + "%");
+            pstmt.setString(2, "%" + apellido + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                idEmpleado = rs.getInt("id");
+            }
+
+            rs.close();
+            pstmt.close();
+            con.cerrarConexion(conexion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idEmpleado;
+    }
+
+    
 
 }

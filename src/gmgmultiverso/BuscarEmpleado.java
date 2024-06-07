@@ -10,13 +10,21 @@ import gmgmultiverso.model.Empleado;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowSorter.SortKey;
@@ -27,6 +35,12 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.JTextComponent;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -416,16 +430,24 @@ public class BuscarEmpleado extends javax.swing.JPanel {
         labelTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaBuscarEmpleado = new javax.swing.JTable();
-        botonReiniciar = new javax.swing.JButton();
         labelNombre = new javax.swing.JLabel();
         textFieldNombre = new javax.swing.JTextField();
         textFieldApellido = new javax.swing.JTextField();
         labelApellido = new javax.swing.JLabel();
+        panelBotones = new javax.swing.JPanel();
+        botonReiniciar = new javax.swing.JButton();
+        botonInforme = new javax.swing.JButton();
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Buscar empleado");
 
         jScrollPane1.setViewportView(tablaBuscarEmpleado);
+
+        labelNombre.setText("Nombre : ");
+
+        labelApellido.setText("Apellido : ");
+
+        panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
 
         botonReiniciar.setText("Reiniciar");
         botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -433,10 +455,15 @@ public class BuscarEmpleado extends javax.swing.JPanel {
                 botonReiniciarActionPerformed(evt);
             }
         });
+        panelBotones.add(botonReiniciar);
 
-        labelNombre.setText("Nombre : ");
-
-        labelApellido.setText("Apellido : ");
+        botonInforme.setText("Generar informe");
+        botonInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInformeActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonInforme);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -446,6 +473,9 @@ public class BuscarEmpleado extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(447, 447, 447)
+                        .addComponent(labelTitulo))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(145, 145, 145)
                         .addComponent(labelNombre)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -454,12 +484,9 @@ public class BuscarEmpleado extends javax.swing.JPanel {
                         .addComponent(labelApellido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(133, 133, 133)
-                        .addComponent(botonReiniciar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(447, 447, 447)
-                        .addComponent(labelTitulo)))
-                .addContainerGap(193, Short.MAX_VALUE))
+                        .addGap(45, 45, 45)
+                        .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -469,13 +496,14 @@ public class BuscarEmpleado extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(72, 72, 72)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(botonReiniciar)
-                    .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(labelApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -490,13 +518,84 @@ public class BuscarEmpleado extends javax.swing.JPanel {
         deseleccionarTodasFilas();
     }//GEN-LAST:event_botonReiniciarActionPerformed
 
+    private void botonInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInformeActionPerformed
+        // TODO add your handling code here:
+        
+        String nombre = textFieldNombre.getText().trim();
+        String apellido = textFieldApellido.getText().trim();
+        
+        Connection conexion = null;
+        try {
+            Class.forName("org.hsqldb.jdbcDriver");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
+        } catch (SQLException | ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(BuscarProveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            return;
+        }
+        
+        InputStream vinculoarchivo = getClass().getResourceAsStream("empleados.jrxml");
+
+        if (vinculoarchivo != null) {
+            JasperReport jr = null;
+            try {
+                String continuarConsulta = " ";
+
+                // Construir la cadena de consulta basada en los parámetros proporcionados
+                if (!nombre.isEmpty()) {
+                    int idEmpleado = emple.obtenerIdEmpleadoPorNombre(nombre);
+                    if (idEmpleado != -1) {
+                        continuarConsulta += " AND id = " + idEmpleado;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                if (!apellido.isEmpty()) {
+                    int idEmpleado = emple.obtenerIdEmpleadoPorApellido(apellido);
+                    if (idEmpleado != -1) {
+                        continuarConsulta += " AND id = " + idEmpleado;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                Map<String, Object> parametros = new HashMap<>();
+                parametros.put("consulta", continuarConsulta);
+                parametros.put("imglogo", "gmgmultiverso/logo.png");
+
+                jr = JasperCompileManager.compileReport(vinculoarchivo);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
+
+                JasperViewer visor = new JasperViewer(jasperPrint, false);
+                visor.setVisible(true);
+            } catch (JRException ex) {
+                java.util.logging.Logger.getLogger(BuscarProveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (vinculoarchivo != null) {
+                        vinculoarchivo.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo proveedores.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_botonInformeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonInforme;
     private javax.swing.JButton botonReiniciar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelApellido;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelTitulo;
+    private javax.swing.JPanel panelBotones;
     private javax.swing.JTable tablaBuscarEmpleado;
     private javax.swing.JTextField textFieldApellido;
     private javax.swing.JTextField textFieldNombre;

@@ -433,5 +433,29 @@ public class ProductoConProveedorDao {
         return productos;
     }
 
-    
+    public int obtenerIdProductoPorNombre(String nombre) {
+        int idProveedor = -1;
+        
+        try {
+            Connection conexion = con.abrirConexion();
+            String consultaSQL = "SELECT id FROM producto WHERE nombre LIKE ?";
+            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
+            pstmt.setString(1, "%" + nombre + "%"); // Buscar coincidencias parciales
+            ResultSet rs = pstmt.executeQuery();
+
+            // Verificar si se encontró un resultado
+            if (rs.next()) {
+                idProveedor = rs.getInt("id");
+            }
+
+            // Cerrar recursos
+            rs.close();
+            pstmt.close();
+            con.cerrarConexion(conexion);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idProveedor;
+    }
 }

@@ -571,7 +571,9 @@ public class BuscarProducto extends javax.swing.JPanel {
         textFieldProducto = new javax.swing.JTextField();
         comboBoxPrecio = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        panelBotones = new javax.swing.JPanel();
         botonReiniciar = new javax.swing.JButton();
+        botonGenerarInforme = new javax.swing.JButton();
 
         latelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         latelTitulo.setText("Buscar producto");
@@ -586,12 +588,23 @@ public class BuscarProducto extends javax.swing.JPanel {
 
         jLabel1.setText("Precio :");
 
+        panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
+
         botonReiniciar.setText("Reiniciar");
         botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonReiniciarActionPerformed(evt);
             }
         });
+        panelBotones.add(botonReiniciar);
+
+        botonGenerarInforme.setText("Generar informe");
+        botonGenerarInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGenerarInformeActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonGenerarInforme);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -613,13 +626,13 @@ public class BuscarProducto extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(comboBoxPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(textFieldProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-                                .addComponent(botonReiniciar)
-                                .addGap(105, 105, 105)))))
+                                .addGap(105, 310, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(comboBoxPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(426, 426, 426)
@@ -638,19 +651,17 @@ public class BuscarProducto extends javax.swing.JPanel {
                         .addGap(32, 32, 32)
                         .addComponent(componenteProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(67, 67, 67)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
-                                    .addComponent(textFieldProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(99, 99, 99)
-                                .addComponent(botonReiniciar)))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(comboBoxPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))))
+                                    .addComponent(textFieldProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(30, 30, 30)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(comboBoxPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))))))
                 .addContainerGap(106, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -661,8 +672,17 @@ public class BuscarProducto extends javax.swing.JPanel {
 
     }//GEN-LAST:event_botonReiniciarActionPerformed
 
+    private void botonGenerarInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarInformeActionPerformed
+        // TODO add your handling code here:
+        String proveedores = componenteProveedores.obtenerNombreElementoSeleccionado();
+        String nombreProducto = textFieldProducto.getText().trim();
+        
+        
+    }//GEN-LAST:event_botonGenerarInformeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonGenerarInforme;
     private javax.swing.JButton botonReiniciar;
     private javax.swing.JComboBox<String> comboBoxPrecio;
     private propiedades.Componente4 componenteProveedores;
@@ -670,6 +690,7 @@ public class BuscarProducto extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel latelTitulo;
+    private javax.swing.JPanel panelBotones;
     private javax.swing.JTable tablaBuscarProducto;
     private javax.swing.JTextField textFieldProducto;
     // End of variables declaration//GEN-END:variables

@@ -417,48 +417,6 @@ public class BuscarEmpleado extends javax.swing.JPanel {
         tablaBuscarEmpleado.clearSelection();
     }
     
-    public void generarInforme(int idEmpleado) {
-        Connection conexion = null;
-        try {
-            Class.forName("org.hsqldb.jdbcDriver");
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
-        } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-
-        InputStream vinculoarchivo = getClass().getResourceAsStream("empleados.jrxml");
-
-        if (vinculoarchivo != null) {
-            JasperReport jr = null;
-            try {
-                String continuarConsulta = "id = " + idEmpleado;
-
-                Map<String, Object> parametros = new HashMap<>();
-                parametros.put("consulta", continuarConsulta);
-                parametros.put("imglogo", "gmgmultiverso/logo.png");
-
-                jr = JasperCompileManager.compileReport(vinculoarchivo);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
-
-                JasperViewer visor = new JasperViewer(jasperPrint, false);
-                visor.setVisible(true);
-            } catch (JRException ex) {
-                ex.printStackTrace();
-            } finally {
-                try {
-                    if (vinculoarchivo != null) {
-                        vinculoarchivo.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo empleados.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -477,8 +435,8 @@ public class BuscarEmpleado extends javax.swing.JPanel {
         textFieldApellido = new javax.swing.JTextField();
         labelApellido = new javax.swing.JLabel();
         panelBotones = new javax.swing.JPanel();
-        botonInforme = new javax.swing.JButton();
         botonReiniciar = new javax.swing.JButton();
+        botonInforme = new javax.swing.JButton();
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Buscar empleado");
@@ -491,14 +449,6 @@ public class BuscarEmpleado extends javax.swing.JPanel {
 
         panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
 
-        botonInforme.setText("Generar informe");
-        botonInforme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonInformeActionPerformed(evt);
-            }
-        });
-        panelBotones.add(botonInforme);
-
         botonReiniciar.setText("Reiniciar");
         botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -506,6 +456,14 @@ public class BuscarEmpleado extends javax.swing.JPanel {
             }
         });
         panelBotones.add(botonReiniciar);
+
+        botonInforme.setText("Generar informe");
+        botonInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInformeActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonInforme);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -563,23 +521,68 @@ public class BuscarEmpleado extends javax.swing.JPanel {
     private void botonInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInformeActionPerformed
         // TODO add your handling code here:
         
-        // Obtener el nombre y apellido del empleado
-        String nombreEmpleado = textFieldNombre.getText().trim();
-        String apellidoEmpleado = textFieldApellido.getText().trim();
-
-        int idEmpleado = -1;
-        if (!nombreEmpleado.isEmpty() && !apellidoEmpleado.isEmpty()) {
-            idEmpleado = emple.obtenerIdEmpleadoPorNombreYApellido(nombreEmpleado, apellidoEmpleado);
-        } else if (!nombreEmpleado.isEmpty()) {
-            idEmpleado = emple.obtenerIdEmpleadoPorNombre(nombreEmpleado);
-        } else if (!apellidoEmpleado.isEmpty()) {
-            idEmpleado = emple.obtenerIdEmpleadoPorApellido(apellidoEmpleado);
+        String nombre = textFieldNombre.getText().trim();
+        String apellido = textFieldApellido.getText().trim();
+        
+        Connection conexion = null;
+        try {
+            Class.forName("org.hsqldb.jdbcDriver");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
+        } catch (SQLException | ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(BuscarProveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            return;
         }
+        
+        InputStream vinculoarchivo = getClass().getResourceAsStream("empleados.jrxml");
 
-        if (idEmpleado != -1) {
-            generarInforme(idEmpleado);
+        if (vinculoarchivo != null) {
+            JasperReport jr = null;
+            try {
+                String continuarConsulta = " ";
+
+                // Construir la cadena de consulta basada en los parámetros proporcionados
+                if (!nombre.isEmpty()) {
+                    int idEmpleado = emple.obtenerIdEmpleadoPorNombre(nombre);
+                    if (idEmpleado != -1) {
+                        continuarConsulta += " AND id = " + idEmpleado;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                if (!apellido.isEmpty()) {
+                    int idEmpleado = emple.obtenerIdEmpleadoPorApellido(apellido);
+                    if (idEmpleado != -1) {
+                        continuarConsulta += " AND id = " + idEmpleado;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
+                Map<String, Object> parametros = new HashMap<>();
+                parametros.put("consulta", continuarConsulta);
+                parametros.put("imglogo", "gmgmultiverso/logo.png");
+
+                jr = JasperCompileManager.compileReport(vinculoarchivo);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
+
+                JasperViewer visor = new JasperViewer(jasperPrint, false);
+                visor.setVisible(true);
+            } catch (JRException ex) {
+                java.util.logging.Logger.getLogger(BuscarProveedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (vinculoarchivo != null) {
+                        vinculoarchivo.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
-            JOptionPane.showMessageDialog(this, "Debe ingresar el nombre y/o el apellido del empleado", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo proveedores.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
         }
         
     }//GEN-LAST:event_botonInformeActionPerformed

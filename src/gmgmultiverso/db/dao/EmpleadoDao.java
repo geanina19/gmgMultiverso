@@ -434,6 +434,8 @@ public class EmpleadoDao {
         return datosEmple;
     }
     
+    
+    //-----------------sacar el id del empleado con el nombre filtrado----------------
     public int obtenerIdEmpleadoPorNombre(String nombre) {
         int idEmpleado = -1;
         try {
@@ -457,7 +459,7 @@ public class EmpleadoDao {
         return idEmpleado;
     }
 
-    
+    //-----------------sacar el id del empleado con el apellido filtrado----------------
     public int obtenerIdEmpleadoPorApellido(String apellido) {
         int idEmpleado = -1;
         try {
@@ -481,6 +483,7 @@ public class EmpleadoDao {
         return idEmpleado;
     }
 
+    //-----------------sacar el id del empleado filtrando por ambos filtrado----------------
     public int obtenerIdEmpleadoPorNombreYApellido(String nombre, String apellido) {
         int idEmpleado = -1;
         try {

@@ -118,20 +118,20 @@
         <Property name="horizontalGap" type="int" value="30"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="botonInforme">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Generar informe"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonInformeActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JButton" name="botonReiniciar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reiniciar"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonReiniciarActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="botonInforme">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Generar informe"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonInformeActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -46,10 +46,6 @@
                               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="botonAnadirProveedor" min="-2" max="-2" attributes="0"/>
-<<<<<<< HEAD
-=======
-                              <EmptySpace min="70" max="32767" attributes="0"/>
->>>>>>> bc688f378e900096c3b054c78cec181c4448dfeb
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>

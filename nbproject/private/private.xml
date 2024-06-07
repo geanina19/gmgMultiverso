@@ -23,8 +23,9 @@
             <file>file:/C:/Users/monic/Documents/NetBeansProjects/gmgMultiverso/src/gmgmultiverso/PerfilCliente.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/EditarProducto.java</file>
+            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/ProveedorDao.java</file>
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/PrincipalAdministrador.java</file>
+            <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProveedor.java</file>
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/db/dao/ProductoConProveedorDao.java</file>
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/BuscarProducto.java</file>
             <file>file:/C:/Users/geanina.foanta/Documents/NetBeansProjects/GmgMultiverso/src/gmgmultiverso/AnadirProducto.java</file>

@@ -540,25 +540,14 @@ public class BuscarEmpleado extends javax.swing.JPanel {
             try {
                 String continuarConsulta = " ";
 
-                // Construir la cadena de consulta basada en los parámetros proporcionados
                 if (!nombre.isEmpty()) {
-                    int idEmpleado = emple.obtenerIdEmpleadoPorNombre(nombre);
-                    if (idEmpleado != -1) {
-                        continuarConsulta += " AND id = " + idEmpleado;
-                    } else {
-                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                    // Modificar la consulta para que busque todos los productos cuyos nombres comienzan con el texto ingresado
+                    continuarConsulta += " AND nombre LIKE '%" + nombre + "%'";
                 }
 
                 if (!apellido.isEmpty()) {
-                    int idEmpleado = emple.obtenerIdEmpleadoPorApellido(apellido);
-                    if (idEmpleado != -1) {
-                        continuarConsulta += " AND id = " + idEmpleado;
-                    } else {
-                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                    // Modificar la consulta para que busque todos los productos cuyos nombres comienzan con el texto ingresado
+                    continuarConsulta += continuarConsulta + " AND apellido LIKE '%" + apellido + "%'";
                 }
 
                 Map<String, Object> parametros = new HashMap<>();

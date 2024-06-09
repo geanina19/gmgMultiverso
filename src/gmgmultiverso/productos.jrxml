@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.21.3.final using JasperReports Library version 6.21.3-4a3078d20785ebe464f18037d738d12fc98c13cf  -->
+<!-- Created with Jaspersoft Studio version 6.21.0.final using JasperReports Library version 6.21.0-4f56c4f36cd19e17675219a9ac4692d5f0f13b06  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Proveedores" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="13acf49e-4913-4d1b-bccc-113817ad15d1">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Adaptaor1"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Adaptador1"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true"/>
@@ -25,7 +25,10 @@
 	pr."ID",
 	pr."TELEFONO",
 	pr."EMAIL"
-FROM "PRODUCTO" p, proveedor pr where p."ID_PROVEEDOR" = pr." ID" $P!{consulta}  ]]>
+FROM "PRODUCTO" p,
+	"PROVEEDOR" pr
+WHERE 
+	 p."ID_PROVEEDOR" = pr."ID"  $P!{consulta}]]>
 	</queryString>
 	<field name="ID_PRODUCTO" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="ID"/>
@@ -109,30 +112,37 @@ FROM "PRODUCTO" p, proveedor pr where p."ID_PROVEEDOR" = pr." ID" $P!{consulta} 
 	<columnHeader>
 		<band height="58" splitType="Stretch">
 			<staticText>
-				<reportElement x="150" y="18" width="100" height="30" uuid="e1d0470d-0b72-4ec9-ad67-d476a0f5c8dc"/>
+				<reportElement x="150" y="18" width="130" height="30" uuid="e1d0470d-0b72-4ec9-ad67-d476a0f5c8dc"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="260" y="18" width="100" height="30" uuid="712b058e-d200-4b2d-8586-c5c7aa0b2000"/>
+				<reportElement x="290" y="18" width="100" height="30" uuid="712b058e-d200-4b2d-8586-c5c7aa0b2000"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Precio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="18" width="128" height="30" uuid="aef83ae0-c219-46e5-acb9-489a7fc7d573"/>
+				<reportElement x="410" y="18" width="128" height="30" uuid="aef83ae0-c219-46e5-acb9-489a7fc7d573"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Unidad existente]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="19" width="138" height="30" uuid="5440811c-6def-4b26-879a-98df5ef22201"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre del proveedor]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="34" splitType="Stretch">
+		<band height="58" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="-2" y="0" width="555" height="32" uuid="b50221b5-8254-440b-8c6f-1f0b138c9259"/>
 				<textField>
@@ -143,28 +153,21 @@ FROM "PRODUCTO" p, proveedor pr where p."ID_PROVEEDOR" = pr." ID" $P!{consulta} 
 					<textFieldExpression><![CDATA[$F{NOMBRE_PROVEEDOR}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="152" y="0" width="100" height="30" uuid="d1d6c082-6003-4574-a8eb-4a376b7afb51"/>
+					<reportElement x="152" y="0" width="130" height="30" uuid="d1d6c082-6003-4574-a8eb-4a376b7afb51"/>
 					<textElement>
 						<font fontName="Arial"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="372" y="2" width="149" height="30" uuid="54ad8bc7-098f-4714-a4b2-f744c6a6ab39"/>
+					<reportElement x="412" y="1" width="127" height="30" uuid="54ad8bc7-098f-4714-a4b2-f744c6a6ab39"/>
 					<textElement>
 						<font fontName="Arial"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{UNIDAD_EXISTENTE}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="2" y="-40" width="138" height="30" uuid="2432766d-1220-4ef4-a9f5-4046b64d7647"/>
-					<textElement>
-						<font fontName="Arial" size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Nombre del proveedor]]></text>
-				</staticText>
 				<textField>
-					<reportElement x="262" y="1" width="100" height="30" uuid="d60d23f6-bb53-4a36-b5fc-5f8b88fe19b2"/>
+					<reportElement x="293" y="0" width="100" height="30" uuid="d60d23f6-bb53-4a36-b5fc-5f8b88fe19b2"/>
 					<textElement>
 						<font fontName="Arial"/>
 					</textElement>
@@ -174,7 +177,7 @@ FROM "PRODUCTO" p, proveedor pr where p."ID_PROVEEDOR" = pr." ID" $P!{consulta} 
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="14" splitType="Stretch">
+		<band height="8" splitType="Stretch">
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="1133a906-5b71-476e-9f3e-bc97c97058c1"/>
 				<graphicElement>
@@ -184,9 +187,9 @@ FROM "PRODUCTO" p, proveedor pr where p."ID_PROVEEDOR" = pr." ID" $P!{consulta} 
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#F5F125" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
+				<reportElement mode="Opaque" x="0" y="2" width="555" height="24" forecolor="#D0B48E" backcolor="#F5F125" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
 				<textField evaluationTime="Report">
 					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#030303" uuid="4834e99c-7f6c-485a-b098-50e5187f2ab4"/>
 					<textElement verticalAlignment="Middle">
@@ -212,6 +215,32 @@ FROM "PRODUCTO" p, proveedor pr where p."ID_PROVEEDOR" = pr." ID" $P!{consulta} 
 		</band>
 	</pageFooter>
 	<summary>
-		<band splitType="Stretch"/>
+		<band height="246" splitType="Stretch">
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="1" y="10" width="552" height="200" uuid="e2d176d7-50cd-4d6b-b128-2f544e5620fe"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Unidades existentes"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{UNIDAD_EXISTENTE}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
 	</summary>
 </jasperReport>

@@ -14,8 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,8 +36,20 @@ import propiedades.EvObjOverComp4;
 import propiedades.LisOverComp4;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.TableColumn;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 
@@ -229,8 +244,6 @@ public class BuscarProducto extends javax.swing.JPanel {
         tablaBuscarProducto.addMouseListener(mouseClickListener);
     }
 
-
-
     
     //------------------------------Abrir Editar Proveedor------------------------------
     
@@ -257,6 +270,7 @@ public class BuscarProducto extends javax.swing.JPanel {
     }
     
     //-----------------------------------------
+    
     public void inicializarTabla() {
         miModelo = new DefaultTableModel(null, new Object[]{"Proveedor", "Producto", "Precio", "Unidad existente", "Editar", "Eliminar"}) {
             @Override
@@ -283,6 +297,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         }
         
     }
+
     
     //-------------Actualizar tabla------------
 
@@ -317,6 +332,10 @@ public class BuscarProducto extends javax.swing.JPanel {
         mouseListenerAnadirColumnasExtra();
     }
     
+    
+    
+    //-----------------------------
+    /*
     public void filtrarProductosRango0a5() {
         quitarListener(); // Eliminar cualquier listener previo
 
@@ -329,7 +348,8 @@ public class BuscarProducto extends javax.swing.JPanel {
         // Actualizar la tabla con los productos filtrados
         actualizarTablaBuscarProductoRango(productosFiltrados);
     }
-    
+    */
+    /*
     public void actualizarTablaBuscarProductoRango(List<ProductoConProveedor> productosFiltrados) {
         quitarListener(); // Eliminar cualquier listener previo
 
@@ -357,7 +377,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         activarOrdenarColumnas(miModelo);
         mouseListenerAnadirColumnasExtra();
     }
-
+*/
 
     
     //-------------Cargar proveedores------------
@@ -381,7 +401,7 @@ public class BuscarProducto extends javax.swing.JPanel {
     }
     
     //-------------Buscar producto------------
-
+    
     public void buscarProducto(int codProducto) {
         quitarListener(); // Eliminar cualquier listener previo
 
@@ -436,12 +456,12 @@ public class BuscarProducto extends javax.swing.JPanel {
                 productosFiltrados = producdao.list();
             }
         }
-
+/*
         if (productosFiltrados.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaBuscarProducto();
         }
-
+*/
         miModelo.setRowCount(0);
 
         ImageIcon editarIcon = crearImageIcon("/imagenes/editar.png");
@@ -467,23 +487,14 @@ public class BuscarProducto extends javax.swing.JPanel {
         activarOrdenarColumnas(miModelo);
         tablaBuscarProducto.setModel(miModelo);
         mouseListenerAnadirColumnasExtra();
-/*
+
         if (!hayResultados) {
             JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaBuscarProducto();
         }
-        */
+        
     }
 
-
-
-
-
-
-
-    
-    
-    
     
     //------------Metodos para eliminar un proveedor------------
     
@@ -553,6 +564,7 @@ public class BuscarProducto extends javax.swing.JPanel {
         actualizarTablaBuscarProducto();
         deseleccionarTodasFilas();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -676,7 +688,87 @@ public class BuscarProducto extends javax.swing.JPanel {
         // TODO add your handling code here:
         String proveedores = componenteProveedores.obtenerNombreElementoSeleccionado();
         String nombreProducto = textFieldProducto.getText().trim();
+        double precioMinimo = 0;
+        double precioMaximo = Double.MAX_VALUE; // Valor máximo por defecto
+
+        // Obtener el rango seleccionado en el JComboBox comboBoxPrecio
+        String rangoSeleccionado = comboBoxPrecio.getSelectedItem().toString();
+
+        // Determinar los valores de precioMinimo y precioMaximo según el rango seleccionado
+        switch (rangoSeleccionado) {
+            case "0 - 5 €":
+                precioMinimo = 0;
+                precioMaximo = 5;
+                break;
+            case "5 - 10 €":
+                precioMinimo = 5;
+                precioMaximo = 10;
+                break;
+            case "10 - 15 €":
+                precioMinimo = 10;
+                precioMaximo = 15;
+                break;
+            case "15 - 100 €":
+                precioMinimo = 15;
+                precioMaximo = 100;
+                break;
+            default:
+                break;
+        }
         
+        Connection conexion = null;
+        try {
+            Class.forName("org.hsqldb.jdbcDriver");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+
+        InputStream vinculoarchivo = getClass().getResourceAsStream("productos.jrxml");
+
+        if (vinculoarchivo != null) {
+            JasperReport jr = null;
+            try {
+                String continuarConsulta = " ";
+
+                if (!nombreProducto.isEmpty()) {
+                    // Modificar la consulta para que busque todos los productos cuyos nombres comienzan con el texto ingresado
+                    continuarConsulta += " AND nombre LIKE '%" + nombreProducto + "%'";
+                }
+                
+                if (proveedores != null && !proveedores.isEmpty()) {
+                    continuarConsulta += continuarConsulta + " AND nombre_empresa = '" + proveedores + "'";
+                }
+                
+                // Agregar la condición del rango de precios solo si se selecciona un rango específico
+                if (!rangoSeleccionado.equals("Todos")) {
+                    continuarConsulta += " AND precio BETWEEN " + precioMinimo + " AND " + precioMaximo;
+                }
+
+                Map<String, Object> parametros = new HashMap<>();
+                parametros.put("consulta", continuarConsulta);
+                parametros.put("imglogo", "gmgmultiverso/logo.png");
+
+                jr = JasperCompileManager.compileReport(vinculoarchivo);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
+
+                JasperViewer visor = new JasperViewer(jasperPrint, false);
+                visor.setVisible(true);
+            } catch (JRException ex) {
+                Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (vinculoarchivo != null) {
+                        vinculoarchivo.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo productos.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
     }//GEN-LAST:event_botonGenerarInformeActionPerformed
 

@@ -585,19 +585,13 @@ public class BuscarProveedor extends javax.swing.JPanel {
             try {
                 String continuarConsulta = " ";
 
-                // Construir la cadena de consulta basada en los parámetros proporcionados
                 if (!telefono.isEmpty()) {
-                    int idProveedor = prov.obtenerIdProveedorPorTelefono(telefono);
-                    if (idProveedor != -1) {
-                        continuarConsulta += " AND id = " + idProveedor;
-                    } else {
-                        JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                    // Modificar la consulta para que busque todos los productos cuyos nombres comienzan con el texto ingresado
+                    continuarConsulta += " AND telefono LIKE '%" + telefono + "%'";
                 }
 
                 if (nombreEmpresa != null && !nombreEmpresa.isEmpty()) {
-                    continuarConsulta += " AND nombre_empresa = '" + nombreEmpresa + "'";
+                    continuarConsulta += continuarConsulta + " AND nombre_empresa = '" + nombreEmpresa + "'";
                 }
 
                 Map<String, Object> parametros = new HashMap<>();
@@ -625,6 +619,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_botonInformeActionPerformed
 
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -442,11 +442,24 @@ public class AnadirEmpleado extends javax.swing.JPanel {
         ManagerConexion managerConexion = new ManagerConexion();
         EmpleadoDao empleadoDao = new EmpleadoDao(managerConexion);
 
-        // Verificar si el empleado ya existe por número de teléfono
+        
+        String mensaje = "";
+
         if (empleadoDao.empleadoExiste(Integer.parseInt(telefonoTexto))) {
-            JOptionPane.showMessageDialog(this, "No se puede añadir el empleado, el número de teléfono ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            mensaje += "El número de teléfono.\n";
+        }
+
+        if (empleadoDao.emailExiste(email)) {
+            mensaje += "El email.\n";
+        }
+
+        if (!mensaje.isEmpty()) {
+            mensaje = "No se puede añadir el empleado. Los siguientes campos ya están en uso:\n\n" + mensaje;
+            JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        
 
         // Añadir el empleado
         boolean resultado = empleadoDao.anadirEmpleado(nuevoEmpleado);

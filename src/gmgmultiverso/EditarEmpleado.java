@@ -346,11 +346,23 @@ public class EditarEmpleado extends javax.swing.JPanel {
         ManagerConexion managerConexion = new ManagerConexion();
         EmpleadoDao empleadoDao = new EmpleadoDao(managerConexion);
 
-        // Verificar si el nuevo número de teléfono ya existe para otro empleado
+        
+        String mensaje = "";
+
         if (empleadoDao.telefonoExisteParaOtrosEmpleados(Integer.parseInt(nuevoTelefono), idEmpleado)) {
-            JOptionPane.showMessageDialog(this, "No se puede modificar el empleado, el número de teléfono ya está en uso.", "Error", JOptionPane.ERROR_MESSAGE);
+            mensaje += "El número de teléfono.\n";
+        }
+
+        if (empleadoDao.emailExisteParaOtrosEmpleados(nuevoEmail, idEmpleado)) {
+            mensaje += "El email.\n";
+        }
+
+        if (!mensaje.isEmpty()) {
+            mensaje = "No se puede modificar el empleado. Los siguientes campos ya están en uso:\n\n" + mensaje;
+            JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
 
         // Crear una instancia de Empleado con los nuevos valores
         Empleado empleadoModificado = new Empleado(idEmpleado, nuevoNombre, nuevoApellido, nuevaContrasenia, Integer.parseInt(nuevoTelefono), nuevoEmail);

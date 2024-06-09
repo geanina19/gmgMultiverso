@@ -6,4 +6,8 @@ PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
     <mapID target="codProveedor" url="html/proveedor.html" />
     <mapID target="codEmpleado" url="html/empleado.html" />
     <mapID target="codProducto" url="html/producto.html" />
+<<<<<<< HEAD
+=======
+    <mapID target="codInforme" url="html/informe.html" />
+>>>>>>> f215ec26d351290f2a33ae2637d3d12a9d541e4f
 </map>

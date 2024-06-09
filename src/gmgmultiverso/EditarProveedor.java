@@ -260,11 +260,23 @@ public class EditarProveedor extends javax.swing.JPanel {
         ManagerConexion managerConexion = new ManagerConexion();
         ProveedorDao proveedorDao = new ProveedorDao(managerConexion);
 
-        // Verificar si el proveedor con el nuevo teléfono ya existe
+        
+        String mensaje = "";
+
         if (proveedorDao.proveedorExiste(telefono, idProveedor)) {
-            JOptionPane.showMessageDialog(this, "No se puede modificar, el proveedor con ese teléfono ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            mensaje += "El número de teléfono.\n";
+        }
+
+        if (proveedorDao.correoExiste(nuevoEmail, idProveedor)) {
+            mensaje += "El email.\n";
+        }
+
+        if (!mensaje.isEmpty()) {
+            mensaje = "No se puede modificar el proveedor. Los siguientes campos ya están en uso:\n\n" + mensaje;
+            JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
 
         // Crear una instancia de Proveedor con los nuevos valores
         Proveedor proveedorModificado = new Proveedor(idProveedor, nuevoNombreEmpresa, telefono, nuevoEmail);

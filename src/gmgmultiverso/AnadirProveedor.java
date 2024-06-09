@@ -340,14 +340,20 @@ public class AnadirProveedor extends javax.swing.JPanel {
         String telefonoTexto = componenteTelefono.getEscritura();
         String email = componenteEmail.getEscritura();
 
-        if (!telefonoTexto.matches("\\d{9}") || !email.matches("[^@]+@[^@]+\\.[^.]+")) {
-            String mensajeError = "";
-            if (!telefonoTexto.matches("\\d{9}")) {
-                mensajeError += "- El teléfono debe contener 9 dígitos numéricos.\n";
-            }
-            if (!email.matches("[^@]+@[^@]+\\.[^.]+")) {
-                mensajeError += "- El email debe ser válido.\n";
-            }
+        String mensajeError = "";
+        
+        // Validar teléfono
+        if (!telefonoTexto.matches("\\d{9}")) {
+            mensajeError += "- El teléfono debe contener 9 dígitos numéricos.\n";
+        }
+
+        // Validar email solo si no está vacío
+        if (!email.isEmpty() && !email.matches("[^@]+@[^@]+\\.[^.]+")) {
+            mensajeError += "- El email debe ser válido.\n";
+        }
+
+        // Mostrar mensaje de error si hay errores de validación
+        if (!mensajeError.isEmpty()) {
             JOptionPane.showMessageDialog(this, mensajeError, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -359,11 +365,23 @@ public class AnadirProveedor extends javax.swing.JPanel {
         ManagerConexion managerConexion = new ManagerConexion();
         ProveedorDao proveedorDao = new ProveedorDao(managerConexion);
 
-        // Verificar si el proveedor ya existe
+        
+        String mensaje = "";
+
         if (proveedorDao.proveedorExiste(telefono)) {
-            JOptionPane.showMessageDialog(this, "No se puede añadir, el proveedor con ese teléfono porque ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            mensaje += "El número de teléfono.\n";
+        }
+
+        if (proveedorDao.correoExiste(email)) {
+            mensaje += "El email.\n";
+        }
+
+        if (!mensaje.isEmpty()) {
+            mensaje = "No se puede añadir el proveedor. Los siguientes campos ya están en uso:\n\n" + mensaje;
+            JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
 
         // Crear un objeto Proveedor con los datos ingresados
         Proveedor nuevoProveedor = new Proveedor(nombre, telefono, email);

@@ -459,8 +459,6 @@ public class AnadirEmpleado extends javax.swing.JPanel {
             return;
         }
 
-        
-
         // Añadir el empleado
         boolean resultado = empleadoDao.anadirEmpleado(nuevoEmpleado);
 

@@ -3,4 +3,5 @@
     <tocitem text="Proveedores" target="codProveedor" />
     <tocitem text="Empleados" target="codEmpleado" />
     <tocitem text="Productos" target="codProducto" />
+    <tocitem text="Informes" target="codInforme" />
 </toc>

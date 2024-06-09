@@ -15,13 +15,16 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -37,6 +40,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
     
     private DefaultTableModel miModelo;
     PedidoConNombreDao pedidoCompleto = new PedidoConNombreDao(con);
+    private TableRowSorter<DefaultTableModel> sorter;
     
     /**
      * Creates new form PanelPedidoAdmin
@@ -148,7 +152,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         });
         
     }
-        
+    
 
     
 
@@ -164,6 +168,13 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableTodosPedidos = new javax.swing.JTable();
         labelTitulo = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        textNombre = new javax.swing.JTextField();
+        buscarButton = new javax.swing.JButton();
+        dateFiltro = new com.toedter.calendar.JDateChooser();
+        buttonReiniciar = new javax.swing.JButton();
 
         tableTodosPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -178,6 +189,68 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Ver pedidos");
 
+        jPanel1.setBackground(new java.awt.Color(255, 245, 238));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel2.setText("Nombre cliente");
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setText("Fecha del pedido");
+
+        buscarButton.setText("Buscar");
+        buscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarButtonActionPerformed(evt);
+            }
+        });
+
+        dateFiltro.setBackground(new java.awt.Color(255, 245, 238));
+
+        buttonReiniciar.setText("Reiniciar");
+        buttonReiniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonReiniciarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(buscarButton)
+                        .addGap(65, 65, 65)
+                        .addComponent(buttonReiniciar))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(textNombre)
+                        .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)))
+                .addContainerGap(567, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buscarButton)
+                    .addComponent(buttonReiniciar))
+                .addGap(51, 51, 51))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,6 +260,10 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                 .addGap(425, 425, 425)
                 .addComponent(labelTitulo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,14 +272,50 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                 .addComponent(labelTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
+        String nombre = textNombre.getText();
+        java.util.Date date = dateFiltro.getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = (date != null) ? sdf.format(date) : "";
+
+        if (nombre.isEmpty() && date == null) {
+            sorter.setRowFilter(null);
+        } else if (nombre.isEmpty()) {
+            sorter.setRowFilter(RowFilter.regexFilter(dateStr, 2));
+        } else if (date == null) {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + nombre, 1));
+        } else {
+            sorter.setRowFilter(RowFilter.andFilter(
+                List.of(RowFilter.regexFilter("(?i)" + nombre, 1),
+                    RowFilter.regexFilter(dateStr, 2))
+            ));
+        }
+    }//GEN-LAST:event_buscarButtonActionPerformed
+
+    private void buttonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReiniciarActionPerformed
+        textNombre.setText("");
+        dateFiltro.setDate(null);
+        sorter.setRowFilter(null);
+//        actualizarTabla();
+    }//GEN-LAST:event_buttonReiniciarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buscarButton;
+    private javax.swing.JButton buttonReiniciar;
+    private com.toedter.calendar.JDateChooser dateFiltro;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitulo;
     private javax.swing.JTable tableTodosPedidos;
+    private javax.swing.JTextField textNombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,8 +3,5 @@
     <tocitem text="Proveedores" target="codProveedor" />
     <tocitem text="Empleados" target="codEmpleado" />
     <tocitem text="Productos" target="codProducto" />
-<<<<<<< HEAD
-=======
     <tocitem text="Informes" target="codInforme" />
->>>>>>> f215ec26d351290f2a33ae2637d3d12a9d541e4f
 </toc>

@@ -572,7 +572,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         Connection conexion = null;
         try {
             Class.forName("org.hsqldb.jdbcDriver");
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "");
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
             return;
@@ -602,7 +602,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
                 Map<String, Object> parametros = new HashMap<>();
                 parametros.put("consulta", continuarConsulta);
-                parametros.put("imglogo", "gmgmultiverso/logo.png");
+                parametros.put("imagen", "gmgmultiverso/logo.png");
 
                 jr = JasperCompileManager.compileReport(vinculoarchivo);
                 JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);

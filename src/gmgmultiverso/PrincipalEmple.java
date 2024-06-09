@@ -24,15 +24,22 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -45,6 +52,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -62,6 +75,9 @@ public class PrincipalEmple extends javax.swing.JFrame {
     int codigoEmpleado;
 
     PedidoConNombreDao pedidoCompleto = new PedidoConNombreDao(con);
+    
+    //para informe
+    String miwhere = "";
     
     private TableRowSorter<DefaultTableModel> sorter;
     public PrincipalEmple(){
@@ -285,6 +301,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         buscarButton = new javax.swing.JButton();
         dateFiltro = new com.toedter.calendar.JDateChooser();
         buttonReiniciar = new javax.swing.JButton();
+        buttonInformePedido = new javax.swing.JButton();
         labelInicio = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -347,42 +364,57 @@ public class PrincipalEmple extends javax.swing.JFrame {
             }
         });
 
+        buttonInformePedido.setText("Crear informe");
+        buttonInformePedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonInformePedidoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textNombre)
-                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(189, 189, 189)
-                .addComponent(buscarButton)
-                .addGap(50, 50, 50)
-                .addComponent(buttonReiniciar)
-                .addGap(245, 245, 245))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(buscarButton)
+                        .addGap(65, 65, 65)
+                        .addComponent(buttonReiniciar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textNombre)
+                            .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+                        .addGap(214, 214, 214)
+                        .addComponent(buttonInformePedido)))
+                .addContainerGap(440, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(75, 75, 75)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1)
+                        .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonInformePedido))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buscarButton)
                     .addComponent(buttonReiniciar))
-                .addGap(42, 42, 42)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(204, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
         );
 
-        labelInicio.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        labelInicio.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         labelInicio.setForeground(new java.awt.Color(255, 160, 122));
 
         jMenu1.setText("Archivo");
@@ -451,6 +483,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp2);
 
+        temaOp3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/oscuroMorado.png"))); // NOI18N
         temaOp3.setText("Oscuro - Morado ");
         temaOp3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -459,6 +492,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp3);
 
+        temaOp10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grisAzulClaro.png"))); // NOI18N
         temaOp10.setText("Gris - Azul Claro ");
         temaOp10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -467,6 +501,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp10);
 
+        temaOp9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoVerde.png"))); // NOI18N
         temaOp9.setText("Blanco - Verde ");
         temaOp9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -475,6 +510,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp9);
 
+        temaOp8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/verdeAzulado.png"))); // NOI18N
         temaOp8.setText("Verde Azulado ");
         temaOp8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -483,6 +519,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp8);
 
+        temaOp7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoNaranja.png"))); // NOI18N
         temaOp7.setText("Blanco - Naranja ");
         temaOp7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -491,6 +528,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp7);
 
+        temaOp6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/blancoAzulClaro.png"))); // NOI18N
         temaOp6.setText("Blanco - Azul Claro");
         temaOp6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -499,6 +537,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp6);
 
+        temaOp5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/contraste.png"))); // NOI18N
         temaOp5.setText("Contraste");
         temaOp5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -507,6 +546,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
         jMenu5.add(temaOp5);
 
+        temaOp4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/grisNaranja.png"))); // NOI18N
         temaOp4.setText("Gris - Naranja");
         temaOp4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -542,9 +582,9 @@ public class PrincipalEmple extends javax.swing.JFrame {
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(labelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1213, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,7 +595,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -751,6 +791,70 @@ public class PrincipalEmple extends javax.swing.JFrame {
         actualizarTabla();
     }//GEN-LAST:event_buttonReiniciarActionPerformed
 
+    private void buttonInformePedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInformePedidoActionPerformed
+    // Obtener el nombre del cliente ingresado en el textField
+        String nombreCliente = textNombre.getText().trim();
+
+        // Obtener la fecha de pedido seleccionada en el datePicker
+        Date fechaPedido = dateFiltro.getDate();
+
+        // Verificar si la fecha de pedido no es nula
+        if (fechaPedido == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha de pedido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Convertir la fecha de pedido a formato de cadena (yyyy-MM-dd)
+        String fechaPedidoStr = new SimpleDateFormat("yyyy-MM-dd").format(fechaPedido);
+
+        Connection conexion = null;
+        try {
+            Class.forName("org.hsqldb.jdbcDriver");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+
+        InputStream vinculoarchivo = getClass().getResourceAsStream("Pedidos.jrxml");
+
+        if (vinculoarchivo != null) {
+            JasperReport jr = null;
+            try {
+                String continuarConsulta = " ";
+
+                // Construir la cadena de consulta basada en los parámetros proporcionados
+                if (!nombreCliente.isEmpty()) {
+                    continuarConsulta += " AND nombre_cliente = '" + nombreCliente + "'";
+                }
+
+                continuarConsulta += " AND fecha_pedido = '" + fechaPedidoStr + "'";
+
+                Map<String, Object> parametros = new HashMap<>();
+                parametros.put("consulta", continuarConsulta);
+                parametros.put("imagen", "gmgmultiverso/logo.png");
+
+                jr = JasperCompileManager.compileReport(vinculoarchivo);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
+
+                JasperViewer visor = new JasperViewer(jasperPrint, false);
+                visor.setVisible(true);
+            } catch (JRException ex) {
+                Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (vinculoarchivo != null) {
+                        vinculoarchivo.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo pedidos.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonInformePedidoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -791,6 +895,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;
+    private javax.swing.JButton buttonInformePedido;
     private javax.swing.JButton buttonReiniciar;
     private com.toedter.calendar.JDateChooser dateFiltro;
     private javax.swing.JLabel jLabel1;

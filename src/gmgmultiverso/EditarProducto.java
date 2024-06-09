@@ -483,6 +483,12 @@ public class EditarProducto extends javax.swing.JPanel {
         ManagerConexion managerConexion = new ManagerConexion();
         ProductoConProveedorDao productoDao = new ProductoConProveedorDao(managerConexion);
 
+        // Verificar si ya existe un producto con el mismo nombre y proveedor
+        if (productoDao.existeProductoConNombreYProveedor(nuevoNombre, nuevoCodigoProveedor)) {
+            JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo nombre y proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si ya existe un producto con el mismo nombre y proveedor
+        }
+        
         // Intentar actualizar el producto en la base de datos
         boolean exito = productoDao.actualizarProducto(productoModificado);
 

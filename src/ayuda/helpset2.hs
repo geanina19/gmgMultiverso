@@ -4,12 +4,12 @@
  "http://java.sun.com/products/javahelp/helpset_2_0.dtd">
 <helpset version="2.0">
  <!-- title -->
- <title>GMG Multiverso - Administrador - Help</title>
+ <title>GMG Multiverso - Empleado - Help</title>
 
  <!-- maps -->
  <maps>
  <homeID>inicio</homeID>
- <mapref location="mapa.jhm" />
+ <mapref location="mapa2.jhm" />
  </maps>
 
  <!-- views -->
@@ -17,14 +17,14 @@
  <name>TOC</name>
  <label>Tabla de contenidos</label>
  <type>javax.help.TOCView</type>
- <data>toc.xml</data>
+ <data>toc2.xml</data>
  </view>
 
  <view xml:lang="es" mergetype="javax.help.SortMerge">
  <name>Indice</name>
  <label>Indice</label>
  <type>javax.help.IndexView</type>
- <data>index.xml</data>
+ <data>index2.xml</data>
  </view>
 
  <view xml:lang="es">

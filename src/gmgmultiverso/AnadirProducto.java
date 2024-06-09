@@ -617,7 +617,13 @@ public class AnadirProducto extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo nombre y proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
             return; // Salir del método si ya existe un producto con el mismo nombre y proveedor
         }
-
+        
+        // Verificar si ya existe un producto con el mismo nombre y proveedor
+        if (productoDao.existeProductoConOtroProveedor(nombre, nuevoCodigoProveedor)) {
+            JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo producto.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si ya existe un producto con el mismo nombre y proveedor
+        }
+        
         // Crear un objeto ProductoConProveedor con los datos ingresados
         ProductoConProveedor nuevoProducto = new ProductoConProveedor(
             nuevoCodigoProveedor,

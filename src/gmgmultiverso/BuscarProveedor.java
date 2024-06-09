@@ -568,7 +568,7 @@ public class BuscarProveedor extends javax.swing.JPanel {
         Connection conexion = null;
         try {
             Class.forName("org.hsqldb.jdbcDriver");
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
             return;

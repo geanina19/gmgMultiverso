@@ -11,6 +11,7 @@ import java.util.List;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 
 /**
@@ -58,9 +59,40 @@ public class ProductoConProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                    
                 }
             }
         }
+    }
+    
+    public boolean existeProductoConNombreYProveedor(String nombreProducto, int codigoProveedor) {
+        Connection conect = null;
+
+        try {
+            conect = con.abrirConexion();
+            String sql = "SELECT COUNT(*) FROM producto WHERE nombre = ? AND id_proveedor = ?";
+            var ps = conect.prepareStatement(sql);
+            ps.setString(1, nombreProducto);
+            ps.setInt(2, codigoProveedor);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; 
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
     }
 
     // Método para añadir un nuevo producto
@@ -77,16 +109,20 @@ public class ProductoConProveedorDao {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return false; // Retorna false si ocurre un error
         } finally {
             if (conect != null) {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
     }
+
+
 
     
     // Método para eliminar un producto por su ID
@@ -110,7 +146,7 @@ public class ProductoConProveedorDao {
                     conect.close();
                 } 
                 catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -138,6 +174,7 @@ public class ProductoConProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -396,5 +433,4 @@ public class ProductoConProveedorDao {
         return productos;
     }
 
-    
 }

@@ -152,6 +152,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="itemVerPedido">
                   <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/imagenes/comida.png"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Ver Pedidos"/>
                   </Properties>
                   <Events>
@@ -159,14 +162,6 @@
                   </Events>
                 </MenuItem>
               </SubComponents>
-            </Menu>
-            <Menu class="javax.swing.JMenu" name="menuInformes">
-              <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/imagenes/graficox20.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Informes"/>
-              </Properties>
             </Menu>
           </SubComponents>
         </Menu>

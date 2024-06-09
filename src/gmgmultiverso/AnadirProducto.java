@@ -7,13 +7,26 @@ package gmgmultiverso;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ProductoConProveedorDao;
 import gmgmultiverso.model.ProductoConProveedor;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
@@ -35,6 +48,7 @@ public class AnadirProducto extends javax.swing.JPanel {
     ResultSet rs;
     PrincipalAdministrador principalAdmin;
     
+    private File imagenSeleccionada;
 
     private int codProveedor = -1;
     
@@ -54,8 +68,20 @@ public class AnadirProducto extends javax.swing.JPanel {
         listaCamposObligPorCompletar.add(componenteNombre.getEtiqueta());
         listaCamposObligPorCompletar.add(componentePrecio.getEtiqueta());
         listaCamposObligPorCompletar.add(componenteUnidadExistente.getEtiqueta());
+        //listaCamposObligPorCompletar.add(botonImagen.getText());
         
         actualizarTextAreaVisorErrores();
+        
+        // Inicializar componentes adicionales
+        botonImagen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                seleccionarImagen();
+            }
+        });
+
+        // Agregar componentes de imagen al layout
+        this.add(botonImagen);
         
         //-------------visor errores--------------------------
         //--------componenteNombre--------
@@ -74,10 +100,15 @@ public class AnadirProducto extends javax.swing.JPanel {
                 } else {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componenteNombre.getEtiqueta());
-
+/*
                     // Verificar si el nombre contiene números
                     if (textoAnadir.matches(".*\\d.*")) {
                         JOptionPane.showMessageDialog(null, "El nombre del producto no puede contener números.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+*/
+                    // Verificar si el nombre contiene caracteres no permitidos (excepto el espacio)
+                    if (!textoAnadir.matches("[a-zA-Z\\s]+")) {
+                        JOptionPane.showMessageDialog(null, "El nombre del producto solo puede contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                     System.out.println("No se ha producido ningún error, textField nombre con contenido");
@@ -91,6 +122,8 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         };
         componenteNombre.addLisOverEtiquetav2(li);
+
+
 
         
         //--------componentePrecio--------
@@ -109,9 +142,19 @@ public class AnadirProducto extends javax.swing.JPanel {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componentePrecio.getEtiqueta());
 
+                    // Reemplazar cualquier coma por un punto en el texto del precio
+                    textoAnadir = textoAnadir.replace(',', '.');
+
                     // Verificar si el precio contiene caracteres no permitidos
-                    if (!textoAnadir.matches("[0-9.,]+")) {
-                        JOptionPane.showMessageDialog(null, "El precio solo puede contener números, punto (.) y coma (,).", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (!textoAnadir.matches("[0-9.]+")) {
+                        JOptionPane.showMessageDialog(null, "El precio solo puede contener números y punto (.)", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // Convertir el texto del precio a un número
+                        double precio = Double.parseDouble(textoAnadir);
+                        // Verificar que el precio no sea mayor a 100
+                        if (precio > 100) {
+                            JOptionPane.showMessageDialog(null, "El precio no puede ser mayor a 100.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
 
                     System.out.println("No se ha producido ningún error, textField Precio con contenido");
@@ -125,6 +168,8 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         };
         componentePrecio.addLisOverEtiquetav2(li2);
+
+
 
         
         //--------componenteUnidadExistente--------
@@ -185,9 +230,34 @@ public class AnadirProducto extends javax.swing.JPanel {
                 actualizarEstadoBotonAnadir();
             }
         });
+        
+        /*
+        // Añadir un FocusListener al botón de la imagen
+        botonImagen.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Verifica si se ha seleccionado una imagen
+                if (imagenSeleccionada != null) {
+                    // Si se ha seleccionado una imagen, elimina el nombre del botón de la lista
+                    listaCamposObligPorCompletar.remove(botonImagen.getText());
+                    System.out.println("No se ha producido ningún error, imagen seleccionada");
+                } else {
+                    // Si no se ha seleccionado ninguna imagen, agrega el nombre del botón a la lista
+                    visorErrores.append(botonImagen.getText());
+                    listaCamposObligPorCompletar.add(botonImagen.getText());
+                    System.out.println("Imagen sin completar");
+                }
+
+                // Llama al método para actualizar el visor de errores
+                actualizarTextAreaVisorErrores();
+                // Llama al método para actualizar el estado del botón
+                actualizarEstadoBotonAnadir();
+            }
+        });
+        */
     }
     
-    //-
+    //--------------------MÉTODOS-------------------------
 //----------------para el textArea vosirErrores----------------
     
     // Método para actualizar el visor de errores
@@ -262,6 +332,56 @@ public class AnadirProducto extends javax.swing.JPanel {
      public PrincipalAdministrador getPrincipalAdmin() {
         return this.principalAdmin;
     }
+     
+    public void seleccionarImagen() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            imagenSeleccionada = fileChooser.getSelectedFile();
+            if (imagenSeleccionada != null) {
+                botonImagen.setText("");
+                botonImagen.setIcon(new ImageIcon(new ImageIcon(imagenSeleccionada.getPath()).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT)));
+            }
+        }
+    }
+
+    public void guardarImagen(String nombreProducto) {
+        try {
+            if (imagenSeleccionada != null) {
+                String extension = imagenSeleccionada.getName().substring(imagenSeleccionada.getName().lastIndexOf("."));
+                File destino = new File("src/imagenesProductos/" + nombreProducto + extension);
+
+                // Leer la imagen para obtener sus dimensiones
+                BufferedImage imagen = ImageIO.read(imagenSeleccionada);
+                int ancho = imagen.getWidth();
+                int alto = imagen.getHeight();
+
+                Files.copy(imagenSeleccionada.toPath(), destino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Método para verificar las dimensiones de la imagen
+    private boolean verificarDimensionesImagen(File imagenSeleccionada) {
+        try {
+            // Leer la imagen para obtener sus dimensiones
+            BufferedImage imagen = ImageIO.read(imagenSeleccionada);
+            int ancho = imagen.getWidth();
+            int alto = imagen.getHeight();
+
+            // Verificar si las dimensiones son 150x150
+            return (ancho <= 150 && alto <= 150);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -296,6 +416,7 @@ public class AnadirProducto extends javax.swing.JPanel {
         botonReiniciar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         botonAnadirProveedor = new javax.swing.JButton();
+        botonImagen = new javax.swing.JButton();
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Añadir un producto");
@@ -344,12 +465,14 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         });
 
+        botonImagen.setText("Elige imagen");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(444, 444, 444)
                         .addComponent(labelTitulo))
@@ -366,13 +489,18 @@ public class AnadirProducto extends javax.swing.JPanel {
                         .addGap(53, 53, 53)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(131, 131, 131)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonAnadirProveedor))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(232, 232, 232)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(botonAnadirProveedor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(79, 79, 79)
+                        .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)))
                 .addContainerGap(73, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -393,17 +521,22 @@ public class AnadirProducto extends javax.swing.JPanel {
                         .addComponent(componentePrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(194, 194, 194))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(botonAnadirProveedor))
                         .addGap(30, 30, 30)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(153, 153, 153))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(botonImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(91, 91, 91))))))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -418,6 +551,18 @@ public class AnadirProducto extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Por favor, completa todos los campos para añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
             return; // Salir del método si algún campo no está seleccionado
         }
+        
+        // Verificar si se ha seleccionado una imagen
+        if (imagenSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Por favor, selecciona una imagen para añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; 
+        }
+
+        // Verificar las dimensiones de la imagen
+        if (!verificarDimensionesImagen(imagenSeleccionada)) {
+            JOptionPane.showMessageDialog(this, "La imagen debe tener dimensiones de 150x150.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // Variables para almacenar los errores
         StringBuilder errores = new StringBuilder();
@@ -429,18 +574,32 @@ public class AnadirProducto extends javax.swing.JPanel {
         String unidadExistenteTexto = componenteUnidadExistente.getEscritura();
 
         // Validar que el nombre solo contenga caracteres
-        if (!nombre.matches("[a-zA-Z]+")) {
+        if (!nombre.matches("[a-zA-Z\\s]+")) {
             errores.append("- El nombre del producto solo puede contener letras.\n");
         }
 
-        // Validar que el precio sea un número válido
+        // Validar que el precio sea un número válido y no sea negativo
         if (!precioTexto.matches("\\d*\\.?\\d+")) {
             errores.append("- El precio del producto debe ser un número válido.\n");
+        } else {
+            // Convertir el precio a un número
+            double precio = Double.parseDouble(precioTexto);
+            // Verificar que el precio no sea negativo
+            if (precio < 0) {
+                errores.append("- El precio del producto no puede ser negativo.\n");
+            }
         }
 
-        // Validar que la cantidad existente sea un número entero
+        // Validar que la cantidad existente sea un número entero y no sea negativa
         if (!unidadExistenteTexto.matches("\\d+")) {
-            errores.append("- La cantidad existente debe ser un número entero.\n");
+            errores.append("- La cantidad existente debe ser un número entero y no puede ser negativa.\n");
+        } else {
+            // Convertir la cantidad existente a un número
+            int unidadExistente = Integer.parseInt(unidadExistenteTexto);
+            // Verificar que la cantidad existente no sea negativa
+            if (unidadExistente < 0) {
+                errores.append("- La cantidad existente no puede ser negativa.\n");
+            }
         }
 
         // Si hay errores, mostrarlos en un mensaje
@@ -449,22 +608,24 @@ public class AnadirProducto extends javax.swing.JPanel {
             return; // Salir del método si hay errores
         }
 
-        // Convertir los datos validados
-        double precio = Double.parseDouble(precioTexto);
-        int unidadExistente = Integer.parseInt(unidadExistenteTexto);
-
-        // Crear un objeto ProductoConProveedor con los datos ingresados
-        ProductoConProveedor nuevoProducto = new ProductoConProveedor(
-            nuevoCodigoProveedor, 
-            null, // El nombre del proveedor no es necesario aquí
-            nombre, 
-            precio, 
-            unidadExistente
-        );
-
         // Instanciar ProductoConProveedorDao
         ManagerConexion managerConexion = new ManagerConexion();
         ProductoConProveedorDao productoDao = new ProductoConProveedorDao(managerConexion);
+
+        // Verificar si ya existe un producto con el mismo nombre y proveedor
+        if (productoDao.existeProductoConNombreYProveedor(nombre, nuevoCodigoProveedor)) {
+            JOptionPane.showMessageDialog(this, "Ya existe un producto con el mismo nombre y proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si ya existe un producto con el mismo nombre y proveedor
+        }
+
+        // Crear un objeto ProductoConProveedor con los datos ingresados
+        ProductoConProveedor nuevoProducto = new ProductoConProveedor(
+            nuevoCodigoProveedor,
+            null, // El nombre del proveedor no es necesario aquí
+            nombre,
+            Double.parseDouble(precioTexto),
+            Integer.parseInt(unidadExistenteTexto)
+        );
 
         // Añadir el producto
         boolean resultado = productoDao.añadirProducto(nuevoProducto);
@@ -472,11 +633,16 @@ public class AnadirProducto extends javax.swing.JPanel {
         // Mostrar mensaje de éxito o error
         if (resultado) {
             JOptionPane.showMessageDialog(this, "Producto añadido exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            // Guardar la imagen vinculada al ID del pedido
+            guardarImagen(nuevoProducto.getNombreProducto());
+
             // Reiniciar el formulario
             botonReiniciarActionPerformed(evt);
         } else {
             JOptionPane.showMessageDialog(this, "Error al añadir el producto", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_botonAnadirActionPerformed
 
     private void botonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonReiniciarActionPerformed
@@ -521,6 +687,7 @@ public class AnadirProducto extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAnadir;
     private javax.swing.JButton botonAnadirProveedor;
+    private javax.swing.JButton botonImagen;
     private javax.swing.JButton botonReiniciar;
     private propiedades.Componente2Anadir componenteNombre;
     private propiedades.Componente2Anadir componentePrecio;

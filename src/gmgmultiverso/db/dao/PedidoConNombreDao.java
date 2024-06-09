@@ -9,6 +9,7 @@ import gmgmultiverso.model.PedidoConNombre;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,6 +57,7 @@ public class PedidoConNombreDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -69,10 +71,10 @@ public class PedidoConNombreDao {
             conect = con.abrirConexion();
 
             String query = "SELECT p.id, c.nombre AS nombre_cliente, p.fecha_pedido, e.nombre AS nombre_empleado, p.estado, p.ultima_actualizacion " +
-                           "FROM pedido p " +
-                           "JOIN cliente c ON p.id_cliente = c.id " +
-                           "JOIN empleado e ON p.id_empleado = e.id " +
-                           "WHERE e.id = ?";
+                       "FROM pedido p " +
+                       "JOIN cliente c ON p.id_cliente = c.id " +
+                       "LEFT JOIN empleado e ON p.id_empleado = e.id " +
+                       "WHERE e.id = ? OR p.id_empleado IS NULL";
 
             var ps = conect.prepareStatement(query);
             ps.setInt(1, idEmpleado);
@@ -107,6 +109,7 @@ public class PedidoConNombreDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         } 
@@ -141,6 +144,7 @@ public class PedidoConNombreDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -241,6 +245,34 @@ public class PedidoConNombreDao {
         }
     }     
     
+    public void actualizarEstadoPedidoyEmple(int idPedido, int nuevoEstadoPedido, int codEmple) {
+        Connection conect = null;
+        try { 
+            conect = con.abrirConexion();
+
+            String query = "UPDATE pedido SET estado = ?, id_empleado = ? WHERE id = ?";
+            var ps = conect.prepareStatement(query);
+            ps.setInt(1, nuevoEstadoPedido);
+            ps.setInt(2, codEmple);
+            ps.setInt(3, idPedido);
+
+            int filasActualizadas = ps.executeUpdate();
+            if (filasActualizadas == 0) {
+                throw new SQLException("No se pudo actualizar el pedido con ID: " + idPedido);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }    
+    
     public int obtenerEstadoPedido(int idPedido) {
         Connection conect = null;
         try {
@@ -268,52 +300,80 @@ public class PedidoConNombreDao {
             }
         }
     }
-
-    //para ver los pedidos del cliente 
-    public List<PedidoConNombre> listByCliente(String correoCliente) {
-    Connection conect = null;
-    try {
-        conect = con.abrirConexion();
-
-        String query = "SELECT p.id, c.nombre AS nombre_cliente, p.fecha_pedido, e.nombre AS nombre_empleado, p.estado, p.ultima_actualizacion " +
-               "FROM pedido p " +
-               "JOIN cliente c ON p.id_cliente = c.id " +
-               "JOIN empleado e ON p.id_empleado = e.id " +
-               "WHERE c.email = ?";
-
-
-        var ps = conect.prepareStatement(query);
-        ps.setString(1, correoCliente);
-
-        var rs = ps.executeQuery();
-        List<PedidoConNombre> pedidos = new ArrayList<>();
-        while (rs.next()) {
-            PedidoConNombre pedido = new PedidoConNombre(
-                    rs.getInt("id"),
-                    rs.getString("nombre_cliente"),
-                    rs.getDate("fecha_pedido"),
-                    rs.getString("nombre_empleado"),
-                    rs.getInt("estado"),
-                    rs.getDate("ultima_actualizacion")
-            );
-            pedidos.add(pedido);
-        }
-
-        return pedidos;
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
-    } finally {
-        if (conect != null) {
+/*************Filtro en pedidos ************/
+    public List<PedidoConNombre> buscarPedidosPorNombreYFecha(String nombreCliente, Date fechaPedido) {
+            Connection conect = null;
             try {
-                conect.close();
+                conect = con.abrirConexion();
+
+                String query = "SELECT p.id, c.nombre AS nombre_cliente, p.fecha_pedido, e.nombre AS nombre_empleado, p.estado, p.ultima_actualizacion " +
+                               "FROM pedido p " +
+                               "JOIN cliente c ON p.id_cliente = c.id " +
+                               "JOIN empleado e ON p.id_empleado = e.id " +
+                               "WHERE c.nombre = ? AND p.fecha_pedido = ?";
+
+                var ps = conect.prepareStatement(query);
+                ps.setString(1, nombreCliente);
+                ps.setDate(2, (java.sql.Date) fechaPedido);
+
+                var rs = ps.executeQuery();
+
+                List<PedidoConNombre> pedidos = new ArrayList<>();
+                while (rs.next()) {
+                    PedidoConNombre pedido = new PedidoConNombre(
+                            rs.getInt("id"),
+                            rs.getString("nombre_cliente"),
+                            rs.getDate("fecha_pedido"),
+                            rs.getString("nombre_empleado"),
+                            rs.getInt("estado"),
+                            rs.getDate("ultima_actualizacion")
+                    );
+                    pedidos.add(pedido);
+                }
+
+                return pedidos;
             } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                if (conect != null) {
+                    try {
+                        conect.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }     
+    
+    /************ NOMBRE EMPLE **********/
+    public String obtenerNombreEmpleado(int idEmpleado) {
+        Connection conect = null;
+        String nombreEmpleado = null;
+        String sql = "SELECT nombre FROM empleado WHERE id = ?";
+
+        try {
+            conect = con.abrirConexion();
+            var pst = conect.prepareStatement(sql);
+            pst.setInt(1, idEmpleado);
+
+            try (var rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    nombreEmpleado = rs.getString("nombre");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
+        return nombreEmpleado;
     }
-}
-
-    
-
-    
     
 }

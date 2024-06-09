@@ -316,7 +316,7 @@ public class EditarEmpleado extends javax.swing.JPanel {
         }
 
         // Verificar si el email contiene un '@'
-        if (!nuevoEmail.contains("@")) {
+        if (!nuevoEmail.matches("[^@]+@[^@]+\\.[^.]+")) {
             emailValido = false;
         }
 

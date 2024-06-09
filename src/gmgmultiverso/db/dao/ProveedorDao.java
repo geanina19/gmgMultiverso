@@ -62,7 +62,7 @@ public class ProveedorDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
-                    
+                    e.printStackTrace();
                 }
             }
         }
@@ -230,8 +230,4 @@ public class ProveedorDao {
         return proveedores;
     }
     
-    
-    
-    
-
 }

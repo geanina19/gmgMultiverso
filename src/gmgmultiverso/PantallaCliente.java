@@ -311,6 +311,7 @@ public class PantallaCliente extends javax.swing.JFrame {
         setResizable(false);
 
         panel.setBackground(new java.awt.Color(255, 255, 255));
+        panel.setOpaque(false);
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         panel.add(buscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 58, 428, 46));
 
@@ -325,6 +326,7 @@ public class PantallaCliente extends javax.swing.JFrame {
         panel.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 40, 90, 90));
 
         panelProductos.setBackground(new java.awt.Color(255, 255, 255));
+        panelProductos.setOpaque(false);
 
         hamburgesa.setText("jLabel1");
 

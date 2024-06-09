@@ -89,10 +89,9 @@ INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('L
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Paula','Ruiz','paula3456',624662616,'oaula.ruiz@gmail.com');
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Romina','Ramos','romina7890',660518943,'romina.ramos@gmail.com');
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Zulema','Ortiz','zulema1234',613938195,'zulema.ortiz@gmail.com');
-<<<<<<< HEAD
+
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Admin','Admin','admin',695319038,'admin@gmgmultiverso.es');
 
-=======
 INSERT INTO empleado(nombre, apellido, contrasenia, telefono, email) VALUES('Admin','Admin','admin',695319038,'admin@gmgmultiverso.es')
 >>>>>>> efdd07a54ae68f75533deb7e9a02b6dd7d515572
 

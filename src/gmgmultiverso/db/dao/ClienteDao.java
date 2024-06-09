@@ -5,15 +5,9 @@
 package gmgmultiverso.db.dao;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.model.Cliente;
-import gmgmultiverso.model.Proveedor;
-import java.awt.List;
-import java.awt.print.Book;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 
 /**
@@ -85,6 +79,7 @@ public class ClienteDao {
                 try {
                     conect.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }

@@ -34,6 +34,12 @@ public class AyudaCliente extends javax.swing.JFrame {
                 abrirPagina("https://gmgmultiverso.wordpress.com/");
             }
         });
+         textFieldInstagram.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                abrirPagina("https://www.instagram.com/gmg_multiverso?igsh=MWFsZ3ptc2UzYjNuYQ==");
+            }
+        });
     }
 
         //para poner el logo del planeta en el frame

@@ -4,7 +4,7 @@
  "http://java.sun.com/products/javahelp/helpset_2_0.dtd">
 <helpset version="2.0">
  <!-- title -->
- <title>Java Development Environment - Help</title>
+ <title>GMG Multiverso - Administrador - Help</title>
 
  <!-- maps -->
  <maps>

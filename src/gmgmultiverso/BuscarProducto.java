@@ -492,7 +492,6 @@ public class BuscarProducto extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "No se encontraron resultados.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
             actualizarTablaBuscarProducto();
         }
-        
     }
 
     

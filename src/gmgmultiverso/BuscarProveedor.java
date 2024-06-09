@@ -444,159 +444,6 @@ public class BuscarProveedor extends javax.swing.JPanel {
         tablaBuscarProveedor.clearSelection();
     }
 
-    public void generarInformePorTelefono(String telefono, String nombreEmpresa) {
-        // Obtener el ID del proveedor basado en el número de teléfono
-        int idProveedor = prov.obtenerIdProveedorPorTelefono(telefono);
-
-
-        // Verificar si se encontró un proveedor con el número de teléfono proporcionado
-        if (idProveedor != -1) {
-            // Generar el informe utilizando el ID del proveedor encontrado
-            Connection conexion = null;
-            try {
-                Class.forName("org.hsqldb.jdbcDriver");
-                conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
-            } catch (SQLException | ClassNotFoundException ex) {
-                Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            // Cargar el archivo JRXML
-            InputStream vinculoarchivo = getClass().getResourceAsStream("proveedores.jrxml");
-
-            // Verificar si el InputStream no es nulo antes de continuar
-            if (vinculoarchivo != null) {
-                JasperReport jr = null;
-                try {
-                    // Construir la cadena de consulta
-                    String continuarConsulta = " AND id = " + idProveedor;
-
-                    if (nombreEmpresa != null && !nombreEmpresa.isEmpty()) {
-                        continuarConsulta += " AND nombre_empresa = '" + nombreEmpresa + "'";
-                    }
-
-                    // Agregar el parámetro "consulta" al informe
-                    Map<String, Object> parametros = new HashMap<>();
-                    parametros.put("consulta", continuarConsulta);
-                    parametros.put("imglogo", "gmgmultiverso/logo.png");
-
-                    jr = JasperCompileManager.compileReport(vinculoarchivo);
-                    JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
-
-                    JasperViewer visor = new JasperViewer(jasperPrint, false);
-                    visor.setVisible(true);
-                } catch (JRException ex) {
-                    Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    // Cierre del InputStream
-                    try {
-                        if (vinculoarchivo != null) {
-                            vinculoarchivo.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo proveedores.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No se encontró ningún proveedor con el número de teléfono proporcionado.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    public void generarInformePorNombreEmpresa(String nombreEmpresa) {
-        // Generar el informe utilizando el nombre de la empresa seleccionado
-        Connection conexion = null;
-        try {
-            Class.forName("org.hsqldb.jdbcDriver");
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        // Cargar el archivo JRXML
-        InputStream vinculoarchivo = getClass().getResourceAsStream("proveedores.jrxml");
-
-        // Verificar si el InputStream no es nulo antes de continuar
-        if (vinculoarchivo != null) {
-            JasperReport jr = null;
-            try {
-                // Construir la cadena de consulta
-                String continuarConsulta = "";
-                if (nombreEmpresa != null && !nombreEmpresa.isEmpty()) {
-                    continuarConsulta = " AND nombre_empresa = '" + nombreEmpresa + "'";
-                }
-
-                // Agregar el parámetro "consulta" al informe
-                Map<String, Object> parametros = new HashMap<>();
-                parametros.put("consulta", continuarConsulta);
-                parametros.put("imglogo", "gmgmultiverso/logo.png");
-
-                jr = JasperCompileManager.compileReport(vinculoarchivo);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
-
-                JasperViewer visor = new JasperViewer(jasperPrint, false);
-                visor.setVisible(true);
-            } catch (JRException ex) {
-                Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                // Cierre del InputStream
-                try {
-                    if (vinculoarchivo != null) {
-                        vinculoarchivo.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo proveedores.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    // Método para generar el informe con todos los proveedores
-    public void generarInformeTodosProveedores() {
-        Connection conexion = null;
-        try {
-            Class.forName("org.hsqldb.jdbcDriver");
-            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
-        } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        InputStream vinculoarchivo = getClass().getResourceAsStream("proveedores.jrxml");
-
-        if (vinculoarchivo != null) {
-            JasperReport jr = null;
-            try {
-                String continuarConsulta = " "; // Consulta que siempre es verdadera para obtener todos los registros
-
-                Map<String, Object> parametros = new HashMap<>();
-                parametros.put("consulta", continuarConsulta);
-                parametros.put("imglogo", "gmgmultiverso/logo.png");
-
-                jr = JasperCompileManager.compileReport(vinculoarchivo);
-                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
-
-                JasperViewer visor = new JasperViewer(jasperPrint, false);
-                visor.setVisible(true);
-            } catch (JRException ex) {
-                Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    if (vinculoarchivo != null) {
-                        vinculoarchivo.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo proveedores.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -613,8 +460,8 @@ public class BuscarProveedor extends javax.swing.JPanel {
         labelTitulo = new javax.swing.JLabel();
         componenteNombreEmpresas = new propiedades.Componente4();
         panelBotones = new javax.swing.JPanel();
-        botonInforme = new javax.swing.JButton();
         botonReiniciar = new javax.swing.JButton();
+        botonInforme = new javax.swing.JButton();
 
         setOpaque(false);
         setPreferredSize(new java.awt.Dimension(1091, 642));
@@ -632,14 +479,6 @@ public class BuscarProveedor extends javax.swing.JPanel {
 
         panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 30, 5));
 
-        botonInforme.setText("Generar informe");
-        botonInforme.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonInformeActionPerformed(evt);
-            }
-        });
-        panelBotones.add(botonInforme);
-
         botonReiniciar.setText("Reiniciar");
         botonReiniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -647,6 +486,14 @@ public class BuscarProveedor extends javax.swing.JPanel {
             }
         });
         panelBotones.add(botonReiniciar);
+
+        botonInforme.setText("Generar informe");
+        botonInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInformeActionPerformed(evt);
+            }
+        });
+        panelBotones.add(botonInforme);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -722,25 +569,58 @@ public class BuscarProveedor extends javax.swing.JPanel {
             return;
         }
 
-        boolean informeGenerado = false;
-
-        // Verificar si se ingresó un número de teléfono
-        if (!telefono.isEmpty()) {
-            // Generar informe por número de teléfono
-            generarInformePorTelefono(telefono, nombreEmpresa);
-            informeGenerado = true;
-        } else if (nombreEmpresa != null && !nombreEmpresa.isEmpty()) {
-            // Generar informe por nombre de empresa
-            generarInformePorNombreEmpresa(nombreEmpresa);
-            informeGenerado = true;
+        Connection conexion = null;
+        try {
+            Class.forName("org.hsqldb.jdbcDriver");
+            conexion = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost", "SA", "SA");
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
 
-        // Si no se proporcionó ni teléfono ni nombre de empresa, generar informe con todos los proveedores
-        if (!informeGenerado) {
-            generarInformeTodosProveedores();
+        InputStream vinculoarchivo = getClass().getResourceAsStream("proveedores.jrxml");
+
+        if (vinculoarchivo != null) {
+            JasperReport jr = null;
+            try {
+                String continuarConsulta = " ";
+
+                if (!telefono.isEmpty()) {
+                    // Modificar la consulta para que busque todos los productos cuyos nombres comienzan con el texto ingresado
+                    continuarConsulta += " AND telefono LIKE '%" + telefono + "%'";
+                }
+
+                if (nombreEmpresa != null && !nombreEmpresa.isEmpty()) {
+                    continuarConsulta += continuarConsulta + " AND nombre_empresa = '" + nombreEmpresa + "'";
+                }
+
+                Map<String, Object> parametros = new HashMap<>();
+                parametros.put("consulta", continuarConsulta);
+                parametros.put("imglogo", "gmgmultiverso/logo.png");
+
+                jr = JasperCompileManager.compileReport(vinculoarchivo);
+                JasperPrint jasperPrint = JasperFillManager.fillReport(jr, parametros, conexion);
+
+                JasperViewer visor = new JasperViewer(jasperPrint, false);
+                visor.setVisible(true);
+            } catch (JRException ex) {
+                Logger.getLogger(BuscarProveedor.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if (vinculoarchivo != null) {
+                        vinculoarchivo.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se pudo cargar el archivo proveedores.jrxml", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_botonInformeActionPerformed
 
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonInforme;

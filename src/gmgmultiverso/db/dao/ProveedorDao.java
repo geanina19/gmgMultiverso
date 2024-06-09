@@ -230,33 +230,4 @@ public class ProveedorDao {
         return proveedores;
     }
     
-    public int obtenerIdProveedorPorTelefono(String telefono) {
-        int idProveedor = -1; // Valor por defecto si no se encuentra el proveedor
-
-        try {
-            Connection conexion = con.abrirConexion();
-            String consultaSQL = "SELECT id FROM proveedor WHERE telefono LIKE ?";
-            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
-            pstmt.setString(1, "%" + telefono + "%"); // Buscar coincidencias parciales
-            ResultSet rs = pstmt.executeQuery();
-
-            // Verificar si se encontró un resultado
-            if (rs.next()) {
-                idProveedor = rs.getInt("id");
-            }
-
-            // Cerrar recursos
-            rs.close();
-            pstmt.close();
-            con.cerrarConexion(conexion);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return idProveedor;
-    }
-
-
-    
-
 }

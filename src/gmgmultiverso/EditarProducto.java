@@ -449,6 +449,13 @@ public class EditarProducto extends javax.swing.JPanel {
         // Validar que el precio sea un número válido
         if (!nuevoPrecio.matches("\\d*\\.?\\d+")) {
             errores.append("- El precio del producto debe ser un número válido.\n");
+        } else {
+            // Convertir el precio a un número
+            double precio = Double.parseDouble(nuevoPrecio);
+            // Validar que el precio no sea mayor a 100
+            if (precio > 100) {
+                errores.append("- El precio del producto no puede ser mayor a 100.\n");
+            }
         }
 
         // Validar que la cantidad existente sea un número entero

@@ -85,6 +85,23 @@ public class EmpleadoDao {
         return false;
     }
     
+    public boolean emailExiste(String email) {
+        String query = "SELECT COUNT(*) FROM empleado WHERE email = ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay al menos un empleado con ese correo electrónico
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+        return false;
+    }
+
+    
     // Método para verificar si un empleado ya existe por número de teléfono
     public boolean empleadoExiste(int telefono) {
         String query = "SELECT COUNT(*) FROM empleado WHERE telefono = ?";
@@ -103,6 +120,7 @@ public class EmpleadoDao {
     }
     
     public boolean anadirEmpleado(Empleado empleado) {
+        
         Connection conect = null;
     
         try {
@@ -434,6 +452,8 @@ public class EmpleadoDao {
         return datosEmple;
     }
     
+    
+    //-----------------sacar el id del empleado con el nombre filtrado----------------
     public int obtenerIdEmpleadoPorNombre(String nombre) {
         int idEmpleado = -1;
         try {
@@ -456,55 +476,5 @@ public class EmpleadoDao {
 
         return idEmpleado;
     }
-
-    
-    public int obtenerIdEmpleadoPorApellido(String apellido) {
-        int idEmpleado = -1;
-        try {
-            Connection conexion = con.abrirConexion();
-            String consultaSQL = "SELECT id FROM empleado WHERE apellido LIKE ?";
-            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
-            pstmt.setString(1, "%" + apellido + "%");
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                idEmpleado = rs.getInt("id");
-            }
-
-            rs.close();
-            pstmt.close();
-            con.cerrarConexion(conexion);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return idEmpleado;
-    }
-
-    public int obtenerIdEmpleadoPorNombreYApellido(String nombre, String apellido) {
-        int idEmpleado = -1;
-        try {
-            Connection conexion = con.abrirConexion();
-            String consultaSQL = "SELECT id FROM empleado WHERE nombre LIKE ? AND apellido LIKE ?";
-            PreparedStatement pstmt = conexion.prepareStatement(consultaSQL);
-            pstmt.setString(1, "%" + nombre + "%");
-            pstmt.setString(2, "%" + apellido + "%");
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                idEmpleado = rs.getInt("id");
-            }
-
-            rs.close();
-            pstmt.close();
-            con.cerrarConexion(conexion);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return idEmpleado;
-    }
-
-    
 
 }

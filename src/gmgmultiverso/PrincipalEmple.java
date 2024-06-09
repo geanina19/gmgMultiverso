@@ -792,7 +792,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonReiniciarActionPerformed
 
     private void buttonInformePedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInformePedidoActionPerformed
-    // Obtener el nombre del cliente ingresado en el textField
+        // Obtener el nombre del cliente ingresado en el textField
         String nombreCliente = textNombre.getText().trim();
 
         // Obtener la fecha de pedido seleccionada en el datePicker

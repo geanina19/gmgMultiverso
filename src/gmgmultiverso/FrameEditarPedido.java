@@ -144,6 +144,12 @@ public class FrameEditarPedido extends javax.swing.JFrame {
 
         jLabel2.setText("Estado del pedido ");
 
+        comboBoxEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxEstadoActionPerformed(evt);
+            }
+        });
+
         editButton.setText("Editar");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +221,10 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         actualizarTablaPedidos();
         dispose();
     }//GEN-LAST:event_editButtonActionPerformed
+
+    private void comboBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxEstadoActionPerformed
 
     /**
      * @param args the command line arguments

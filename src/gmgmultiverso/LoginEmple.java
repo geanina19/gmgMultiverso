@@ -89,12 +89,12 @@ public class LoginEmple extends javax.swing.JFrame {
         textFieldPassword.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
-                    boolean isCapsOn = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
-                    if (isCapsOn) {
-                        JOptionPane.showMessageDialog(null, "¡Mayúsculas activadas!", "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    }
-                }
+//                if (e.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
+//                    boolean isCapsOn = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
+//                    if (isCapsOn) {
+//                        JOptionPane.showMessageDialog(null, "¡Mayúsculas activadas!", "Advertencia", JOptionPane.WARNING_MESSAGE);
+//                    }
+//                }
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     iniciarSesion();
                 }
@@ -155,7 +155,6 @@ public class LoginEmple extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Login Empleado");
-        setAlwaysOnTop(true);
         setBackground(new java.awt.Color(153, 204, 255));
 
         panelPrincipal.setBackground(new java.awt.Color(204, 204, 204));
@@ -163,7 +162,7 @@ public class LoginEmple extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logox200.png"))); // NOI18N
 
-        labelInicia.setFont(new java.awt.Font("Gabriola", 1, 24)); // NOI18N
+        labelInicia.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         labelInicia.setText("Bienvenido, inicia sesión");
 
         labelName.setText("Usuario:");
@@ -192,13 +191,9 @@ public class LoginEmple extends javax.swing.JFrame {
                 .addComponent(buttonCancel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
+                .addGap(81, 81, 81)
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addContainerGap(144, Short.MAX_VALUE)
-                        .addComponent(labelInicia, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(111, 111, 111))
-                    .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addGap(81, 81, 81)
                         .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(labelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labelContra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -206,7 +201,9 @@ public class LoginEmple extends javax.swing.JFrame {
                         .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(textFieldPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                             .addComponent(textFieldUser))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(labelInicia, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -216,9 +213,9 @@ public class LoginEmple extends javax.swing.JFrame {
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelLoginLayout.createSequentialGroup()
-                        .addGap(48, 48, 48)
+                        .addGap(45, 45, 45)
                         .addComponent(labelInicia)
-                        .addGap(42, 42, 42)
+                        .addGap(45, 45, 45)
                         .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(labelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(textFieldUser, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))))
@@ -230,7 +227,7 @@ public class LoginEmple extends javax.swing.JFrame {
                 .addGroup(panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonEntrar)
                     .addComponent(buttonCancel))
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
 
         panelPrincipal.add(panelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 710, 520));

@@ -16,7 +16,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -50,6 +52,9 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         this.principalAdmin = principalAdmin;
         anadirDatosTabla();
         tableTodosPedidos.setRowHeight(50);
+        
+        sorter = new TableRowSorter<>(miModelo);
+        tableTodosPedidos.setRowSorter(sorter);
     }
     
      /*--------- METODO PARA LOS ICONOS --------------*/
@@ -153,6 +158,26 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         
     }
     
+    /*****combo box***********/
+    public void cargarEstadosEnComboBox() {
+        comboBoxEstado.removeAllItems();
+
+        List<Integer> estados = pedidoCompleto.listarEstadosPedido();
+        // Mapea los valores numéricos de los estados a sus representaciones de cadena
+        Map<Integer, String> estadoStrings = new HashMap<>();
+        estadoStrings.put(1, "Aceptado");
+        estadoStrings.put(2, "En preparación");
+        estadoStrings.put(3, "Enviado");
+
+
+        // Agrega los estados existentes al combo box
+        for (Integer estado : estados) {
+            if (estadoStrings.containsKey(estado)) {
+                comboBoxEstado.addItem(estadoStrings.get(estado));
+            }
+        }
+
+    }
 
     
 
@@ -175,6 +200,8 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         buscarButton = new javax.swing.JButton();
         dateFiltro = new com.toedter.calendar.JDateChooser();
         buttonReiniciar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        comboBoxEstado = new javax.swing.JComboBox<>();
 
         tableTodosPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,8 +215,6 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Ver pedidos");
-
-        jPanel1.setBackground(new java.awt.Color(255, 245, 238));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Nombre cliente");
@@ -213,6 +238,9 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Estado");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -228,40 +256,46 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                         .addComponent(buscarButton)
                         .addGap(65, 65, 65)
                         .addComponent(buttonReiniciar))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(textNombre)
-                        .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)))
-                .addContainerGap(567, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textNombre)
+                            .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+                        .addGap(95, 95, 95)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(72, 72, 72)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
                     .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buscarButton)
                     .addComponent(buttonReiniciar))
-                .addGap(51, 51, 51))
+                .addGap(42, 42, 42))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(425, 425, 425)
                 .addComponent(labelTitulo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -274,7 +308,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(122, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -309,9 +343,11 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton buttonReiniciar;
+    private javax.swing.JComboBox<String> comboBoxEstado;
     private com.toedter.calendar.JDateChooser dateFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitulo;

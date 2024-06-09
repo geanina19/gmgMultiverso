@@ -269,7 +269,49 @@ public class PedidoConNombreDao {
         }
     }
 
-    
+    //para ver los pedidos del cliente 
+    public List<PedidoConNombre> listByCliente(String correoCliente) {
+    Connection conect = null;
+    try {
+        conect = con.abrirConexion();
+
+        String query = "SELECT p.id, c.nombre AS nombre_cliente, p.fecha_pedido, e.nombre AS nombre_empleado, p.estado, p.ultima_actualizacion " +
+               "FROM pedido p " +
+               "JOIN cliente c ON p.id_cliente = c.id " +
+               "JOIN empleado e ON p.id_empleado = e.id " +
+               "WHERE c.email = ?";
+
+
+        var ps = conect.prepareStatement(query);
+        ps.setString(1, correoCliente);
+
+        var rs = ps.executeQuery();
+        List<PedidoConNombre> pedidos = new ArrayList<>();
+        while (rs.next()) {
+            PedidoConNombre pedido = new PedidoConNombre(
+                    rs.getInt("id"),
+                    rs.getString("nombre_cliente"),
+                    rs.getDate("fecha_pedido"),
+                    rs.getString("nombre_empleado"),
+                    rs.getInt("estado"),
+                    rs.getDate("ultima_actualizacion")
+            );
+            pedidos.add(pedido);
+        }
+
+        return pedidos;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    } finally {
+        if (conect != null) {
+            try {
+                conect.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+}
+
     
 
     

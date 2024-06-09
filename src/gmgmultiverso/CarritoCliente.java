@@ -33,7 +33,9 @@ import java.util.Date;
 import java.util.List;
 import gmgmultiverso.model.Producto;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 import java.net.URL;
+import javax.swing.JButton;
 
 
 /**
@@ -57,7 +59,7 @@ public class CarritoCliente extends javax.swing.JFrame {
         this.setIconImage(getIconImage());
     }
 
-        //para poner el logo del planeta en el frame
+    //para poner el logo del planeta en el frame
     @Override
     public Image getIconImage() {
         URL url = getClass().getResource("/imagenes/planeta.png");
@@ -76,52 +78,83 @@ public class CarritoCliente extends javax.swing.JFrame {
     }
 
     private void actualizarInterfazDeUsuario() {
-        // primero limpio el panel antes de agregar los productos
-        panelProductos.removeAll();
+    // primero limpio el panel antes de agregar los productos
+    panelProductos.removeAll();
 
-        // gridBagLayout para organizar los elementos en filas y columnas
-        panelProductos.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+    // gridBagLayout para organizar los elementos en filas y columnas
+    panelProductos.setLayout(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = GridBagConstraints.RELATIVE;
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(10, 10, 10, 10); // Espacio entre los elementos
+
+    for (int i = 0; i < nombresProductosEnCarrito.size(); i++) {
+        String nombreProducto = nombresProductosEnCarrito.get(i);
+        ImageIcon imagenProducto = imagenesProductosEnCarrito.get(i);
+        double precioProducto = getPrecioFromNombre(nombreProducto);
+
+        // Mostrar la imagen del producto en un JLabel
+        JLabel imagenLabel = new JLabel();
+        ImageIcon imagenEscalada = new ImageIcon(imagenProducto.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        imagenLabel.setIcon(imagenEscalada);
         gbc.gridx = 0;
-        gbc.gridy = GridBagConstraints.RELATIVE;
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.insets = new Insets(10, 10, 10, 10); // Espacio entre los elementos
+        panelProductos.add(imagenLabel, gbc);
 
-        for (int i = 0; i < nombresProductosEnCarrito.size(); i++) {
-            String nombreProducto = nombresProductosEnCarrito.get(i);
-            ImageIcon imagenProducto = imagenesProductosEnCarrito.get(i);
-            double precioProducto = getPrecioFromNombre(nombreProducto);
+        // Mostrar el nombre del producto en un JLabel
+        JLabel nombreLabel = new JLabel(nombreProducto);
+        gbc.gridx = 1;
+        gbc.insets = new Insets(10, 30, 5, 10); // Espacio entre el nombre y la imagen
+        panelProductos.add(nombreLabel, gbc);
 
-            // Mostrar la imagen del producto en un JLabel
-            JLabel imagenLabel = new JLabel();
-            ImageIcon imagenEscalada = new ImageIcon(imagenProducto.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
-            imagenLabel.setIcon(imagenEscalada);
-            gbc.gridx = 0;
-            panelProductos.add(imagenLabel, gbc);
+        // Mostrar la cantidad del producto en un JComboBox
+        JComboBox<String> cantidadComboBox = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
+        gbc.gridx = 2;
+        gbc.insets = new Insets(10, 10, 5, 10); // Espacio entre la cantidad y el nombre
+        panelProductos.add(cantidadComboBox, gbc);
 
-            // Mostrar el nombre del producto en un JLabel
-            JLabel nombreLabel = new JLabel(nombreProducto);
-            gbc.gridx = 1;
-            gbc.insets = new Insets(10, 30, 5, 10); // Espacio entre el nombre y la imagen
-            panelProductos.add(nombreLabel, gbc);
+        // Mostrar el precio del producto en un JLabel
+        JLabel precioLabel = new JLabel(String.valueOf(precioProducto));
+        gbc.gridx = 3;
+        gbc.insets = new Insets(10, 10, 10, 10); 
+        panelProductos.add(precioLabel, gbc);
 
-            // Mostrar la cantidad del producto en un JComboBox
-            JComboBox<String> cantidadComboBox = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
-            gbc.gridx = 2;
-            gbc.insets = new Insets(10, 10, 5, 10); // Espacio entre la cantidad y el nombre
-            panelProductos.add(cantidadComboBox, gbc);
+        // Crear el botón de eliminación
+        JButton eliminarButton = new JButton("Eliminar");
+        gbc.gridx = 4;
+        panelProductos.add(eliminarButton, gbc);
 
-            // Mostrar el precio del producto en un JLabel
-            JLabel precioLabel = new JLabel(String.valueOf(precioProducto));
-            gbc.gridx = 3;
-            gbc.insets = new Insets(10, 10, 10, 10); 
-            panelProductos.add(precioLabel, gbc);
-        }
+        // Añadir ActionListener al JComboBox para actualizar el precio
+        cantidadComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int cantidad = Integer.parseInt((String) cantidadComboBox.getSelectedItem());
+                double nuevoPrecio = precioProducto * cantidad;
+                precioLabel.setText(String.valueOf(nuevoPrecio));
+            }
+        });
 
-        // Actualizar la interfaz
-        revalidate();
-        repaint();
+        // Añadir ActionListener al botón de eliminación
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Eliminar el producto de las listas
+                int index = nombresProductosEnCarrito.indexOf(nombreProducto);
+                if (index != -1) {
+                    nombresProductosEnCarrito.remove(index);
+                    imagenesProductosEnCarrito.remove(index);
+                    // Actualizar la interfaz
+                    actualizarInterfazDeUsuario();
+                }
+            }
+        });
     }
+
+    // Actualizar la interfaz
+    revalidate();
+    repaint();
+}
+
 
     public void mostrarProducto(String nombreProducto, ImageIcon imagen, int cantidadProducto, double precioProducto) {
         // Verificar si la imagen es null
@@ -174,8 +207,7 @@ public class CarritoCliente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Carrito Cliente");
-
-        panelProductos.setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         jLabel3.setText("Cantidad");
 

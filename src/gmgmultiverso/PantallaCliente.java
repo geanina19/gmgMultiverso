@@ -12,6 +12,8 @@ import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatGitHubIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.*;
 import gmgmultiverso.db.ManagerConexion;
 import gmgmultiverso.db.dao.ClienteDao;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -26,7 +28,9 @@ import javax.swing.event.DocumentListener;
 
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.net.URL;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -280,6 +284,7 @@ public class PantallaCliente extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem16 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem17 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -408,8 +413,22 @@ public class PantallaCliente extends javax.swing.JFrame {
 
         jMenu1.setText("Productos");
 
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/iconBurger.png"))); // NOI18N
-        jMenuItem3.setText("Ver productos");
+        jMenuItem17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/iconBurger.png"))); // NOI18N
+        jMenuItem17.setText("Ver Productos");
+        jMenuItem17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem17ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem17);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
+        jMenuItem3.setText("Ver  Pedidos");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -781,6 +800,29 @@ public class PantallaCliente extends javax.swing.JFrame {
         p.setVisible(true);
     }//GEN-LAST:event_jMenuItem16ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    
+        // Obtener el correo electrónico del cliente
+    String correoElectronico = getCorreoElectronico();
+    
+    // Abrir VerPedidos y pasar el correo electrónico
+     VerPedidos vp = new VerPedidos(correoElectronico);
+    panel.setLayout(new BorderLayout());
+    panel.add(vp, BorderLayout.CENTER);
+    
+    panel.removeAll(); // limpia todos los componentes
+    panel.setLayout(new BorderLayout()); //establece un laout 
+    panel.add(vp, BorderLayout.CENTER); // Añade el panel de verpedidos al centro 
+    panel.revalidate(); // actualiza el menu principal
+    panel.repaint(); //y vuelve a mostrar
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
+        this.dispose();
+        PantallaCliente p = new PantallaCliente();
+        p.setVisible(true);
+    }//GEN-LAST:event_jMenuItem17ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -845,6 +887,7 @@ public class PantallaCliente extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
+    private javax.swing.JMenuItem jMenuItem17;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

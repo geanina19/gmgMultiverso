@@ -142,7 +142,7 @@ WHERE
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="34" splitType="Stretch">
+		<band height="58" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="-2" y="0" width="555" height="32" uuid="b50221b5-8254-440b-8c6f-1f0b138c9259"/>
 				<textField>
@@ -177,7 +177,7 @@ WHERE
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="14" splitType="Stretch">
+		<band height="8" splitType="Stretch">
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="1133a906-5b71-476e-9f3e-bc97c97058c1"/>
 				<graphicElement>
@@ -187,9 +187,9 @@ WHERE
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="25" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<frame>
-				<reportElement mode="Opaque" x="0" y="1" width="555" height="24" forecolor="#D0B48E" backcolor="#F5F125" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
+				<reportElement mode="Opaque" x="0" y="2" width="555" height="24" forecolor="#D0B48E" backcolor="#F5F125" uuid="729c3539-f946-4d0e-a0a7-bda2815ea1b0"/>
 				<textField evaluationTime="Report">
 					<reportElement style="Column header" x="513" y="0" width="40" height="20" forecolor="#030303" uuid="4834e99c-7f6c-485a-b098-50e5187f2ab4"/>
 					<textElement verticalAlignment="Middle">
@@ -215,6 +215,32 @@ WHERE
 		</band>
 	</pageFooter>
 	<summary>
-		<band splitType="Stretch"/>
+		<band height="246" splitType="Stretch">
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="1" y="10" width="552" height="200" uuid="e2d176d7-50cd-4d6b-b128-2f544e5620fe"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Unidades existentes"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{NOMBRE_PRODUCTO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{UNIDAD_EXISTENTE}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
 	</summary>
 </jasperReport>

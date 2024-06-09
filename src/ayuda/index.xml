@@ -4,4 +4,5 @@
     <indexitem text="Proveedores" target="codProveedor" />
     <indexitem text="Empleados" target="codEmpleado" />
     <indexitem text="Productos" target="codProducto" />
+    <indexitem text="Informes" target="codInforme" />
 </index>

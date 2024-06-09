@@ -68,7 +68,39 @@ public class ProveedorDao {
         }
     }
     
+    public boolean correoExiste(String email) {
+        String query = "SELECT COUNT(*) FROM proveedor WHERE email = ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay al menos un proveedor con ese correo electrónico
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+        return false;
+    }
     
+    public boolean correoExiste(String email, int idProveedorExcluido) {
+        String query = "SELECT COUNT(*) FROM proveedor WHERE email = ? AND id != ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setInt(2, idProveedorExcluido);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay al menos un proveedor con ese correo electrónico excluyendo el actual
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de errores
+        }
+        return false;
+    }
+
     // Método para verificar si un proveedor ya existe por número de teléfono excluyendo el proveedor actual
     public boolean proveedorExiste(int telefono, int idProveedorExcluido) {
         String query = "SELECT COUNT(*) FROM proveedor WHERE telefono = ? AND id != ?";
@@ -86,6 +118,7 @@ public class ProveedorDao {
         }
         return false;
     }
+
 
     
     // Método para verificar si un proveedor ya existe por número de teléfono

@@ -91,6 +91,7 @@ public class infoProducto extends javax.swing.JDialog {
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         name.setText("Nombre del producto ");
 

@@ -91,20 +91,30 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         estadoStrings.put(2, "En preparación");
         estadoStrings.put(3, "Enviado");
 
-        // Agrega los estados al combo box
-        for (Integer estado : estados) {
-            comboBoxEstado.addItem(estadoStrings.get(estado));
-        }
-        
-            // Obtener el estado del pedido actual desde la base de datos
+        // Obtener el estado del pedido actual desde la base de datos
         int estadoPedidoActual = pedidoCompleto.obtenerEstadoPedido(codigoPedido);
 
-        // Buscar el índice del estado del pedido actual en la lista de estados
-        int indiceEstadoActual = estados.indexOf(estadoPedidoActual);
+        // Agrega la opción "Seleccionar estado" si no hay estado asignado
+        if (estadoPedidoActual == 0 || !estadoStrings.containsKey(estadoPedidoActual)) {
+            comboBoxEstado.addItem("Seleccionar estado");
+        }
 
-        // Seleccionar el índice correspondiente en el combo box
-        comboBoxEstado.setSelectedIndex(indiceEstadoActual);
+        // Agrega los estados existentes al combo box
+        for (Integer estado : estados) {
+            if (estadoStrings.containsKey(estado)) {
+                comboBoxEstado.addItem(estadoStrings.get(estado));
+            }
+        }
+
+        // Seleccionar el estado actual si está en la lista, de lo contrario seleccionar "Seleccionar estado"
+        String estadoActualTexto = estadoStrings.get(estadoPedidoActual);
+        if (estadoActualTexto != null) {
+            comboBoxEstado.setSelectedItem(estadoActualTexto);
+        } else {
+            comboBoxEstado.setSelectedItem("Seleccionar estado");
+        }
     }
+
     
     /**************** ACTUALIZAR TABLA *****************/
     private void actualizarTablaPedidos() {  

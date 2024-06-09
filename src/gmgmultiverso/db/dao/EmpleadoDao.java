@@ -85,6 +85,25 @@ public class EmpleadoDao {
         return false;
     }
     
+    // Método para verificar si un correo electrónico ya existe para otros empleados (excluyendo al empleado actual)
+    public boolean emailExisteParaOtrosEmpleados(String email, int idEmpleadoActual) {
+        String query = "SELECT COUNT(*) FROM empleado WHERE email = ? AND id != ?";
+        try (Connection conn = con.abrirConexion();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            stmt.setInt(2, idEmpleadoActual);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Retorna true si hay otros empleados con ese correo electrónico
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    
     public boolean emailExiste(String email) {
         String query = "SELECT COUNT(*) FROM empleado WHERE email = ?";
         try (Connection conn = con.abrirConexion();

@@ -399,6 +399,11 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         ayuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
         ayuda.setText("Ver ayuda");
+        ayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ayudaActionPerformed(evt);
+            }
+        });
         menuAyuda.add(ayuda);
 
         jMenuBar1.add(menuAyuda);
@@ -955,6 +960,10 @@ public class PrincipalAdministrador extends javax.swing.JFrame
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_itemCerrarAplicacionActionPerformed
+
+    private void ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ayudaActionPerformed
 
     /**
      * @param args the command line arguments

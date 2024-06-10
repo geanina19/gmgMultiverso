@@ -30,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -95,12 +96,12 @@ public class LoginAdmin extends javax.swing.JFrame {
         // Iterar sobre la lista de empleados para verificar las credenciales
         for (Empleado empleado : empleados) {
             // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
-            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
+            if (empleado.getEmail().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
                 // Si el usuario es Admin o alguno de los cuatro nombres específicos, permitir el inicio de sesión
-                if (usuario.equals("Admin") ||
-                    usuario.equals("Gema") ||
-                    usuario.equals("Monica") ||
-                    usuario.equals("Geanina")) {
+                if (usuario.equals("admin@gmgmultiverso.es") ||
+                    usuario.equals("gema@gmgmultiverso.es") ||
+                    usuario.equals("monica@gmgmultiverso.es") ||
+                    usuario.equals("geanina@gmgmultiverso.es")) {
                     return true;
                 }
             }
@@ -121,7 +122,7 @@ public class LoginAdmin extends javax.swing.JFrame {
         // Iterar sobre la lista de empleados para buscar el usuario y la contraseña
         for (Empleado empleado : empleados) {
             // Verificar si el nombre de usuario y la contraseña coinciden con algún empleado
-            if (empleado.getNombre().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
+            if (empleado.getEmail().equals(usuario) && empleado.getContrasenia().equals(contrasenia)) {
                 // Si coinciden, devolver el ID del empleado
                 return empleado.getId();
             }
@@ -130,6 +131,8 @@ public class LoginAdmin extends javax.swing.JFrame {
         // Si no se encuentra el usuario o la contraseña no coincide, devolver -1
         return -1;
     }
+    
+    
 
 
 
@@ -255,6 +258,11 @@ public class LoginAdmin extends javax.swing.JFrame {
         String usuario = ingresarUsuario.getText();
         String contrasenia = String.valueOf(ingresarContrasenia.getPassword());
 
+        if(!usuario.matches("[^@]+@[^@]+\\.[^.]+")) {
+            JOptionPane.showMessageDialog(this, "El correo electrónico no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         // Validar las credenciales ingresadas
         if (validarCredenciales(usuario, contrasenia)) {
             // Si las credenciales son válidas, obtener el ID del empleado

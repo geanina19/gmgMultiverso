@@ -46,7 +46,9 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         this.codigoPedido = codigoPedido;
         this.codEmple = codEmple;
         // Depuración
-        System.out.println("Codigo del Pedido en el constructor::ç " + codigoPedido + "codigo emple: " +codEmple);        
+        System.out.println("Codigo del Pedido en el constructor::ç " + codigoPedido + "codigo emple: " +codEmple); 
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new java.awt.Color(250, 240, 230));
         
         cargarDatosCliente(codigoPedido);
 //        String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(codigoPedido);
@@ -144,6 +146,12 @@ public class FrameEditarPedido extends javax.swing.JFrame {
 
         jLabel2.setText("Estado del pedido ");
 
+        comboBoxEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxEstadoActionPerformed(evt);
+            }
+        });
+
         editButton.setText("Editar");
         editButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +223,10 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         actualizarTablaPedidos();
         dispose();
     }//GEN-LAST:event_editButtonActionPerformed
+
+    private void comboBoxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxEstadoActionPerformed
 
     /**
      * @param args the command line arguments

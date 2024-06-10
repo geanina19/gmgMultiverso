@@ -16,9 +16,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -50,6 +54,10 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         this.principalAdmin = principalAdmin;
         anadirDatosTabla();
         tableTodosPedidos.setRowHeight(50);
+        
+        sorter = new TableRowSorter<>(miModelo);
+        tableTodosPedidos.setRowSorter(sorter);
+        cargarEstadosEnComboBox();
     }
     
      /*--------- METODO PARA LOS ICONOS --------------*/
@@ -138,21 +146,34 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         JTableHeader tableHeader = tableTodosPedidos.getTableHeader();
         tableHeader.setDefaultRenderer(headerRenderer);
 
-        // Añadir el MouseListener para el evento de clic
-        tableTodosPedidos.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int columnaModificar = tableTodosPedidos.getColumnModel().getColumnIndex("Editar");
-                int fila = tableTodosPedidos.rowAtPoint(e.getPoint());
-                if (fila >= 0 && tableTodosPedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-                    // Código para abrir el panel de edición
-                    //abrirVentanaPedido(fila);
-                }
-            }
-        });
         
     }
     
+    /*****combo box***********/
+    public void cargarEstadosEnComboBox() {
+        comboBoxEstado.removeAllItems();
+
+        // Mapa para los valores numéricos de los estados y sus representaciones de cadena
+        Map<Integer, String> estadoStrings = new HashMap<>();
+        estadoStrings.put(1, "Aceptado");
+        estadoStrings.put(2, "En preparación");
+        estadoStrings.put(3, "Enviado");
+
+        // Obtener los estados desde la base de datos
+        List<Integer> estados = pedidoCompleto.listarEstadosPedido();
+
+        // Agrega la opción "Seleccionar estado" como opción por defecto
+        comboBoxEstado.addItem("Seleccionar estado");
+
+        // Agrega los estados al combo box
+        for (Integer estado : estados) {
+            String estadoNombre = estadoStrings.get(estado);
+            if (estadoNombre != null) {
+                comboBoxEstado.addItem(estadoNombre);
+            }
+        }
+    }
+
 
     
 
@@ -175,6 +196,8 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         buscarButton = new javax.swing.JButton();
         dateFiltro = new com.toedter.calendar.JDateChooser();
         buttonReiniciar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        comboBoxEstado = new javax.swing.JComboBox<>();
 
         tableTodosPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,8 +211,6 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
 
         labelTitulo.setFont(new java.awt.Font("Times New Roman", 3, 24)); // NOI18N
         labelTitulo.setText("Ver pedidos");
-
-        jPanel1.setBackground(new java.awt.Color(255, 245, 238));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Nombre cliente");
@@ -205,6 +226,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         });
 
         dateFiltro.setBackground(new java.awt.Color(255, 245, 238));
+        dateFiltro.setOpaque(false);
 
         buttonReiniciar.setText("Reiniciar");
         buttonReiniciar.addActionListener(new java.awt.event.ActionListener() {
@@ -212,6 +234,9 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                 buttonReiniciarActionPerformed(evt);
             }
         });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Estado");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -223,58 +248,63 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(textNombre)
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE))
+                .addGap(95, 95, 95)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(buscarButton)
                         .addGap(65, 65, 65)
-                        .addComponent(buttonReiniciar))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(textNombre)
-                        .addComponent(dateFiltro, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)))
-                .addContainerGap(567, Short.MAX_VALUE))
+                        .addComponent(buttonReiniciar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(72, 72, 72)
+                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(71, 71, 71)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1)
-                    .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buscarButton)
-                    .addComponent(buttonReiniciar))
-                .addGap(51, 51, 51))
+                    .addComponent(dateFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buscarButton)
+                        .addComponent(buttonReiniciar)))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(425, 425, 425)
-                .addComponent(labelTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(434, 434, 434)
+                .addComponent(labelTitulo)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(14, 14, 14)
                 .addComponent(labelTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -284,18 +314,40 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = (date != null) ? sdf.format(date) : "";
 
-        if (nombre.isEmpty() && date == null) {
-            sorter.setRowFilter(null);
-        } else if (nombre.isEmpty()) {
-            sorter.setRowFilter(RowFilter.regexFilter(dateStr, 2));
-        } else if (date == null) {
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + nombre, 1));
-        } else {
-            sorter.setRowFilter(RowFilter.andFilter(
-                List.of(RowFilter.regexFilter("(?i)" + nombre, 1),
-                    RowFilter.regexFilter(dateStr, 2))
-            ));
+        String estadoSeleccionado = (String) comboBoxEstado.getSelectedItem();
+        Integer estadoNumero = null;
+
+        // Mapa para los valores numéricos de los estados
+        Map<String, Integer> estadoMap = new HashMap<>();
+        estadoMap.put("Aceptado", 1);
+        estadoMap.put("En preparación", 2);
+        estadoMap.put("Enviado", 3);
+
+        // Convertir la selección de estado a su valor numérico
+        if (estadoMap.containsKey(estadoSeleccionado)) {
+            estadoNumero = estadoMap.get(estadoSeleccionado);
         }
+
+        // Crear una lista de filtros
+        List<RowFilter<DefaultTableModel, Object>> filters = new ArrayList<>();
+
+        if (!nombre.isEmpty()) {
+            filters.add(RowFilter.regexFilter("(?i)" + nombre, 1)); // Filtro por nombre de cliente
+        }
+        if (date != null) {
+            filters.add(RowFilter.regexFilter(dateStr, 2)); // Filtro por fecha de pedido
+        }
+        if (estadoNumero != null) {
+            filters.add(RowFilter.regexFilter(estadoNumero.toString(), 4)); // Filtro por estado
+        }
+
+        // Aplicar el filtro 
+        if (filters.isEmpty()) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.andFilter(filters));
+        }
+
     }//GEN-LAST:event_buscarButtonActionPerformed
 
     private void buttonReiniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReiniciarActionPerformed
@@ -309,9 +361,11 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton buttonReiniciar;
+    private javax.swing.JComboBox<String> comboBoxEstado;
     private com.toedter.calendar.JDateChooser dateFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTitulo;

@@ -68,10 +68,28 @@ public class ProveedorDao {
         }
     }
     
+    public boolean tieneProductosAsociados(int codigoProveedor) {
+        String sql = "SELECT COUNT(*) FROM producto WHERE id_proveedor = ?";
+        try (Connection conect = con.abrirConexion();
+             PreparedStatement pst = conect.prepareStatement(sql)) {
+
+            pst.setInt(1, codigoProveedor);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    
     public boolean correoExiste(String email) {
         String query = "SELECT COUNT(*) FROM proveedor WHERE email = ?";
-        try (Connection conn = con.abrirConexion();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conect = con.abrirConexion();
+             PreparedStatement stmt = conect.prepareStatement(query)) {
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {

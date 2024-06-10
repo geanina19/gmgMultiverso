@@ -116,11 +116,6 @@ public class PrincipalEmple extends javax.swing.JFrame {
         // Esto hace que la tabla no sea editable
         tablePedidos.setDefaultEditor(Object.class, null); 
         // Esto permite la selección de una sola fila
-//        tablePedidos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION); 
-
-        // Agregar ordenación alfabética al hacer clic en los encabezados de las columnas
-//        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
-//        tablePedidos.setRowSorter(sorter);   
 
         //----------------JAVAHELP----------------------------
     
@@ -135,7 +130,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
                 HelpBroker hb = helpset.createHelpBroker();
                 JHelp jhelp = new JHelp(helpset);
                 //jhelp.setCurrentID("inicio");
-                hb.enableHelpOnButton(ayuda, "codProveedor", helpset);
+                hb.enableHelpOnButton(ayuda, "codEmple", helpset);
             } 
             else 
             {
@@ -269,31 +264,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         });
 
     }
-    
-    
-    
-    
-    /******************* Obtener id de la fila seleccionada ()*************/
-    private int obtenerCodigoPedido(int fila) {
-        int codigoPedido = -1;
-        try {
-            String nombre = tablePedidos.getValueAt(fila, 1).toString();
-            String fechaStr = tablePedidos.getValueAt(fila, 4).toString();
 
-            // Convertir la fecha a java.sql.Date
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); // Ajustar el formato según sea necesario
-            java.util.Date parsedDate = format.parse(fechaStr);
-            java.sql.Date fechaPedido = new java.sql.Date(parsedDate.getTime());
-            
-            // Obtener el ID del pedido utilizando el método del DAO
-            codigoPedido = pedidoCompleto.getPedidoIdByNombreYFecha(nombre, fechaPedido);
-            System.out.println(codigoPedido);
-        } catch (ParseException e) {
-            e.printStackTrace(); // Manejar la excepción adecuadamente
-        }
-        return codigoPedido;
-
-    }
     
         /*-------------- MODIFICAR PEDIDO --------------*/
 
@@ -864,10 +835,10 @@ public class PrincipalEmple extends javax.swing.JFrame {
 
                 // Construir la cadena de consulta basada en los parámetros proporcionados
                 if (!nombreCliente.isEmpty()) {
-                    continuarConsulta += " AND nombre_cliente = '" + nombreCliente + "'";
+                    continuarConsulta += " AND nombre_cliente LIKE '%" + nombreCliente + "%'";
                 }
 
-                continuarConsulta += " AND fecha_pedido = '" + fechaPedidoStr + "'";
+                continuarConsulta += " fecha_pedido = '" + fechaPedidoStr + "'";
 
                 Map<String, Object> parametros = new HashMap<>();
                 parametros.put("consulta", continuarConsulta);

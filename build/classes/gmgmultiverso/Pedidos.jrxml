@@ -13,20 +13,23 @@
 			<style mode="Opaque" backcolor="#F0EFEF"/>
 		</conditionalStyle>
 	</style>
+	<parameter name="imagen" class="java.lang.String"/>
+	<parameter name="consulta" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT 
-    p.id, 
-    c.nombre AS nombre_cliente, 
-    p.fecha_pedido, 
-    e.nombre AS nombre_empleado, 
-    dp.cantidad
-FROM 
-    pedido p 
-    LEFT JOIN cliente c ON p.id_cliente = c.id 
-    LEFT JOIN empleado e ON p.id_empleado = e.id 
-    LEFT JOIN detalle_pedido dp ON p.id = dp.id_pedido
- WHERE  $P!{consulta}
-]]>
+		<![CDATA[SELECT p."ID",
+	c."NOMBRE" AS nombre_cliente,
+	p."FECHA_PEDIDO",
+	e."NOMBRE" AS nombre_empleado,
+	dp."CANTIDAD"
+FROM "PEDIDO" p
+	LEFT JOIN "CLIENTE" c ON 
+	 p."ID_CLIENTE" = c."ID" 
+	LEFT JOIN "EMPLEADO" e ON 
+	 p."ID_EMPLEADO" = e."ID" 
+	LEFT JOIN "DETALLE_PEDIDO" dp ON 
+	 p."ID" = dp."ID_PEDIDO" 
+WHERE 
+	 $P!{consulta}]]>
 	</queryString>
 	<field name="ID" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.name" value="ID"/>
@@ -80,8 +83,7 @@ FROM
 			</frame>
 			<image>
 				<reportElement x="463" y="0" width="87" height="95" uuid="c43a2f14-30e1-4d92-ae24-8f65a87af107"/>
-				<imageExpression><![CDATA[$P{imagen}
-$P{imagen}]]></imageExpression>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -160,12 +162,7 @@ $P{imagen}]]></imageExpression>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="41" splitType="Stretch">
-			<textField>
-				<reportElement x="455" y="0" width="100" height="30" uuid="addb2fd1-a990-48a4-87cd-3078d9d11d1e"/>
-				<textFieldExpression><![CDATA[SUM($F{CANTIDAD})]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="41" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="25" splitType="Stretch">

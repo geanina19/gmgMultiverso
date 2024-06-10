@@ -341,7 +341,7 @@ public class PanelPedidoAdmin extends javax.swing.JPanel {
             filters.add(RowFilter.regexFilter(estadoNumero.toString(), 4)); // Filtro por estado
         }
 
-        // Aplicar el filtro compuesto
+        // Aplicar el filtro 
         if (filters.isEmpty()) {
             sorter.setRowFilter(null);
         } else {

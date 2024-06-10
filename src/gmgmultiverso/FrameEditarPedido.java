@@ -46,7 +46,9 @@ public class FrameEditarPedido extends javax.swing.JFrame {
         this.codigoPedido = codigoPedido;
         this.codEmple = codEmple;
         // Depuración
-        System.out.println("Codigo del Pedido en el constructor::ç " + codigoPedido + "codigo emple: " +codEmple);        
+        System.out.println("Codigo del Pedido en el constructor::ç " + codigoPedido + "codigo emple: " +codEmple); 
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new java.awt.Color(250, 240, 230));
         
         cargarDatosCliente(codigoPedido);
 //        String nombreCliente = pedidoCompleto.getNombreClientePorIdPedido(codigoPedido);

@@ -410,21 +410,26 @@ public class BuscarProveedor extends javax.swing.JPanel {
         // Desactivar la ordenación de la tabla
         tablaBuscarProveedor.setAutoCreateRowSorter(false);
 
-        // Mostrar el cuadro de diálogo de confirmación incluyendo el nombre de la empresa
-        int opcion = JOptionPane.showConfirmDialog(this,
-                "¿Estás seguro de que quieres eliminar el proveedor '" + nombreEmpresa + "'?", "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION);
-
-        if (opcion == JOptionPane.YES_OPTION) {
-            // Si el usuario presiona "OK", procede con la eliminación
-            if (eliminarProveedor(codigoProveedor)) {
-                JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                actualizarTablaBuscarProveedor(); // Actualiza la tabla después de eliminar el proveedor.
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        // Verificar si el proveedor tiene productos asociados
+        if (prov.tieneProductosAsociados(codigoProveedor)) {
+            JOptionPane.showMessageDialog(this, "No se puede eliminar el proveedor '" + nombreEmpresa + "' porque tiene productos asociados. Primero elimine los productos asociados.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            System.out.println("Eliminación cancelada");
+            // Mostrar el cuadro de diálogo de confirmación incluyendo el nombre de la empresa
+            int opcion = JOptionPane.showConfirmDialog(this,
+                    "¿Estás seguro de que quieres eliminar el proveedor '" + nombreEmpresa + "'?", "Confirmar eliminación",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                // Si el usuario presiona "OK", procede con la eliminación
+                if (eliminarProveedor(codigoProveedor)) {
+                    JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    actualizarTablaBuscarProveedor(); // Actualiza la tabla después de eliminar el proveedor.
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                System.out.println("Eliminación cancelada");
+            }
         }
 
         // Reactivar la ordenación de la tabla utilizando el estado guardado

@@ -742,7 +742,7 @@ public class BuscarProducto extends javax.swing.JPanel {
                 
                 // Agregar la condición del rango de precios solo si se selecciona un rango específico
                 if (!rangoSeleccionado.equals("Todos")) {
-                    continuarConsulta += " AND precio BETWEEN " + precioMinimo + " AND " + precioMaximo;
+                    continuarConsulta += continuarConsulta + " AND precio BETWEEN " + precioMinimo + " AND " + precioMaximo;
                 }
 
                 Map<String, Object> parametros = new HashMap<>();

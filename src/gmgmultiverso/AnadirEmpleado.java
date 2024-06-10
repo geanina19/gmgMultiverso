@@ -67,7 +67,6 @@ public class AnadirEmpleado extends javax.swing.JPanel {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componenteNombre.getEtiqueta());
                     
-                    //String llenoNombre = vacioNombre.setText();
                     System.out.println("No se ha producido ningun error, textField nombre con contenido");
                     System.out.println("Nombre introducido : " + textoAnadir);
                     
@@ -104,7 +103,6 @@ public class AnadirEmpleado extends javax.swing.JPanel {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componenteApellido.getEtiqueta());
                     
-                    //String llenoNombre = vacioNombre.setText();
                     System.out.println("No se ha producido ningun error, textField apellido con contenido");
                     System.out.println("Apellido introducido : " + textoAnadir);
                     

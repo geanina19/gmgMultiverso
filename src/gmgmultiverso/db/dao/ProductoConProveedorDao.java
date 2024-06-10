@@ -66,6 +66,36 @@ public class ProductoConProveedorDao {
         }
     }
     
+    public boolean existeProductoConNombreYProveedor(String nombreProducto, int codigoProveedor, int idProducto) {
+        Connection conect = null;
+
+        try {
+            conect = con.abrirConexion();
+            String sql = "SELECT COUNT(*) FROM producto WHERE nombre = ? AND id_proveedor = ? AND id != ?";
+            var ps = conect.prepareStatement(sql);
+            ps.setString(1, nombreProducto);
+            ps.setInt(2, codigoProveedor);
+            ps.setInt(3, idProducto); // Asegúrate de establecer todos los parámetros
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; 
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conect != null) {
+                try {
+                    conect.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
+    
     public boolean existeProductoConNombreYProveedor(String nombreProducto, int codigoProveedor) {
         Connection conect = null;
 
@@ -94,6 +124,7 @@ public class ProductoConProveedorDao {
 
         return false;
     }
+
 
     // Método para añadir un nuevo producto
     public boolean añadirProducto(ProductoConProveedor producto) {

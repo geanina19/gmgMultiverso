@@ -100,12 +100,7 @@ public class AnadirProducto extends javax.swing.JPanel {
                 } else {
                     // Si el campo se ha completado, quítalo de la listaCamposVacios
                     listaCamposObligPorCompletar.remove(componenteNombre.getEtiqueta());
-/*
-                    // Verificar si el nombre contiene números
-                    if (textoAnadir.matches(".*\\d.*")) {
-                        JOptionPane.showMessageDialog(null, "El nombre del producto no puede contener números.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-*/
+
                     // Verificar si el nombre contiene caracteres no permitidos (excepto el espacio)
                     if (!textoAnadir.matches("[a-zA-Z\\s]+")) {
                         JOptionPane.showMessageDialog(null, "El nombre del producto solo puede contener letras y espacios.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -168,8 +163,6 @@ public class AnadirProducto extends javax.swing.JPanel {
             }
         };
         componentePrecio.addLisOverEtiquetav2(li2);
-
-
 
         
         //--------componenteUnidadExistente--------

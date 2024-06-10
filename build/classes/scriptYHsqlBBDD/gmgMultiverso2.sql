@@ -92,8 +92,6 @@ INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Z
 
 INSERT INTO empleado (nombre, apellido, contrasenia, telefono, email) VALUES ('Admin','Admin','admin',695319038,'admin@gmgmultiverso.es');
 
-INSERT INTO empleado(nombre, apellido, contrasenia, telefono, email) VALUES('Admin','Admin','admin',695319038,'admin@gmgmultiverso.es')
->>>>>>> efdd07a54ae68f75533deb7e9a02b6dd7d515572
 
 -- Datos pedido
 INSERT INTO pedido (id_cliente, fecha_pedido, id_empleado, estado, ultima_actualizacion) VALUES (1, '2024-03-15', 1, 1, '2023-03-15');

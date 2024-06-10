@@ -40,6 +40,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
+import javax.help.JHelp;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -117,8 +121,32 @@ public class PrincipalEmple extends javax.swing.JFrame {
         // Agregar ordenación alfabética al hacer clic en los encabezados de las columnas
 //        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(miModelo);
 //        tablePedidos.setRowSorter(sorter);   
-        
-        
+
+        //----------------JAVAHELP----------------------------
+    
+        String AYUDA_HS = "ayuda/helpset2.hs";
+        try 
+        {
+            ClassLoader cl = getClass().getClassLoader();
+            URL ayudaURL = cl.getResource(AYUDA_HS);
+            if (ayudaURL != null) 
+            {
+                HelpSet helpset = new HelpSet(null, ayudaURL);
+                HelpBroker hb = helpset.createHelpBroker();
+                JHelp jhelp = new JHelp(helpset);
+                //jhelp.setCurrentID("inicio");
+                hb.enableHelpOnButton(ayuda, "codProveedor", helpset);
+            } 
+            else 
+            {
+                System.err.println("No se pudo encontrar el archivo de ayuda: " + AYUDA_HS);
+            }
+        } 
+        catch (HelpSetException ex) 
+        {
+            System.err.println("Error al cargar la ayuda: " + ex);
+        }
+                  
     }
     
     @Override
@@ -308,6 +336,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
         menuCerrarSesion = new javax.swing.JMenuItem();
         menuCerrar = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        ayuda = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuOscuro = new javax.swing.JMenuItem();
         menuClaro = new javax.swing.JMenuItem();
@@ -440,6 +469,16 @@ public class PrincipalEmple extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Ayuda");
+
+        ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pregunta.png"))); // NOI18N
+        ayuda.setText("Ver ayuda");
+        ayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ayudaActionPerformed(evt);
+            }
+        });
+        jMenu2.add(ayuda);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Tema");
@@ -855,6 +894,10 @@ public class PrincipalEmple extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonInformePedidoActionPerformed
 
+    private void ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ayudaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -894,6 +937,7 @@ public class PrincipalEmple extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ayuda;
     private javax.swing.JButton buscarButton;
     private javax.swing.JButton buttonInformePedido;
     private javax.swing.JButton buttonReiniciar;

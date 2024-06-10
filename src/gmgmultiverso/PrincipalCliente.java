@@ -99,6 +99,7 @@ public class PrincipalCliente extends javax.swing.JFrame {
         background.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(298, 0, 410, 550));
 
         panelinicio3.setBackground(new java.awt.Color(255, 255, 255));
+        panelinicio3.setOpaque(false);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Semibold", 2, 24)); // NOI18N
         jLabel10.setText("Iniciar Sesión");

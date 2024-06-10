@@ -65,10 +65,10 @@ public class VerPedidos extends javax.swing.JPanel {
     
     
     /*--------------------- METODO PARA AÑADIR LOS DATOS A LA TABLA ------------------*/
- public void anadirDatosTabla(){
+ public void anadirDatosTabla() {
     // Obtener lista de pedidos del cliente por su correo electrónico
     List<PedidoConNombre> pedidos = pedidoCompleto.listByCliente(correoCliente); 
-    
+
     miModelo = new DefaultTableModel(new Object[]{
             "Numero de pedido", "Nombre cliente", "Fecha pedido", "Nombre empleado", "Estado del pedido", "Última actualización"}, 0) {
         @Override
@@ -79,11 +79,11 @@ public class VerPedidos extends javax.swing.JPanel {
             return Object.class;
         }
     };
-    
+
     ImageIcon estado1Icon = crearImageIcon("/imgEmple/recibidoIcono.png");
     ImageIcon estado2Icon = crearImageIcon("/imgEmple/preparacionIcono.png");
     ImageIcon estado3Icon = crearImageIcon("/imgEmple/enviadoIcono.png");
-    
+
     for (PedidoConNombre pedido : pedidos) {
         ImageIcon estadoIcon;
         switch (pedido.getEstado()) {
@@ -110,36 +110,37 @@ public class VerPedidos extends javax.swing.JPanel {
         });
     }
     tableTodosPedidos.setModel(miModelo);
-        
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        TableColumnModel columnModel = tableTodosPedidos.getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            if (i != 4 && i != 6) { 
-                columnModel.getColumn(i).setCellRenderer(centerRenderer);
+
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+    TableColumnModel columnModel = tableTodosPedidos.getColumnModel();
+    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+        if (i != 4 && i != 6) { 
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
+    DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+    headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+    headerRenderer.setBackground(Color.LIGHT_GRAY); 
+    headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
+
+    JTableHeader tableHeader = tableTodosPedidos.getTableHeader();
+    tableHeader.setDefaultRenderer(headerRenderer);
+
+    tableTodosPedidos.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            int fila = tableTodosPedidos.rowAtPoint(e.getPoint());
+            if (fila >= 0) {
+                // Aquí puedes agregar la lógica que deseas ejecutar cuando se haga clic en una fila
+                System.out.println("Fila seleccionada: " + fila);
             }
         }
+    });
+}
 
-        DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
-        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        headerRenderer.setBackground(Color.LIGHT_GRAY); 
-        headerRenderer.setFont(headerRenderer.getFont().deriveFont(Font.BOLD)); 
-
-        JTableHeader tableHeader = tableTodosPedidos.getTableHeader();
-        tableHeader.setDefaultRenderer(headerRenderer);
-
-        tableTodosPedidos.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int columnaModificar = tableTodosPedidos.getColumnModel().getColumnIndex("Editar");
-                int fila = tableTodosPedidos.rowAtPoint(e.getPoint());
-                if (fila >= 0 && tableTodosPedidos.columnAtPoint(e.getPoint()) == columnaModificar) {
-                    
-                }
-            }
-        });
-    }
         
     /**
      * This method is called from within the constructor to initialize the form.

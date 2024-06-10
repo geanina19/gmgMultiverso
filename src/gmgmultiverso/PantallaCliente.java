@@ -310,7 +310,6 @@ public class PantallaCliente extends javax.swing.JFrame {
         setBackground(new java.awt.Color(255, 221, 129));
         setResizable(false);
 
-        panel.setBackground(new java.awt.Color(255, 255, 255));
         panel.setOpaque(false);
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         panel.add(buscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(307, 58, 428, 46));
@@ -425,7 +424,7 @@ public class PantallaCliente extends javax.swing.JFrame {
         jMenu1.add(jMenuItem17);
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/carritoAColor.png"))); // NOI18N
-        jMenuItem3.setText("Ver  Pedidos");
+        jMenuItem3.setText("Ver  Historial");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
